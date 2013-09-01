@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Alliances;
 
 import java.util.List;
 import org.bukkit.Bukkit;
@@ -9,6 +9,9 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
+
+import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.WCVault;
 
 public class WACommandEx
   implements CommandExecutor, Listener

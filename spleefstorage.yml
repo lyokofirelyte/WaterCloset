@@ -1,0 +1,317 @@
+package com.github.lyokofirelyte.WaterCloset;
+
+import java.util.Iterator;
+import java.util.List;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.Server;
+import org.bukkit.World;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
+
+public class WASpleefChat
+  implements Listener
+{
+  WCMain plugin;
+  String WASP = "§aWASpleef §2// §a";
+
+  public WASpleefChat(WCMain instance)
+  {
+    this.plugin = instance;
+  }
+
+  @EventHandler(priority=EventPriority.NORMAL)
+  public void onCommandPreprocess(AsyncPlayerChatEvent event)
+  {
+    if ((this.plugin.WASpleefconfig.getBoolean("Spleef.Active")) && (this.plugin.WASpleefdatacore.getStringList("Spleef.Players").contains(event.getPlayer().getName())))
+    {
+      List<String> spleefPlayers = this.plugin.WASpleefdatacore.getStringList("Spleef.Players");
+      Boolean started = Boolean.valueOf(this.plugin.WASpleefdatacore.getBoolean("Spleef.Started"));
+      Boolean inRound = Boolean.valueOf(this.plugin.WASpleefdatacore.getBoolean("Spleef.inRound"));
+      List<String> ready = this.plugin.WASpleefdatacore.getStringList("Spleef.Ready");
+      String captain = this.plugin.WASpleefconfig.getString("Spleef.Captain");
+      Boolean matWarn = Boolean.valueOf(this.plugin.WASpleefdatacore.getBoolean("Spleef.MatWarn"));
+      int matLevel2;
+      if (ready.size() == spleefPlayers.size() - 1)
+      {
+        String currentPlayer;
+        if (!matWarn.booleanValue())
+        {
+          this.plugin.WASpleefdatacore.set("Spleef.MatWarn", Boolean.valueOf(true));
+
+          for (String currentPlayer2 : spleefPlayers){
+
+            Bukkit.getPlayer(currentPlayer2).sendMessage(this.WASP + "Everyone's ready! §eSPLEEF CAPTAIN! §aType in the material we shall use for this round!");
+          }
+
+          spleefSetup();
+          this.plugin.WASpleefconfig.set("Spleef.Active", Boolean.valueOf(true));
+          event.setCancelled(true);
+
+          return;
+        }
+
+        if ((event.getPlayer().getName().equalsIgnoreCase(captain)) && (matWarn.booleanValue()))
+        {
+          switch (event.getMessage()){
+          case "grassleaf":
+          case -529976782:
+            if (currentPlayer.equals("doublesnowleaf")) break label967; break;
+          case -331930628:
+            if (currentPlayer.equals("superslow")) break label1403; break;
+          case -301476509:
+            if (currentPlayer.equals("doublegrassleaf")) break label1019; break;
+          case -49684883:
+            if (currentPlayer.equals("woolcake")) break label759; break;
+          case 104075:
+            if (currentPlayer.equals("ice")) break label1327; break;
+          case 3198781:
+            if (currentPlayer.equals("hell")) break label1237; break;
+          case 3317598:
+            if (currentPlayer.equals("leaf")) break label1071; break;
+          case 3535235:
+            if (currentPlayer.equals("snow")) break label721; break;
+          case 3655341:
+            if (currentPlayer.equals("wood")) break label877; break;
+          case 3655349:
+            if (currentPlayer.equals("wool")) break label1365; break;
+          case 98436988:
+            if (currentPlayer.equals("glass")) break label1469; break;
+          case 98615734:
+            if (currentPlayer.equals("grass")) break label1289; break;
+          case 691935073:
+            if (currentPlayer.equals("snowleaf")) break label1109; break;
+          case 779471535:
+            if (currentPlayer.equals("doubleleaf")) break label915; break;
+          case 779689172:
+            if (currentPlayer.equals("doublesnow")) break label1185; break;
+          case 904306401:
+            if (currentPlayer.equals("triplesnow"))
+              break label811; }
+          event.getPlayer().sendMessage(this.WASP + "Type snow, hell, grass, ice, wool, superslow, glass, leaf, doublesnow, doubleleaf," + 
+            " snowleaf, grassleaf, doublesnowleaf, doublegrassleaf, triplesnow, woolcake, or wood.");
+          this.plugin.WASpleefdatacore.set("Spleef.Material", null);
+          event.setCancelled(true);
+          return;
+
+          this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "snowblock");
+          event.setCancelled(true);
+          break label1504;
+
+          this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(2));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "cake");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "wool");
+          event.setCancelled(true);
+          break label1504;
+
+          label811: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(3));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "snowblock");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "snowblock");
+          this.plugin.WASpleefdatacore.set("Spleef.Material3", "snowblock");
+          event.setCancelled(true);
+          break label1504;
+
+          label877: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "log");
+          event.setCancelled(true);
+          break label1504;
+
+          label915: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(2));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "leaves");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "leaves");
+          event.setCancelled(true);
+          break label1504;
+
+          label967: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(2));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "50%snowblock,50%leaves");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "50%snowblock,50%leaves");
+          event.setCancelled(true);
+          break label1504;
+
+          this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(2));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "50%grass,50%leaves");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "50%grass,50%leaves");
+          event.setCancelled(true);
+          break label1504;
+
+          label1071: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "leaves");
+          event.setCancelled(true);
+          break label1504;
+
+          label1109: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "50%snowblock,50%leaves");
+          event.setCancelled(true);
+          break label1504;
+
+          this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "50%grass,50%leaves");
+          event.setCancelled(true);
+          break label1504;
+
+          label1185: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(2));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "snowblock");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "snowblock");
+          event.setCancelled(true);
+          break label1504;
+
+          label1237: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(2));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "10%fire,90%air");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "nether");
+          event.setCancelled(true);
+          break label1504;
+
+          label1289: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "grass");
+          event.setCancelled(true);
+          break label1504;
+
+          label1327: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "ice");
+          event.setCancelled(true);
+          break label1504;
+
+          label1365: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "white,red,blue,orange,purple,green,lightgreen,lightblue,pink,black");
+          event.setCancelled(true);
+          break label1504;
+
+          label1403: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(3));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "soulsand");
+          this.plugin.WASpleefdatacore.set("Spleef.Material2", "ice");
+          this.plugin.WASpleefdatacore.set("Spleef.Material3", "web");
+          event.setCancelled(true);
+          break label1504;
+
+          label1469: this.plugin.WASpleefdatacore.set("Spleef.MatLevel", Integer.valueOf(1));
+          this.plugin.WASpleefdatacore.set("Spleef.Material", "glasspane");
+
+          event.setCancelled(true);
+
+          label1504: if (event.getPlayer().isOp())
+          {
+            this.plugin.WASpleefdatacore.set("Users." + event.getPlayer().getName() + ".isOp", Boolean.valueOf(true));
+          }
+
+          event.getPlayer().setOp(true);
+          matLevel2 = this.plugin.WASpleefdatacore.getInt("Spleef.MatLevel");
+          String material3;
+          switch (matLevel2)
+          {
+          default:
+            event.getPlayer().sendMessage("SOMETHING WENT WRONG GOD DAMNIT EVERTHING'S BROKEN AHHAHAHA SHIT");
+            break;
+          case 1:
+            String material2 = this.plugin.WASpleefdatacore.getString("Spleef.Material");
+            clearArena(event.getPlayer());
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "rg select spleef");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/set " + material2);
+            break;
+          case 2:
+            material3 = this.plugin.WASpleefdatacore.getString("Spleef.Material");
+            String material4 = this.plugin.WASpleefdatacore.getString("Spleef.Material2");
+            clearArena(event.getPlayer());
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "rg select spleef");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/shift 1 d");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/set " + material4);
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/shift 1 u");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/set " + material3);
+            break;
+          case 3:
+            String material5 = this.plugin.WASpleefdatacore.getString("Spleef.Material");
+            String material6 = this.plugin.WASpleefdatacore.getString("Spleef.Material2");
+            String material7 = this.plugin.WASpleefdatacore.getString("Spleef.Material3");
+            clearArena(event.getPlayer());
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "rg select spleef");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/shift 2 d");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/set " + material7);
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/shift 1 u");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/set " + material6);
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/shift 1 u");
+            Bukkit.getServer().dispatchCommand(event.getPlayer(), "/set " + material5);
+          }
+
+          if (!this.plugin.WASpleefdatacore.getBoolean("Users." + event.getPlayer().getName() + ".isOp")) {
+            event.getPlayer().setOp(false);
+          }
+
+          for (String currentPlayer : spleefPlayers)
+          {
+            Bukkit.getPlayer(currentPlayer).sendMessage(this.WASP + event.getMessage() + ChatColor.GREEN + " was choosen!");
+          }
+
+          spleefTeleport();
+          spleefSetup();
+          this.plugin.WASpleefdatacore.set("Spleef.Ready", null);
+          this.plugin.WASpleefdatacore.set("Spleef.ReadyForNext", Boolean.valueOf(true));
+          this.plugin.WASpleefconfig.set("Spleef.Active", Boolean.valueOf(false));
+          this.plugin.WASpleefdatacore.set("Spleef.inRound", Boolean.valueOf(true));
+          this.plugin.WASpleefdatacore.set("Spleef.MatWarn", Boolean.valueOf(false));
+        }
+
+        return;
+      }
+
+      if ((started.booleanValue()) && (!inRound.booleanValue()) && (event.getMessage().equalsIgnoreCase("ready")) && (!ready.contains(event.getPlayer().getName())) && (spleefPlayers.contains(event.getPlayer().getName())))
+      {
+        event.setCancelled(true);
+        ready.add(event.getPlayer().getName());
+        this.plugin.WASpleefdatacore.set("Spleef.Ready", ready);
+
+        for (String currentPlayer : spleefPlayers)
+        {
+          Bukkit.getPlayer(currentPlayer).sendMessage("§7§o" + event.getPlayer().getDisplayName() + " §7§ois ready for the next round. (" + ready.size() + "§7§o/" + spleefPlayers.size() + "§7§o)");
+        }
+      }
+    }
+  }
+
+  private void clearArena(Player player)
+  {
+    Bukkit.getServer().dispatchCommand(player, "/rg select spleef");
+    Bukkit.getServer().dispatchCommand(player, "/expand 2 d");
+    Bukkit.getServer().dispatchCommand(player, "/set 0");
+  }
+
+  public void spleefSetup()
+  {
+    List spleefPlayersRemaining = this.plugin.WASpleefdatacore.getStringList("Spleef.RemainingPlayers");
+    List spleefPlayers = this.plugin.WASpleefdatacore.getStringList("Spleef.Players");
+
+    for (String spleefTransfer : spleefPlayers)
+    {
+      if (!spleefPlayersRemaining.contains(spleefTransfer))
+      {
+        spleefPlayersRemaining.add(spleefTransfer);
+        this.plugin.WASpleefdatacore.set("Spleef.RemainingPlayers", spleefPlayersRemaining);
+      }
+    }
+  }
+
+  public void spleefTeleport()
+  {
+    List spleefPlayers4 = this.plugin.WASpleefdatacore.getStringList("Spleef.Players");
+    int pointAmount = this.plugin.WASpleefconfig.getInt("Spleef.Points");
+    this.plugin.WASpleefdatacore.set("Spleef.FallReady", Boolean.valueOf(true));
+
+    for (String currentPlayer : spleefPlayers4)
+    {
+      int x = this.plugin.WASpleefconfig.getInt("Spleef.X" + pointAmount);
+      int y = this.plugin.WASpleefconfig.getInt("Spleef.Y" + pointAmount);
+      int z = this.plugin.WASpleefconfig.getInt("Spleef.Z" + pointAmount);
+      int yaw = this.plugin.WASpleefconfig.getInt("Spleef.Yaw" + pointAmount);
+      int pitch = this.plugin.WASpleefconfig.getInt("Spleef.Pitch" + pointAmount);
+      World spleefWorld = Bukkit.getWorld(this.plugin.WASpleefconfig.getString("Spleef.World"));
+      Location spleefTp = new Location(spleefWorld, x, y, z, yaw, pitch);
+      Bukkit.getPlayer(currentPlayer).teleport(spleefTp);
+      pointAmount--;
+      Bukkit.getPlayer(currentPlayer).sendMessage(this.WASP + "BEGIN! KILL EVERYONE!#@%");
+    }
+  }
+}

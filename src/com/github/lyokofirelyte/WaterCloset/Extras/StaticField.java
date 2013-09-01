@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Extras;
 
 import java.util.List;
 import org.bukkit.Bukkit;
@@ -18,6 +18,8 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 
 public class StaticField extends JavaPlugin
   implements CommandExecutor, Listener

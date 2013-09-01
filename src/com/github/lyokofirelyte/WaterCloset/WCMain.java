@@ -5,12 +5,22 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
+
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
+import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
+import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
+import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
+import com.github.lyokofirelyte.WaterCloset.Extras.waOSReport;
 
 public class WCMain extends JavaPlugin
 {
@@ -21,15 +31,22 @@ public class WCMain extends JavaPlugin
   File datacoreFile;
   File WAAlliancesconfigFile;
   File WAAlliancesdatacoreFile;
-  FileConfiguration WASpleefconfig;
-  FileConfiguration WASpleefdatacore;
-  FileConfiguration config;
-  FileConfiguration datacore;
-  FileConfiguration WAAlliancesconfig;
-  FileConfiguration WAAlliancesdatacore;
+  public FileConfiguration WASpleefconfig;
+  public FileConfiguration WASpleefdatacore;
+  public FileConfiguration config;
+  public FileConfiguration datacore;
+  public FileConfiguration WAAlliancesconfig;
+  public FileConfiguration WAAlliancesdatacore;
+  private String url;
+  private String username;
+  private String password;
+  private Connection conn;
 
   public void onEnable()
   {
+
+
+    
     PluginManager pm = getServer().getPluginManager();
     pm.registerEvents(new WACommandEx(this), this);
     pm.registerEvents(new WCJoin(this), this);
@@ -63,6 +80,18 @@ public class WCMain extends JavaPlugin
     this.config = new YamlConfiguration();
     this.datacore = new YamlConfiguration();
     loadYamls();
+    
+
+
+    url = config.getString("url");
+    username = config.getString("username");
+    password = config.getString("password");
+
+    if ((url == null) || (username == null) || (password == null))
+    {
+      Bukkit.getServer().getLogger().info("You must provide a url, username, and password in the config.yml.");
+      Bukkit.getServer().getPluginManager().disablePlugin(this);
+    }
 
     registerCommands();
 
@@ -76,12 +105,23 @@ public class WCMain extends JavaPlugin
     }
   }
 
-  public void onDisable()
-  {
+  public void onDisable() {
+	  
     getLogger().info("CORE AND ALL EXTENSIONS HAVE BEEN DEACTIVATED.");
     saveYamls();
+    
+    try
+    {
+      if (this.conn != null)
+      {
+        this.conn.close();
+      }
+    }
+    catch (SQLException e) {
+      e.printStackTrace();
+    }
   }
-
+  
   private void registerCommands()
   {
     getCommand("watercloset").setExecutor(new WCCommands(this));
@@ -104,6 +144,8 @@ public class WCMain extends JavaPlugin
 
     getCommand("forcefield").setExecutor(new StaticField(this));
     getCommand("ff").setExecutor(new StaticField(this));
+    
+    getCommand("report").setExecutor(new waOSReport(this));
   }
 
   private void copy(InputStream in, File file)

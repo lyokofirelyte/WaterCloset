@@ -1,0 +1,84 @@
+name: WaterCloset
+main: com.github.lyokofirelyte.WaterCloset.WCMain
+author: lyokofirelyte
+prefix: WC
+depend: [Vault]
+version: 2
+
+commands:
+   watercloset:
+      description: WC Root Command
+      usage: Admin use only.
+      permission: wc.admin
+   wc:
+      description: WC Root Command
+      usage: Admin use only.
+      permission: wc.admin
+   o:
+      description: Staff Chat
+      usage: /o <message>
+      permission: wa.staff
+   l:
+      description: Alliance Chat
+      usage: /l <message>
+   waa:
+      description: WAA Help Menu
+      usage: /waa help
+   nick:
+      description: NICKNAMES BITCHES!
+      usage: /nick <nick>
+   getnick:
+      description: VTE Command
+      usage: You don't.
+      permission: vte.nick
+   stringbuilder:
+      description: VTE Command
+      usage: You don't.
+      permission: vte.stringbuilder
+   itemname:
+      description: VTE Command
+      usage: You don't.
+      permission: vte.itemname
+   timestamp:
+      description: VTE Command
+      usage: You don't.
+      permission: vte.timestamp
+   msg:
+      description: Message people all the things.
+      usage: I don't know, maybe /msg <player> <message>?
+   tell:
+      description: Message people all the things.
+      usage: I don't know, maybe /tell <player> <message>?
+   t:
+      description: Message people all the things.
+      usage: I don't know, maybe /t <player> <message>?
+   r:
+      description: Reply to someone.
+      usage: /r <message>.
+   forcefield:
+      description: It's a fucking forcefield.
+      usage: /forcefield
+      permission: ff.use
+   ff:
+      description: It's a fucking shortcut for /forcefield.
+      usage: /ff
+      permission: ff.use
+   report:
+      description: Report someone for aboose.
+      usage: /report <player> <reason>
+permissions:
+    spleef.admin:
+        description: Use admin stuff.
+        default: op
+    wa.staff:
+        description: WA Staff.
+        default: op
+    wa.mod:
+        description: WA Staff.
+        default: op
+    wa.security:
+        description: WA Staff.
+        default: op
+    wa.statesman:
+        description: Double Mobs.
+        default: false

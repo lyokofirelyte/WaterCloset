@@ -1,0 +1,85 @@
+# WaterCloset Core Config  #
+
+Core:
+  Plugins:
+  - WASpleef
+  - WAAlliances
+  - VTExtension
+  - WC
+  - StaticField
+  Help:
+  - '&dWaterCloset &5// &dHelp Core'
+  - '&f--- --- --- --- --- --- ---'
+  - '&1| &3/spleef help &f// &3Spleef Menu'
+  - '&1| &3/waa help &f// &3Alliance Menu'
+  - '&1| &3/wc reload &f// &3WaterCloset Reload'
+  - '&1| &3/wc save &f// &3WaterCloset Save'
+  - '&1| &3/wc placeholders &f// &3Chat PlaceHolder Menu'
+  JoinMessages:
+  - So it seems that %p has logged in!
+  - Glad to see you, %p!
+  - Welcome to WA, %p!
+  - Look out! Here comes %p!
+  - Well well well... look who it is! (%p)
+  - '%p has joined Worlds Apart!'
+  - '%p has logged in over 9000 times! (Give or take)'
+  - Hello %p, may I take your hat?
+  - '%p is liak so totes online, obvi.'
+  - '%p is too cool for anything other than Minecraft.'
+  - '%p has joined us today. YAY!'
+  - How are you today, %p?
+  - '%p decided to drop in on us today.'
+  - '%p has returned from the outside world...'
+  - A wild %p has appeared!
+  - So %p, I heard you like WA...
+  - '%p has virtualized into Worlds Apart!'
+  - Hi there %p!
+  - '%p is cray-cray enough to join us today.'
+  - '%p is in a much better place now.'
+  - '%p has joined WA. Please stare at them for awhile.'
+  - '%p logged in just for you.'
+  - '%p is overjoyed to join us today. Really.'
+  - '%p has fallen from heaven and landed in WA.'
+  - '%p is the cats meow for joining WA.'
+  - '%p is the bees knees for joining WA.'
+  - How do you do, %p?
+  - '%p is liak oh so totes awes for logging in.'
+  - Hello there %p...you are not going to leave us.. right?
+  - '%p has risen from the grave to play with us today.'
+  - Speaking of %p... here they are!
+  - Hello %p. We are watching you. Always.
+  - Is it getting hot in here, or is it just %p?
+  QuitMessages:
+  - So it seems that %p has logged out!
+  - Interesting, it seems that %p has left!
+  - Cya later, %p!
+  - Look out! %p is leaving!
+  - Well well well... look who left! (%p)
+  - '%p has left Worlds Apart!'
+  - '%p has logged out over 9000 times! (Give or take)'
+  - Bye %p, here is your hat back.
+  - '%p is liak so totes offline, obvi.'
+  - '%p is too cool for Minecraft.'
+  - '%p has left us today. BOO!'
+  - Bye bye for now, %p!
+  - '%p decided to drop out on us today.'
+  - '%p has entered the outside world...'
+  - A wild %p has disappeared!
+  - So %p, I heard you like to leave WA...
+  - '%p has de-virtualized out of Worlds Apart!'
+  - Bye %p!
+  - '%p is cray-cray enough to leave us today.'
+  - '%p is in a much worse place now, unless they went to IC.'
+  - '%p has left WA. Please stare at them for awhile.'
+  - '%p logged out just for you.'
+  - '%p is overjoyed to leave us today. How rude!.'
+  - '%p has bailed!'
+  - '%p is not the cats meow for leaving WA.'
+  - '%p is not the bees knees for leaving WA.'
+  - Peace out, brussel sprouts! ~%p
+  - '%p is liak oh so not totes awes for logging out.'
+  - But %p! You said you would never leave! YOU PROMISED!
+  - '%p has fallen back into the grave.'
+  - Speaking of %p... oh, they left. Darn.
+  - Goodbye %p. We are still watching you. Always.
+  - Another one bites the dust. (%p)

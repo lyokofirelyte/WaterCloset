@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Extras;
 
 import java.util.Date;
 import org.bukkit.Bukkit;
@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 
 public class TimeStampEX
   implements CommandExecutor

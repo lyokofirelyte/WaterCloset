@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Extras;
 
 import java.util.List;
 
@@ -10,6 +10,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityExplodeEvent;
+
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 
 public class TNTNerf implements Listener {
 	
