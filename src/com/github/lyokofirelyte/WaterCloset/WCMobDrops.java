@@ -24,7 +24,7 @@ public class WCMobDrops implements Listener {
 	
 	public WCMobDrops(WCMain instance){
 	   plugin = instance;
-	  }
+    } 
 	
 
 	 @EventHandler(priority = EventPriority.NORMAL)

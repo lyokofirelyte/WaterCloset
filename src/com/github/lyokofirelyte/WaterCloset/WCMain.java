@@ -37,6 +37,7 @@ public class WCMain extends JavaPlugin
     pm.registerEvents(new StaticField(this), this);
     pm.registerEvents(new WCChannels(this), this);
     pm.registerEvents(new WCMobDrops(this), this);
+    pm.registerEvents(new TNTNerf(this), this);
 
     this.WASpleefconfigFile = new File(getDataFolder() + File.separator + "WASpleef", "config.yml");
     this.WASpleefdatacoreFile = new File(getDataFolder() + File.separator + "WASpleef", "datacore.yml");
