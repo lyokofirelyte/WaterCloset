@@ -26,7 +26,7 @@ public class WCMobDrops implements Listener {
 	   plugin = instance;
 	  }
 	
-	
+
 	 @EventHandler(priority = EventPriority.NORMAL)
 	  public void onPlayerBadTouch(PlayerInteractEvent event){
 		 		 
@@ -38,10 +38,14 @@ public class WCMobDrops implements Listener {
 	 		  
 	 		  if (player.getInventory().getItemInHand().getItemMeta().hasDisplayName()){
 	 		  
-	          if (player.getInventory().getItemInHand().getItemMeta().getDisplayName().contains("5 Shinies")) {
+	          if (player.getInventory().getItemInHand().getItemMeta().getDisplayName().contains("Shinies")) {
 	        	  
 	        	  int goldInHand = player.getInventory().getItemInHand().getAmount();
-	        	  Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco give " + player.getName() + " " + (goldInHand * 5));
+	        	  if (event.getPlayer().hasPermission("wa.statesman")){
+	        	  Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco give " + player.getName() + " " + (goldInHand * 40));
+	        	  } else {
+	        	  Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco give " + player.getName() + " " + (goldInHand * 20));
+	        	  }
 	        	  player.setItemInHand(new ItemStack(Material.AIR)); 
 	        	  return;
 	       
@@ -71,19 +75,24 @@ public class WCMobDrops implements Listener {
 			ArrayList<String> lore;
 			Random rand = new Random();
 			Random moneyAmount = new Random();
-			int randomMoneyAmount = moneyAmount.nextInt(101) + 1;
+			int randomMoneyAmount = moneyAmount.nextInt(140) + 1;
 		    int randomNumber = rand.nextInt(4) + 1;
 		
 		
 		if (randomNumber == 4) {
-            ItemStack shard = new ItemStack(Material.GOLD_NUGGET, (randomMoneyAmount / 5));
+			
+			ItemStack shard = new ItemStack(Material.GOLD_NUGGET, (randomMoneyAmount / 20));
             ItemMeta name = shard.getItemMeta();
             drops = new ArrayList<ItemStack>();
             lore = new ArrayList<String>();
 
-            name.addEnchant(Enchantment.DURABILITY, 10, true);
-            name.setDisplayName("§6§o5 Shinies");
-            lore.add("§7§oIt's so shiny...I should right click it.");
+            name.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 10, true);
+            	if (event.getEntity().getKiller().hasPermission("wa.statesman")){
+            		name.setDisplayName("§6§oFourty Shinies!");
+            	} else {
+            		name.setDisplayName("§6§oTwenty Shinies!");
+            	}
+            lore.add("§7§oIt's so shiny...I should right click with it in my hand.");
             name.setLore(lore);
             shard.setItemMeta((ItemMeta)name);
             drops.add(shard);
