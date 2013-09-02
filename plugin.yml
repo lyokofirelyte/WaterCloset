@@ -66,6 +66,12 @@ commands:
    report:
       description: Report someone for aboose.
       usage: /report <player> <reason>
+   mail:
+      description: Send a mail to someone.
+      usage: /mail
+   search:
+      description: Search the global database of help!
+      usage: /search <query>
 permissions:
     spleef.admin:
         description: Use admin stuff.
