@@ -103,7 +103,7 @@ public class TimeStampEX
     return true;
   }
 
-  public String createString(String[] args, int x)
+  public static String createString(String[] args, int x)
   {
     StringBuilder sb = new StringBuilder();
     for (int i = x; i < args.length; i++)

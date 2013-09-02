@@ -31,12 +31,16 @@ public class WCMain extends JavaPlugin
   File datacoreFile;
   File WAAlliancesconfigFile;
   File WAAlliancesdatacoreFile;
+  File mailFile;
+  File helpFile;
   public FileConfiguration WASpleefconfig;
   public FileConfiguration WASpleefdatacore;
   public FileConfiguration config;
   public FileConfiguration datacore;
   public FileConfiguration WAAlliancesconfig;
   public FileConfiguration WAAlliancesdatacore;
+  public static FileConfiguration mail;
+  public static FileConfiguration help;
   private String url;
   private String username;
   private String password;
@@ -64,6 +68,8 @@ public class WCMain extends JavaPlugin
 
     this.configFile = new File(getDataFolder(), "config.yml");
     this.datacoreFile =  new File(getDataFolder(), "datacore.yml");
+    this.mailFile = new File(getDataFolder(), "mail.yml");
+    this.helpFile = new File(getDataFolder(), "help.yml");
 
     this.vaultMgr.hookSetup();
     try
@@ -79,9 +85,10 @@ public class WCMain extends JavaPlugin
     this.WASpleefdatacore = new YamlConfiguration();
     this.config = new YamlConfiguration();
     this.datacore = new YamlConfiguration();
+    WCMain.mail = new YamlConfiguration();
+    WCMain.help = new YamlConfiguration();
     loadYamls();
     
-
 
     url = config.getString("url");
     username = config.getString("username");
@@ -146,6 +153,10 @@ public class WCMain extends JavaPlugin
     getCommand("ff").setExecutor(new StaticField(this));
     
     getCommand("report").setExecutor(new waOSReport(this));
+    
+    getCommand("mail").setExecutor(new WCMail(this));
+    
+    getCommand("search").setExecutor(new WCHelp(this));
   }
 
   private void copy(InputStream in, File file)
@@ -172,6 +183,8 @@ public class WCMain extends JavaPlugin
     {
       this.config.save(this.configFile);
       this.datacore.save(this.datacoreFile);
+      WCMain.mail.save(this.mailFile);
+      WCMain.help.save(this.helpFile);
 
       this.WASpleefconfig.save(this.WASpleefconfigFile);
       this.WASpleefdatacore.save(this.WASpleefdatacoreFile);
@@ -188,6 +201,8 @@ public class WCMain extends JavaPlugin
     try {
       this.config.save(this.configFile);
       this.datacore.save(this.datacoreFile);
+      WCMain.mail.save(this.mailFile);
+      WCMain.help.save(this.helpFile);
     } catch (IOException e) {
       e.printStackTrace();
     }
@@ -242,6 +257,8 @@ public class WCMain extends JavaPlugin
     {
       this.config.load(this.configFile);
       this.datacore.load(this.datacoreFile);
+      WCMain.mail.load(this.mailFile);
+      WCMain.help.load(this.helpFile);
 
       this.WASpleefconfig.load(this.WASpleefconfigFile);
       this.WASpleefdatacore.load(this.WASpleefdatacoreFile);
@@ -257,6 +274,8 @@ public class WCMain extends JavaPlugin
     try {
       this.config.load(this.configFile);
       this.datacore.load(this.datacoreFile);
+      WCMain.mail.load(this.mailFile);
+      WCMain.help.load(this.helpFile);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -264,19 +283,42 @@ public class WCMain extends JavaPlugin
 
   private void firstRun() throws Exception {
     if (!this.configFile.exists()) {
-      this.configFile.getParentFile().mkdirs();
-      this.WASpleefconfigFile.getParentFile().mkdirs();
-      this.WAAlliancesconfigFile.getParentFile().mkdirs();
-      copy(getResource("config.yml"), this.configFile);
-      copy(getResource("WASpleefconfig.yml"), this.WASpleefconfigFile);
-      copy(getResource("WAAlliancesconfig.yml"), this.WAAlliancesconfigFile);
+    	this.configFile.getParentFile().mkdirs();
+    	copy(getResource("config.yml"), this.configFile);
     }
+    
+    if (!this.mailFile.exists()){
+        this.mailFile.getParentFile().mkdirs();
+        copy(getResource("mail.yml"), this.mailFile);
+    }
+    
+    if (!this.helpFile.exists()){
+        this.helpFile.getParentFile().mkdirs();
+        copy(getResource("help.yml"), this.helpFile);
+    }
+    
+    if (!this.WASpleefconfigFile.exists()){
+        this.WASpleefconfigFile.getParentFile().mkdirs();
+        copy(getResource("WASpleefconfig.yml"), this.WASpleefconfigFile);
+    }
+    
+    if (!this.WAAlliancesconfigFile.exists()){
+        this.WAAlliancesconfigFile.getParentFile().mkdirs();
+        copy(getResource("WAAlliancesconfig.yml"), this.WAAlliancesconfigFile);
+    }
+    
     if (!this.datacoreFile.exists()) {
-      this.datacoreFile.getParentFile().mkdirs();
+    	this.datacoreFile.getParentFile().mkdirs();
+        copy(getResource("datacore.yml"), this.datacoreFile);
+    }
+    
+    if (!this.WASpleefdatacoreFile.exists()){
       this.WASpleefdatacoreFile.getParentFile().mkdirs();
-      this.WAAlliancesdatacoreFile.getParentFile().mkdirs();
-      copy(getResource("datacore.yml"), this.datacoreFile);
       copy(getResource("WASpleefdatacore.yml"), this.WASpleefdatacoreFile);
+    }
+    
+    if (!this.WAAlliancesdatacoreFile.exists()){ 	
+      this.WAAlliancesdatacoreFile.getParentFile().mkdirs();
       copy(getResource("WAAlliancesdatacore.yml"), this.WAAlliancesdatacoreFile);
     }
   }

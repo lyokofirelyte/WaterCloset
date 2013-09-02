@@ -18,6 +18,7 @@ public class WCCommands implements CommandExecutor {
   }
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	  
     if (cmd.getName().equalsIgnoreCase("wc") || cmd.getName().equalsIgnoreCase("watercloset"))
     {
       if (!(sender instanceof Player))
@@ -37,7 +38,7 @@ public class WCCommands implements CommandExecutor {
       
         case "placeholders":
         	
-        	sender.sendMessage(WC + "%t = town, %c = coords");
+        	sender.sendMessage(WC + "%t = town, %c = coords, %p = paragons");
         	break;
         	
       	case "reload":

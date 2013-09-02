@@ -22,6 +22,7 @@ public class WCJoin
   @EventHandler(priority=EventPriority.HIGH)
   public boolean onPlayerJoin(final PlayerJoinEvent event)
   {
+	WCMail.mailLogin(event.getPlayer());
     List <String> joinMessages = this.plugin.config.getStringList("Core.JoinMessages");
     Random rand = new Random();
     int randomNumber = rand.nextInt(joinMessages.size());

@@ -41,6 +41,10 @@ public class WCChannels implements CommandExecutor, Listener {
 		  event.setMessage(event.getMessage().replaceAll("%c", x + "," + y + "," + z)); 
 		  } 
 	  
+	  if (event.getMessage().contains("%p")){
+		  event.setMessage(event.getMessage().replaceAll("%p", "ohsototes.com/?p=paragon"));
+	  }
+	  
 	  if (event.getMessage().contains("%t")) { 
 		  String town = this.plugin.WAAlliancesconfig.getString("Users." + event.getPlayer().getName() + ".Alliance"); 
 		  
@@ -63,8 +67,10 @@ public class WCChannels implements CommandExecutor, Listener {
 	  Player p = event.getPlayer(); 
 	  String message = event.getMessage(); 
 	  event.setCancelled(true); 
+
 	  Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', WCVault.chat.getPlayerPrefix(p)) + ChatColor.translateAlternateColorCodes('&', WCVault.chat.getPlayerSuffix(p)) + p.getDisplayName() + "§f: " + ChatColor.translateAlternateColorCodes('&', message));
-		  
+	  	
+	  	
   }
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -428,7 +434,7 @@ public class WCChannels implements CommandExecutor, Listener {
     return true;
   }
 
-  private String createString(String[] args, int i)
+public static String createString(String[] args, int i)
   {
     StringBuilder sb = new StringBuilder();
     for (i = 0; i < args.length; i++)
