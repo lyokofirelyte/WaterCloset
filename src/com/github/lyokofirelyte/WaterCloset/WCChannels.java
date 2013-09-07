@@ -67,10 +67,22 @@ public class WCChannels implements CommandExecutor, Listener {
 	  Player p = event.getPlayer(); 
 	  String message = event.getMessage(); 
 	  event.setCancelled(true); 
-
-	  Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', WCVault.chat.getPlayerPrefix(p)) + ChatColor.translateAlternateColorCodes('&', WCVault.chat.getPlayerSuffix(p)) + p.getDisplayName() + "§f: " + ChatColor.translateAlternateColorCodes('&', message));
-	  	
-	  	
+	  int pLevel = plugin.config.getInt("Users." + p.getName() + ".ParagonLevelDisplay");
+	  
+	if (pLevel >= 1){
+	  
+	  if (p.hasPermission("wa.citizen")){
+		  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + "&7P" + pLevel + "&8*" + WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));
+	  	} else {
+	  	  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + "&7P" + pLevel + "&8*" +  WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));  
+	  }
+	} else {
+		if (p.hasPermission("wa.citizen")){
+			  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));
+		  	} else {
+		  	  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));  
+		  }
+	}
   }
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)

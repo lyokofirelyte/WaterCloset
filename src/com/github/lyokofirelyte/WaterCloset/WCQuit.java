@@ -23,6 +23,7 @@ public class WCQuit
   @EventHandler(priority=EventPriority.HIGH)
   public boolean onPlayerQuit(final PlayerQuitEvent event)
   {
+	    
     List <String> quitMessages = this.plugin.config.getStringList("Core.QuitMessages");
     Random rand = new Random();
     int randomNumber = rand.nextInt(quitMessages.size());

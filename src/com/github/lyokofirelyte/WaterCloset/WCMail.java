@@ -126,9 +126,9 @@ String message;
 					  OfflinePlayer sendTo = Bukkit.getOfflinePlayer(current);
 				  	
 					  message = TimeStampEX.createString(args, 2);
-					  
+					  mail = plugin.config.getStringList("Users." + current + ".Mail");
 					  mail.add(p.getDisplayName() + " &9// &3" + message);
-					  WCMain.mail.set("Users." + sendTo + ".Mail", mail);
+					  WCMain.mail.set("Users." + current + ".Mail", mail);
 					  	if (sendTo.isOnline()){
 					  		Bukkit.getPlayer(current).sendMessage(AS(WC + "You've recieved a new mail! Check it with /mail read."));
 					  	}
@@ -140,7 +140,7 @@ String message;
 			  default:
 				  
 				  if (args[1].equalsIgnoreCase(p.getName())){
-					  sender.sendMessage(AS(WC + "I'm schizophrenic, and so I am. Together, I can solve this."));
+					  sender.sendMessage(AS(WC + "I'm schizophrenic, and so am I. Together, I can solve this."));
 					  break;
 				  }
 				  
@@ -238,6 +238,10 @@ String message;
 		mail = WCMain.mail.getStringList("Users." + p.getName() + ".Mail");
 		List <String> userList = WCMain.mail.getStringList("Users.Total");
 		
+		if (mail.size() > 0){
+			p.sendMessage(AS(WC + "You have " + mail.size() + " &dnew messages. Read them with /mail read."));
+		}
+		
 		if (userList.contains(p.getName())){
 			return;
 		} else {
@@ -245,10 +249,6 @@ String message;
 			WCMain.mail.set("Users.Total", userList);
 		}
 		
-		if (mail.size() == 0){
-			return;
-		} else {
-			p.sendMessage(AS(WC + "You have " + mail.size() + " &dnew messages. Read them with /mail read."));
-		}
+
 	}
 }

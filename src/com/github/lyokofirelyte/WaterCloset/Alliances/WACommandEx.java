@@ -893,7 +893,7 @@ public class WACommandEx
                 this.plugin.WAAlliancesconfig.set("Users." + sender.getName() + ".isOp", Boolean.valueOf(true));
               }
 
-              sender.setOp(true);
+              
 
               if (Tier.intValue() == 0)
               {
@@ -909,6 +909,7 @@ public class WACommandEx
                   return true;
                 }
 
+                sender.setOp(true);
                 Integer Bank2 = Integer.valueOf(Bank.intValue() - 60000);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(1));
@@ -917,7 +918,7 @@ public class WACommandEx
                 Bukkit.getServer().dispatchCommand(sender, "/outset 15");
                 Bukkit.getServer().dispatchCommand(sender, "/rg redefine " + Alliance);
                 Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 1!");
-                if (!this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp"))
+                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
                 {
                   sender.setOp(false);
                 }
@@ -938,6 +939,7 @@ public class WACommandEx
                   return true;
                 }
 
+                sender.setOp(true);
                 Integer Bank2 = Integer.valueOf(Bank.intValue() - 75000);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(2));
@@ -946,7 +948,7 @@ public class WACommandEx
                 Bukkit.getServer().dispatchCommand(sender, "/outset 20");
                 Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
                 Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 2!");
-                if (!this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp"))
+                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
                 {
                   sender.setOp(false);
                 }
@@ -966,7 +968,8 @@ public class WACommandEx
                   sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
                   return true;
                 }
-
+                
+                sender.setOp(true);
                 Integer Bank2 = Integer.valueOf(Bank.intValue() - 90000);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(3));
@@ -975,7 +978,7 @@ public class WACommandEx
                 Bukkit.getServer().dispatchCommand(sender, "/outset 20");
                 Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
                 Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 3!");
-                if (!this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp"))
+                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
                 {
                   sender.setOp(false);
                 }
@@ -995,7 +998,8 @@ public class WACommandEx
                   sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
                   return true;
                 }
-
+                
+                sender.setOp(true);
                 Integer Bank2 = Integer.valueOf(Bank.intValue() - 105000);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(4));
@@ -1004,7 +1008,7 @@ public class WACommandEx
                 Bukkit.getServer().dispatchCommand(sender, "/outset 15");
                 Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
                 Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 4!");
-                if (!this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp"))
+                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
                 {
                   sender.setOp(false);
                 }
@@ -1025,7 +1029,7 @@ public class WACommandEx
                   sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
                   return true;
                 }
-
+                sender.setOp(true);
                 Integer Bank2 = Integer.valueOf(Bank.intValue() - 125000);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
                 this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(5));
@@ -1034,7 +1038,7 @@ public class WACommandEx
                 Bukkit.getServer().dispatchCommand(sender, "/outset 15");
                 Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
                 Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 5!");
-                if (!this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp"))
+                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
                 {
                   sender.setOp(false);
                 }

@@ -16,14 +16,7 @@ public class WCHelp implements CommandExecutor {
 	}
 
 // ADMINISTRATUM HELP
-static List <String> AdministratumHelpGlobal = WCMain.help.getStringList("Help.Administratum.Global");
-static List <String> AdministratumHelpSelection = WCMain.help.getStringList("Help.Administratum.Selection");
-static List <String> AdministratumHelpActions = WCMain.help.getStringList("Help.Administratum.Actions");
-static List <String> AdministratumHelpFilters = WCMain.help.getStringList("Help.Administratum.Filters");
-static List <String> AdministratumHelpChannels = WCMain.help.getStringList("Help.Administratum.Channels");
-static List <String> AdministratumHelpWatchList = WCMain.help.getStringList("Help.Administratum.WatchList");
-static List <String> AdministratumHelpEvents = WCMain.help.getStringList("Help.Administratum.Events");
-static List <String> AdministratumHelpPlugin = WCMain.help.getStringList("Help.Administratum.Plugin");
+static List <String> AdministratumHelpGlobal = WCMain.help.getStringList("Help.Administratum");
 
 // WC HELP
 static List <String> WCHelpMail = WCMain.help.getStringList("Help.WC.Mail");
@@ -43,12 +36,20 @@ static List <String> WCHelpMail = WCMain.help.getStringList("Help.WC.Mail");
 			
 			for (String search : AdministratumHelpGlobal){
 				if (search.toLowerCase().contains(args[0].toLowerCase())){
-					sender.sendMessage(search.replaceAll(args[0], "&6" + args[0]));
+					sender.sendMessage(WCMail.AS(search.replaceAll(args[0], "&6" + args[0] + "&3")));
 					x++;
 				}
 			}
 			
-			sender.sendMessage("§7§o" + x + " §7§oresults found.");
+			for (String search : WCHelpMail){
+				if (search.toLowerCase().contains(args[0].toLowerCase())){
+					sender.sendMessage(WCMail.AS(search.replaceAll(args[0], "&6" + args[0] + "&3")));
+					x++;
+				}
+			}
+			
+			
+			sender.sendMessage("§7§o" + x + " §7§oresult(s) found.");
 		}
 	
 

@@ -8,12 +8,10 @@ version: 2
 commands:
    watercloset:
       description: WC Root Command
-      usage: Admin use only.
-      permission: wc.admin
+      usage: /watercloset
    wc:
       description: WC Root Command
-      usage: Admin use only.
-      permission: wc.admin
+      usage: /wc
    o:
       description: Staff Chat
       usage: /o <message>
@@ -88,3 +86,6 @@ permissions:
     wa.statesman:
         description: Double Mobs.
         default: false
+    wa.citizen:
+        description: Chat Colors.
+        default: op

@@ -59,6 +59,8 @@ public class WCMain extends JavaPlugin
     pm.registerEvents(new WCChannels(this), this);
     pm.registerEvents(new WCMobDrops(this), this);
     pm.registerEvents(new TNTNerf(this), this);
+    pm.registerEvents(new WCBlockBreak(this), this);
+    pm.registerEvents(new WCBlockPlace(this), this);
 
     this.WASpleefconfigFile = new File(getDataFolder() + File.separator + "WASpleef", "config.yml");
     this.WASpleefdatacoreFile = new File(getDataFolder() + File.separator + "WASpleef", "datacore.yml");
@@ -88,7 +90,10 @@ public class WCMain extends JavaPlugin
     WCMain.mail = new YamlConfiguration();
     WCMain.help = new YamlConfiguration();
     loadYamls();
-    
+    int v = datacore.getInt("V");
+    v++;
+    datacore.set("V", v);
+    Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + "&o- watercloset has updated (v2.1." + v + "&d&o) -"));
 
     url = config.getString("url");
     username = config.getString("username");

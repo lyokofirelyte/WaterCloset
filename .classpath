@@ -4,7 +4,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Downloads/compilelatest2.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Downloads/VaultCompile.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/Essentials.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/PermissionsEx.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/Essentials.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/PermissionsEx.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
