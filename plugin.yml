@@ -80,6 +80,9 @@ permissions:
     wa.mod:
         description: WA Staff.
         default: op
+    wa.mod2:
+        description: WA Staff.
+        default: op
     wa.security:
         description: WA Staff.
         default: op

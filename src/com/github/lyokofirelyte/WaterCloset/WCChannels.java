@@ -1,9 +1,11 @@
 package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -25,11 +27,107 @@ public class WCChannels implements CommandExecutor, Listener {
     this.plugin = instance;
   }
   
+	
+	
+	public void stats(String s, Player p){
+		
+		if (s.length() == 6){
+			p.sendMessage(WCMail.WC + "Try !stats <username>.");
+			return;
+		}
+		
+		String message[] = s.split(" ");
+		OfflinePlayer player = Bukkit.getOfflinePlayer(message[1].toString());
+		
+			if (player.hasPlayedBefore() == false){
+				p.sendMessage(WCMail.WC + "That player has never logged in before!");
+				return;
+			}
+			
+		int paragonLevel = plugin.datacore.getInt("Users." + player.getName() + ".ParagonLevel");
+		double money = WCVault.econ.getBalance(player.getName());
+		String rank = WCVault.chat.getPlayerPrefix("world", message[1]);
+		String position = WCVault.chat.getPlayerSuffix("world", message[1]);
+		String alliance = plugin.WAAlliancesconfig.getString("Users." + player.getName() + ".Alliance");
+		String allianceRank = plugin.WAAlliancesconfig.getString("Users." + player.getName() + ".AllianceRank");
+		
+			if (position.equalsIgnoreCase("&7")){
+				plugin.datacore.set("Users." + player.getName() + ".SuffixTemp", "Member");
+			} else {
+				plugin.datacore.set("Users." + player.getName() + ".SuffixTemp", position);
+			}
+			
+		Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + player.getName() + ".InAlliance");
+		
+			if (inAlliance == false){
+				plugin.datacore.set("Users." + player.getName() + ".AllianceTemp", "&7Forever&8Alone");
+			} else {
+				String color1 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color1");
+				String color2 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color2");
+				int midpoint = alliance.length() / 2;
+		        String firstHalf = alliance.substring(0, midpoint);
+		        String secondHalf = alliance.substring(midpoint);
+				plugin.datacore.set("Users." + player.getName() + ".AllianceTemp", "&" + color1 + firstHalf + "&" + color2 + secondHalf);
+			}
+			
+		String allianceUpdated = plugin.datacore.getString("Users." + player.getName() + ".AllianceTemp");
+		
+			
+		p.sendMessage(new String[]{
+			WCMail.AS(WCMail.WC + "Inspecting player " + player.getName() + "."),
+			WCMail.AS("&1| &a&oglobal rank&f: " + rank),
+			WCMail.AS("&1| &a&oserver position&f: " + plugin.datacore.getString("Users." + player.getName() + ".SuffixTemp")),
+			WCMail.AS("&1| &f> > > < < <"),
+			WCMail.AS("&1| &b&oalliance&f: " + allianceUpdated),
+			WCMail.AS("&1| &b&oalliance ranking&f: " + allianceRank),
+			WCMail.AS("&1| &f> > > < < <"),
+			WCMail.AS("&1| &6&oparagon level&f: " + paragonLevel),
+			WCMail.AS("&1| &6&oshiny balance&f: " + money),
+			WCMail.AS("&1| &f> > > < < <"),
+		});
+		
+		if (player.isOnline()){
+			p.sendMessage(WCMail.AS("&1| &c&ostatus&f: &aONLINE"));
+		} else {
+			p.sendMessage(WCMail.AS("&1| &c&ostatus&f: &4OFFLINE"));	
+		}
+		
+	}
   
   @EventHandler(priority=EventPriority.HIGH)
   public void onPlayerChat(AsyncPlayerChatEvent event){
 	  
 	  if (event.isCancelled()){
+		  return;
+	  }
+	  
+	  if (plugin.datacore.getBoolean("Users." + event.getPlayer().getName() + ".ObeliskTemp")){
+		  event.setCancelled(true);
+		  
+		  if (plugin.config.getStringList("Obelisks.Names").contains(event.getMessage().toLowerCase())){
+			  plugin.datacore.set("Users." + event.getPlayer().getName() + ".ObeliskSelection", true);
+		  	  plugin.datacore.set("Users." + event.getPlayer().getName() + ".ObeliskLocation", event.getMessage().toLowerCase());
+		  	  event.getPlayer().sendMessage(WCMail.WC + "Alright! Now just right click the glowstone and you're ready to go!");
+		      plugin.datacore.set("Users." + event.getPlayer().getName() + ".ObeliskTemp", null);
+		  } else if (event.getMessage().equals("##")){
+			  plugin.datacore.set("Users." + event.getPlayer().getName() + ".ObeliskTemp", null);
+		  		event.getPlayer().sendMessage(WCMail.WC + "Cancelled your teleport!");
+		  } else {
+			  event.getPlayer().sendMessage(WCMail.WC + "That location does not exist. Try again or type ## to cancle.");
+		  }  
+		  
+		  return;
+	  }
+	  
+	  if (event.getMessage().startsWith("!faq")){
+		  event.setCancelled(true);
+		  WCFAQ.faq(event.getMessage(), event.getPlayer());
+		  return;
+	  }
+	  
+	  if (event.getMessage().startsWith("!stats")){
+		  event.setCancelled(true);
+		  stats(event.getMessage(), event.getPlayer());
 		  return;
 	  }
 	  
@@ -66,24 +164,31 @@ public class WCChannels implements CommandExecutor, Listener {
 	  
 	  Player p = event.getPlayer(); 
 	  String message = event.getMessage(); 
-	  event.setCancelled(true); 
-	  int pLevel = plugin.config.getInt("Users." + p.getName() + ".ParagonLevelDisplay");
-	  
-	if (pLevel >= 1){
-	  
-	  if (p.hasPermission("wa.citizen")){
-		  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + "&7P" + pLevel + "&8*" + WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));
-	  	} else {
-	  	  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + "&7P" + pLevel + "&8*" +  WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));  
-	  }
-	} else {
-		if (p.hasPermission("wa.citizen")){
-			  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));
-		  	} else {
-		  	  Bukkit.broadcastMessage(WCMail.AS((WCVault.chat.getPlayerPrefix(p)) + WCVault.chat.getPlayerSuffix(p) + p.getDisplayName() + "§f: " + message));  
-		  }
-	}
+	  event.setCancelled(true);
+	  rankCheck(p, message);
+ 
   }
+  
+  
+  
+  private void rankCheck(Player p, String message) {
+	  
+	if (p.hasPermission("wa.staff")){
+		globalChat(p, "§f", message);
+	} else {
+		globalChat(p, "§f", message);
+	}
+	
+}
+
+
+public void globalChat(Player p, String chatColor, String message){
+	if (p.hasPermission("wa.staff") || p.hasPermission("wa.statesman")){
+	  Bukkit.broadcastMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + chatColor + message));  
+  } else {
+	  Bukkit.broadcastMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p)) + " §f// " + p.getDisplayName() + "§f: " + chatColor + message);  
+  }
+}
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
   {

@@ -564,7 +564,7 @@ public class WACommandEx
             String firstHalf = nick.substring(0, midpoint);
             String secondHalf = nick.substring(midpoint);
 
-            if (this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".Staff"))
+            if (Bukkit.getPlayer(args[2]).hasPermission("wa.staff"))
             {
               String firstHalfColors = "&" + Color1 + "&o" + firstHalf;
               String secondHalfColors = "&" + Color2 + "&o" + secondHalf;
@@ -581,7 +581,7 @@ public class WACommandEx
 
             String completed = firstHalfColors + secondHalfColors;
 
-            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + pl + " " + completed);
+            Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + args[2] + " " + completed);
             name.sendMessage(this.waaprefix + "Your name was updated.");
             this.plugin.saveWAAlliances();
           }
@@ -816,20 +816,20 @@ public class WACommandEx
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "pex group " + Alliance + " user add " + pl);
             this.plugin.WAAlliancesconfig.set("Users." + pl + ".disHandeled", Boolean.valueOf(true));
           }
-          else if ((args[0].equalsIgnoreCase("save")) && (this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".Staff")))
+          else if ((args[0].equalsIgnoreCase("save")) && (sender.hasPermission("wa.staff")))
           {
             this.plugin.saveWAAlliances();
             sender.sendMessage(this.waaprefix + "Config saved!");
           }
-          else if ((args[0].equalsIgnoreCase("reload")) && (this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".Staff")))
+          else if ((args[0].equalsIgnoreCase("reload")) && (sender.hasPermission("wa.staff")))
           {
             sender.sendMessage(this.waaprefix + "Config reloaded!");
             this.plugin.loadWAAlliances();
           }
           else
           {
-            if ((args[0].equalsIgnoreCase("approve")) && (args.length == 2) && (this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".Staff")))
-            {
+            if (args[0].equalsIgnoreCase("approve") && (args.length == 2) && (sender.hasPermission("wa.staff"))){
+            
               Boolean AllianceCheck = Boolean.valueOf(this.plugin.WAAlliancesconfig.getBoolean("Alliances." + args[1] + ".Created"));
 
               if (!AllianceCheck.booleanValue())
@@ -884,179 +884,26 @@ public class WACommandEx
               }
 
               String Alliance = this.plugin.WAAlliancesconfig.getString("Users." + pl + ".Alliance");
-              Integer Tier = Integer.valueOf(this.plugin.WAAlliancesconfig.getInt("Alliances." + Alliance + ".Tier"));
-              Integer Bank = Integer.valueOf(this.plugin.WAAlliancesconfig.getInt("Alliances." + Alliance + ".Bank"));
-              Boolean Approved = Boolean.valueOf(this.plugin.WAAlliancesconfig.getBoolean("Alliances." + Alliance + ".Approved"));
+              Integer tier = Integer.valueOf(this.plugin.WAAlliancesconfig.getInt("Alliances." + Alliance + ".Tier"));
+              Integer bank = Integer.valueOf(this.plugin.WAAlliancesconfig.getInt("Alliances." + Alliance + ".Bank"));
+              Boolean approved = Boolean.valueOf(this.plugin.WAAlliancesconfig.getBoolean("Alliances." + Alliance + ".Approved"));
 
               if (sender.isOp())
               {
                 this.plugin.WAAlliancesconfig.set("Users." + sender.getName() + ".isOp", Boolean.valueOf(true));
               }
-
               
-
-              if (Tier.intValue() == 0)
-              {
-                if (!Approved.booleanValue())
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance must be approved by a staff member before you do this!");
-                  return true;
-                }
-
-                if (Bank.intValue() < 60000)
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
-                  return true;
-                }
-
-                sender.setOp(true);
-                Integer Bank2 = Integer.valueOf(Bank.intValue() - 60000);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(1));
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Bank", Bank2);
-                Bukkit.getServer().dispatchCommand(sender, "rg select " + Alliance);
-                Bukkit.getServer().dispatchCommand(sender, "/outset 15");
-                Bukkit.getServer().dispatchCommand(sender, "/rg redefine " + Alliance);
-                Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 1!");
-                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
-                {
-                  sender.setOp(false);
-                }
-
-                return true;
-              }
-              if (Tier.intValue() == 1)
-              {
-                if (!Approved.booleanValue())
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance must be approved by a staff member before you do this!");
-                  return true;
-                }
-
-                if (Bank.intValue() < 75000)
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
-                  return true;
-                }
-
-                sender.setOp(true);
-                Integer Bank2 = Integer.valueOf(Bank.intValue() - 75000);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(2));
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Bank", Bank2);
-                Bukkit.getServer().dispatchCommand(sender, "rg select " + Alliance);
-                Bukkit.getServer().dispatchCommand(sender, "/outset 20");
-                Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
-                Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 2!");
-                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
-                {
-                  sender.setOp(false);
-                }
-
-                return true;
-              }
-              if (Tier.intValue() == 2)
-              {
-                if (!Approved.booleanValue())
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance must be approved by a staff member before you do this!");
-                  return true;
-                }
-
-                if (Bank.intValue() < 90000)
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
-                  return true;
-                }
-                
-                sender.setOp(true);
-                Integer Bank2 = Integer.valueOf(Bank.intValue() - 90000);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(3));
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Bank", Bank2);
-                Bukkit.getServer().dispatchCommand(sender, "rg select " + Alliance);
-                Bukkit.getServer().dispatchCommand(sender, "/outset 20");
-                Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
-                Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 3!");
-                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
-                {
-                  sender.setOp(false);
-                }
-
-                return true;
-              }
-              if (Tier.intValue() == 3)
-              {
-                if (!Approved.booleanValue())
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance must be approved by a staff member before you do this!");
-                  return true;
-                }
-
-                if (Bank.intValue() < 105000)
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
-                  return true;
-                }
-                
-                sender.setOp(true);
-                Integer Bank2 = Integer.valueOf(Bank.intValue() - 105000);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(4));
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Bank", Bank2);
-                Bukkit.getServer().dispatchCommand(sender, "rg select " + Alliance);
-                Bukkit.getServer().dispatchCommand(sender, "/outset 15");
-                Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
-                Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 4!");
-                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
-                {
-                  sender.setOp(false);
-                }
-
-                return true;
-              }
-
-              if (Tier.intValue() == 4)
-              {
-                if (!Approved.booleanValue())
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance must be approved by a staff member before you do this!");
-                  return true;
-                }
-
-                if (Bank.intValue() < 125000)
-                {
-                  sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
-                  return true;
-                }
-                sender.setOp(true);
-                Integer Bank2 = Integer.valueOf(Bank.intValue() - 125000);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Approved", false);
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Tier", Integer.valueOf(5));
-                this.plugin.WAAlliancesconfig.set("Alliances." + Alliance + ".Bank", Bank2);
-                Bukkit.getServer().dispatchCommand(sender, "rg select " + Alliance);
-                Bukkit.getServer().dispatchCommand(sender, "/outset 15");
-                Bukkit.getServer().dispatchCommand(sender, "rg redefine " + Alliance);
-                Bukkit.broadcastMessage(this.waaprefix + Alliance + " has been upgraded to Tier 5!");
-                if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
-                {
-                  sender.setOp(false);
-                }
-
-                return true;
-              }
-
-              sender.sendMessage(this.waaprefix + "That tier isn't ready yet :(");
-
-              if (!this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp"))
+              sender.setOp(true);
+              allianceUpgrade(Alliance, tier, bank, approved, sender);
+              if (plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".isOp") == false)
               {
                 sender.setOp(false);
               }
 
-            }
-            else if (args[0].equalsIgnoreCase("kick"))
-            {
-              if (!this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".Staff"))
+            
+            } else if (args[0].equalsIgnoreCase("kick")) {
+            	
+              if (sender.hasPermission("wa.mod2") == false)
               {
                 sender.sendMessage(this.waaprefix + "You must be staff to use this command!");
                 return true;
@@ -1407,7 +1254,9 @@ public class WACommandEx
     return true;
   }
 
-  public boolean isLeader(String pl, String allianceName)
+
+
+public boolean isLeader(String pl, String allianceName)
   {
     String player = this.plugin.WAAlliancesconfig.getString("Users." + pl);
     String leader = this.plugin.WAAlliancesconfig.getString("Alliances." + allianceName + ".Leader");
@@ -1430,4 +1279,34 @@ public class WACommandEx
 
     return true;
   }
+  
+  private void allianceUpgrade(String alliance, Integer tier, Integer bank,
+			Boolean approved, CommandSender sender) {
+		
+		if (approved == false){
+			sender.sendMessage(waaprefix + "Your alliance must be approved by a staff member before you do this!");
+          return;
+		}
+		
+		String tierPrices = "60000 75000 90000 105000 125000 145000 165000 180000";
+		String outsetLevels = "15 15 20 20 15 25 10 15";
+		String[] prices = tierPrices.split(" ");
+		String[] outsets = outsetLevels.split(" ");
+		
+		if (bank < Integer.parseInt(prices[(tier)])){
+        sender.sendMessage(this.waaprefix + "Your alliance lackcs the proper funds to carry out this operation!");
+        return;
+      }
+		
+      plugin.WAAlliancesconfig.set("Alliances." + alliance + ".Approved", false);
+      plugin.WAAlliancesconfig.set("Alliances." + alliance + ".Tier", (tier+1));
+      plugin.WAAlliancesconfig.set("Alliances." + alliance + ".Bank", (bank-(Integer.parseInt(prices[(tier)]))));
+      
+      Bukkit.getServer().dispatchCommand(sender, "rg select " + alliance);
+      Bukkit.getServer().dispatchCommand(sender, "/outset " + outsets[(tier)]);
+      Bukkit.getServer().dispatchCommand(sender, "/rg redefine " + alliance);
+      Bukkit.broadcastMessage(waaprefix + alliance + " has been upgraded to Tier " + (tier+1) + "!");
+		
+		
+	}
 }

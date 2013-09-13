@@ -25,22 +25,55 @@ import com.github.lyokofirelyte.WaterCloset.Extras.waOSReport;
 public class WCMain extends JavaPlugin
 {
   public WCVault vaultMgr = new WCVault(this);
+  
   File WASpleefconfigFile;
   File WASpleefdatacoreFile;
+  
+  File WASpleefconfigFileBACKUP;
+  File WASpleefdatacoreFileBACKUP;
+  
   File configFile;
   File datacoreFile;
+  
+  File configFileBACKUP;
+  File datacoreFileBACKUP;
+  
   File WAAlliancesconfigFile;
   File WAAlliancesdatacoreFile;
+  
+  File WAAlliancesconfigFileBACKUP;
+  File WAAlliancesdatacoreFileBACKUP;
+  
   File mailFile;
   File helpFile;
+  
+  File mailFileBACKUP;
+  File helpFileBACKUP;
+  
   public FileConfiguration WASpleefconfig;
   public FileConfiguration WASpleefdatacore;
+  
+  public FileConfiguration WASpleefconfigBACKUP;
+  public FileConfiguration WASpleefdatacoreBACKUP;
+  
   public FileConfiguration config;
   public FileConfiguration datacore;
+  
+  public FileConfiguration configBACKUP;
+  public FileConfiguration datacoreBACKUP;
+  
   public FileConfiguration WAAlliancesconfig;
   public FileConfiguration WAAlliancesdatacore;
+  
+  public FileConfiguration WAAlliancesconfigBACKUP;
+  public FileConfiguration WAAlliancesdatacoreBACKUP; 
+  
   public static FileConfiguration mail;
   public static FileConfiguration help;
+  
+  public static FileConfiguration mailBACKUP;
+  public static FileConfiguration helpBACKUP;
+  
   private String url;
   private String username;
   private String password;
@@ -64,14 +97,28 @@ public class WCMain extends JavaPlugin
 
     this.WASpleefconfigFile = new File(getDataFolder() + File.separator + "WASpleef", "config.yml");
     this.WASpleefdatacoreFile = new File(getDataFolder() + File.separator + "WASpleef", "datacore.yml");
+    
+    this.WASpleefconfigFileBACKUP = new File(getDataFolder() + File.separator + "WASpleef", "configBACKUP.yml");
+    this.WASpleefdatacoreFileBACKUP = new File(getDataFolder() + File.separator + "WASpleef", "datacoreBACKUP.yml");
 
     this.WAAlliancesconfigFile = new File(getDataFolder() + File.separator + "WAAlliances", "config.yml");
     this.WAAlliancesdatacoreFile = new File(getDataFolder() + File.separator + "WAAlliances", "datacore.yml");
+    
+    this.WAAlliancesconfigFileBACKUP = new File(getDataFolder() + File.separator + "WAAlliances", "configBACKUP.yml");
+    this.WAAlliancesdatacoreFileBACKUP = new File(getDataFolder() + File.separator + "WAAlliances", "datacoreBACKUP.yml");
 
     this.configFile = new File(getDataFolder(), "config.yml");
+    this.configFileBACKUP = new File(getDataFolder(), "configBACKUP.yml");
+    
     this.datacoreFile =  new File(getDataFolder(), "datacore.yml");
+    this.datacoreFileBACKUP =  new File(getDataFolder(), "datacoreBACKUP.yml");
+    
     this.mailFile = new File(getDataFolder(), "mail.yml");
+    this.mailFileBACKUP = new File(getDataFolder(), "mailBACKUP.yml");
+    
     this.helpFile = new File(getDataFolder(), "help.yml");
+    this.helpFileBACKUP = new File(getDataFolder(), "helpBACKUP.yml");
+    
 
     this.vaultMgr.hookSetup();
     try
@@ -83,12 +130,28 @@ public class WCMain extends JavaPlugin
 
     this.WAAlliancesconfig = new YamlConfiguration();
     this.WAAlliancesdatacore = new YamlConfiguration();
+    
+    this.WAAlliancesconfigBACKUP = new YamlConfiguration();
+    this.WAAlliancesdatacoreBACKUP = new YamlConfiguration();
+    
     this.WASpleefconfig = new YamlConfiguration();
     this.WASpleefdatacore = new YamlConfiguration();
+    
+    this.WASpleefconfigBACKUP = new YamlConfiguration();
+    this.WASpleefdatacoreBACKUP = new YamlConfiguration();
+    
     this.config = new YamlConfiguration();
+    this.configBACKUP = new YamlConfiguration();
+    
     this.datacore = new YamlConfiguration();
+    this.datacoreBACKUP = new YamlConfiguration();
+    
     WCMain.mail = new YamlConfiguration();
+    WCMain.mailBACKUP = new YamlConfiguration();
+    
     WCMain.help = new YamlConfiguration();
+    WCMain.helpBACKUP = new YamlConfiguration();
+    
     loadYamls();
     int v = datacore.getInt("V");
     v++;
@@ -181,6 +244,26 @@ public class WCMain extends JavaPlugin
       e.printStackTrace();
     }
   }
+  
+  public void backupYamls(){
+	    
+	  try
+	    {
+	      this.config.save(this.configFileBACKUP);
+	      this.datacore.save(this.datacoreFileBACKUP);
+	      WCMain.mail.save(this.mailFileBACKUP);
+	      WCMain.help.save(this.helpFileBACKUP);
+
+	      this.WASpleefconfig.save(this.WASpleefconfigFileBACKUP);
+	      this.WASpleefdatacore.save(this.WASpleefdatacoreFileBACKUP);
+
+	      this.WAAlliancesconfig.save(this.WAAlliancesconfigFileBACKUP);
+	      this.WAAlliancesdatacore.save(this.WAAlliancesdatacoreFileBACKUP);
+	    
+	    } catch (IOException e) {
+	      e.printStackTrace();
+	    }
+  }
 
   public void saveYamls()
   {
@@ -196,6 +279,7 @@ public class WCMain extends JavaPlugin
 
       this.WAAlliancesconfig.save(this.WAAlliancesconfigFile);
       this.WAAlliancesdatacore.save(this.WAAlliancesdatacoreFile);
+    
     } catch (IOException e) {
       e.printStackTrace();
     }

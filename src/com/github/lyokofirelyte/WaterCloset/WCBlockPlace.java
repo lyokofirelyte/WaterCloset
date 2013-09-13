@@ -71,6 +71,28 @@ public class WCBlockPlace implements Listener{
 			return;
 	}
 	
+	if (plugin.datacore.getBoolean("Users." + e.getPlayer().getName() + ".ObeliskPlaceMode")){
+		
+		plugin.datacore.set("Users." + e.getPlayer().getName() + ".ObeliskPlaceMode", false);
+		double x = e.getBlock().getLocation().getX();
+		double y = e.getBlock().getLocation().getY();
+		double z = e.getBlock().getLocation().getZ();
+		
+		String xyz = x + "," + y + "," + z;
+		String latest = plugin.datacore.getString("Obelisks.Latest");
+		String type = plugin.datacore.getString("Obelisks.LatestType");
+		
+		plugin.config.set("Obelisks.Locations." + xyz + ".X", x);
+		plugin.config.set("Obelisks.Locations." + xyz + ".Y", y);
+		plugin.config.set("Obelisks.Locations." + xyz + ".Z", z);
+		plugin.config.set("Obelisks.Locations." + xyz + ".Name", latest);
+		plugin.config.set("Obelisks.Locations." + xyz + ".Type", type);
+		plugin.config.set("Obelisks.ListGrab." + latest, xyz);
+		
+		e.getPlayer().sendMessage(WCMail.AS(WCMail.WC + "Location set for " + latest));
+		return;
+}
+	
 	if (plugin.datacore.getBoolean("Users." + e.getPlayer().getName() + ".ParagonBreakMode")){
 		
 		double x = e.getBlock().getLocation().getX();
@@ -212,7 +234,7 @@ public class WCBlockPlace implements Listener{
 				ItemStack token = new ItemStack(Material.INK_SACK, 5, (short) 11);
 		        ItemMeta name = token.getItemMeta();
 		        lore = new ArrayList<String>();
-		        name.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 10, true);
+		        name.addEnchant(Enchantment.DURABILITY, 10, true);
 		        name.setDisplayName("§e§o§lPARAGON TOKEN");
 		        lore.add("§7§oIt's currency!");
 		        name.setLore(lore);
@@ -225,7 +247,7 @@ public class WCBlockPlace implements Listener{
 		ItemStack token = new ItemStack(Material.INK_SACK, 1, (short) 11);
         ItemMeta name = token.getItemMeta();
         lore = new ArrayList<String>();
-        name.addEnchant(Enchantment.LOOT_BONUS_BLOCKS, 10, true);
+        name.addEnchant(Enchantment.DURABILITY, 10, true);
         name.setDisplayName("§e§o§lPARAGON TOKEN");
         lore.add("§7§oIt's currency!");
         name.setLore(lore);

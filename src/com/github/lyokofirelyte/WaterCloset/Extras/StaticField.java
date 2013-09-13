@@ -125,6 +125,16 @@ public class StaticField extends JavaPlugin
   {
     List<String> forceUsers = this.plugin.datacore.getStringList("ForceField.Users");
 
+    if (event.getEntity() instanceof Player){
+    	
+    	Player p = (Player)event.getEntity();
+    	if (plugin.datacore.getBoolean("Users." + p.getName() + ".NoDamage")){
+    		event.setCancelled(true);
+    		plugin.datacore.set("Users." + p.getName() + ".NoDamage", null);
+    		return;
+    	}
+    }
+    
     if (forceUsers.size() >= 1)
     {
       Entity e = event.getEntity();

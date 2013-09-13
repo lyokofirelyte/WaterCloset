@@ -126,7 +126,7 @@ String message;
 					  OfflinePlayer sendTo = Bukkit.getOfflinePlayer(current);
 				  	
 					  message = TimeStampEX.createString(args, 2);
-					  mail = plugin.config.getStringList("Users." + current + ".Mail");
+					  mail = WCMain.mail.getStringList("Users." + current + ".Mail");
 					  mail.add(p.getDisplayName() + " &9// &3" + message);
 					  WCMain.mail.set("Users." + current + ".Mail", mail);
 					  	if (sendTo.isOnline()){

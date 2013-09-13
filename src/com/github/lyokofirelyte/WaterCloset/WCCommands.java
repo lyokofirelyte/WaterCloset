@@ -234,6 +234,62 @@ public class WCCommands implements CommandExecutor {
       
         break;
         
+        case "addobelisk":
+        	
+        	if (sender.hasPermission("wa.staff")){
+        		
+        		if (args.length != 3){
+        			sender.sendMessage(WC + "Please use /wc addobelisk <name> <type> (Type = default or custom)!");
+        			break;
+        		}
+        		
+        		if (!(args[2].equals("default")) && !(args[2].equals("custom"))){
+        			sender.sendMessage(WC + "Please use default or custom!");
+        			break;
+        		}
+        		
+        		List <String> names = plugin.config.getStringList("Obelisks.Names");
+        		
+        			if (names.contains(args[1])){
+        				sender.sendMessage(WC + "That name already exists!");
+        				break;
+        			}
+        			
+        		plugin.datacore.set("Users." + sender.getName() + ".ObeliskPlaceMode", true);
+        		names.add(args[1]);
+        		plugin.config.set("Obelisks.Names", names);
+        		plugin.datacore.set("Obelisks.Latest", args[1]);
+        		plugin.datacore.set("Obelisks.LatestType", args[2]);
+        		sender.sendMessage(WCMail.AS(WC + "Place a GLOWSTONE into the spot where the landing location will be set."));
+        		return true;
+        	}
+      
+        break;
+        
+        case "remobelisk":
+        	
+        	if (sender.hasPermission("wa.staff")){
+        		
+        		if (args.length != 2){
+        			sender.sendMessage(WC + "Please use /wc remobelisk <name>!");
+        			break;
+        		}
+        		
+        		List <String> names = plugin.config.getStringList("Obelisks.Names");
+        		
+        			if (!names.contains(args[1])){
+        				sender.sendMessage(WC + "That name isn't on the list!");
+        				break;
+        			}
+
+        		names.remove(args[1]);
+        		plugin.config.set("Obelisks.Names", names);
+        		sender.sendMessage(WC + "Obelisk removed.");
+        		return true;
+        	}
+      
+        break;
+        
         case "bp":
         	
         	if (sender.hasPermission("wa.staff")){
@@ -280,6 +336,24 @@ public class WCCommands implements CommandExecutor {
 			break;
 		}
       		
+      	case "backup":
+      		
+      		Boolean ok = plugin.config.getBoolean("OK");
+      		
+      		if (ok == false || ok == null){
+      			sender.sendMessage("The main config is corrupted for some reason! Backup aborted! Contact Hugs!");
+      			break;
+      		}
+      		
+          	if (sender.hasPermission("wa.staff")){
+          		plugin.backupYamls();
+          		sender.sendMessage(WC + "Backup saved!");
+          		break;
+          	} else {
+    			sender.sendMessage(WC + "NO NO, YOU NO HAVE PERMISSIONS.");
+    			break;
+    		}
+          	
       	case "?": case "help": default:
       		
       	List <String> help = plugin.config.getStringList("Core.Help");

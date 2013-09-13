@@ -1,13 +1,18 @@
 package com.github.lyokofirelyte.WaterCloset;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
 public class WCJoin
   implements Listener
@@ -19,9 +24,32 @@ public class WCJoin
     this.plugin = instance;
   }
 
-  @EventHandler(priority=EventPriority.HIGH)
+  @SuppressWarnings("deprecation")
+@EventHandler(priority=EventPriority.HIGH)
   public boolean onPlayerJoin(final PlayerJoinEvent event)
   {
+	  
+	 if (plugin.datacore.getBoolean("Users." + event.getPlayer().getName() + ".Comp") == false && event.getPlayer().hasPlayedBefore()){
+	     ArrayList<String> lore;
+		 plugin.datacore.set("Users." + event.getPlayer().getName() + ".Comp", true);
+		 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco give " + event.getPlayer().getName() + " 40000");
+		 
+		    ItemStack paragon = new ItemStack(Material.STAINED_CLAY, 15, (short) 2);
+	        ItemMeta paragonName = paragon.getItemMeta();
+	        lore = new ArrayList<String>();
+	        
+	        lore.add("§7§oSorry about the trouble!");
+	        lore.add("§7§oThis will help a bit.");
+	        paragonName.setLore(lore);
+	        
+	        paragonName.setDisplayName("§4§lINFERNO PARAGON");
+	        paragonName.addEnchant(Enchantment.DURABILITY, 10, true);
+	        paragon.setItemMeta(paragonName);
+	        event.getPlayer().getInventory().addItem(paragon);
+	        event.getPlayer().updateInventory();
+	        event.getPlayer().sendMessage(WCMail.WC + "We're working on getting the alliances back in order. The system is fixed, but for the troubles here's a kit.");
+	 }
+	 
 	WCMail.mailLogin(event.getPlayer());
     List <String> joinMessages = this.plugin.config.getStringList("Core.JoinMessages");
     Random rand = new Random();
