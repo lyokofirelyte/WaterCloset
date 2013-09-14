@@ -239,8 +239,13 @@ public class WCBlockPlace implements Listener{
 		        lore.add("§7§oIt's currency!");
 		        name.setLore(lore);
 		        token.setItemMeta((ItemMeta)name);
-		        p.getInventory().addItem(token);
-		        p.updateInventory();
+		        	if (p.getInventory().getSize() == 36){
+		        		p.getPlayer().getWorld().dropItem(p.getPlayer().getLocation(), token);
+		        	} else {
+		        		p.getInventory().addItem(token);
+		        		p.updateInventory();
+		        	}
+		        updateCheck(p);
 		        
 			} else {
 				
@@ -252,9 +257,14 @@ public class WCBlockPlace implements Listener{
         lore.add("§7§oIt's currency!");
         name.setLore(lore);
         token.setItemMeta((ItemMeta)name);
-        p.getInventory().addItem(token);
-        p.updateInventory();
-        updateCheck(p);
+        	if (p.getInventory().getSize() == 36){
+        		p.getPlayer().getWorld().dropItem(p.getPlayer().getLocation(), token);
+        	} else {
+        		p.getInventory().addItem(token);
+        		p.updateInventory();
+        		updateCheck(p);
+        	}
+    			
         
 			}
 			

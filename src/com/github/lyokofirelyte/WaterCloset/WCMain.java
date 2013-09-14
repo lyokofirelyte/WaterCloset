@@ -15,7 +15,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
-
 import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
@@ -169,7 +168,21 @@ public class WCMain extends JavaPlugin
     }
 
     registerCommands();
-
+    
+    if (WCMain.help.getBoolean("REBOOTING")){
+    WCMain.help.set("REBOOTING", false);
+    datacore.set("noEnchant", false);
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+    {
+      public void run()
+      {
+    	  Bukkit.broadcastMessage(WCMail.WC + "The server has been running successfully for two minutes so we've automatically scheduled the next reboot for 24 hours from now.");
+      }
+    }
+    , 2400L);	
+	
+    }
+    
     getLogger().log(Level.INFO, "CORE HAS BEEN INITIALIZED.");
 
     List<String> pluginList = this.config.getStringList("Core.Plugins");
@@ -178,7 +191,16 @@ public class WCMain extends JavaPlugin
     {
       getLogger().log(Level.INFO, pluginMessage.toUpperCase() + " IS READY.");
     }
-  }
+    
+	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+    {
+      public void run()
+      {
+    	  wcReboot();
+      }
+    }
+    , 1728000);	
+  	}
 
   public void onDisable() {
 	  
@@ -225,6 +247,8 @@ public class WCMain extends JavaPlugin
     getCommand("mail").setExecutor(new WCMail(this));
     
     getCommand("search").setExecutor(new WCHelp(this));
+    
+    getCommand("reboot").setExecutor(new WCReboot(this));
   }
 
   private void copy(InputStream in, File file)
@@ -411,4 +435,66 @@ public class WCMain extends JavaPlugin
       copy(getResource("WAAlliancesdatacore.yml"), this.WAAlliancesdatacoreFile);
     }
   }
+  
+	
+	public void wcReboot(){
+		
+		WCMain.help.set("REBOOTING", true);
+		
+		Bukkit.broadcastMessage(WCMail.WC + "The server will be executing the daily reboot in 5 minutes. It be down around 60 seconds.");
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+	    {
+	      public void run()
+	      {
+	    	  Bukkit.broadcastMessage(WCMail.WC + "The server will be executing the daily reboot in 4 minutes. It be down around 60 seconds.");
+	      }
+	    }
+	    , 1200L);
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+	    {
+	      public void run()
+	      {
+	    	  Bukkit.broadcastMessage(WCMail.WC + "The server will be executing the daily reboot in 3 minutes. It be down around 60 seconds.");
+	      }
+	    }
+	    , 2400L);	
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+	    {
+	      public void run()
+	      {
+	    	  Bukkit.broadcastMessage(WCMail.WC + "The server will be executing the daily reboot in 2 minutes. It be down around 60 seconds.");
+	      }
+	    }
+	    , 3600L);	
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+	    {
+	      public void run()
+	      {
+	    	  Bukkit.broadcastMessage(WCMail.WC + "The server will be executing the daily reboot in 1 minute. It be down around 60 seconds.");
+	      }
+	    }
+	    , 4800L);
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+	    {
+	      public void run()
+	      {
+	    	  Bukkit.broadcastMessage(WCMail.WC + "The server is now rebooting. We've saved the world, don't worry! See you in 60.");
+	      }
+	    }
+	    , 6000L);	
+		
+		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable()
+	    {
+	      public void run()
+	      {
+	    	  Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "stop");
+	      }
+	    }
+	    , 6100L);
+	}
 }

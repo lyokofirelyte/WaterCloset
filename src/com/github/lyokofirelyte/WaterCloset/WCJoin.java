@@ -29,6 +29,16 @@ public class WCJoin
   public boolean onPlayerJoin(final PlayerJoinEvent event)
   {
 	  
+		if (plugin.datacore.getBoolean("Users." + event.getPlayer().getName() + ".needsExp")){
+			float xp = plugin.datacore.getInt("Users." + event.getPlayer().getName() + ".exp");
+			event.getPlayer().setExp(xp);
+			plugin.datacore.set("Users." + event.getPlayer().getName() + ".needsExp", false);
+		}
+	  
+	  if (event.getPlayer().hasPlayedBefore() == false){
+		  plugin.datacore.set("Users." + event.getPlayer().getName() + ".Comp", true);
+	  }
+	  
 	 if (plugin.datacore.getBoolean("Users." + event.getPlayer().getName() + ".Comp") == false && event.getPlayer().hasPlayedBefore()){
 	     ArrayList<String> lore;
 		 plugin.datacore.set("Users." + event.getPlayer().getName() + ".Comp", true);

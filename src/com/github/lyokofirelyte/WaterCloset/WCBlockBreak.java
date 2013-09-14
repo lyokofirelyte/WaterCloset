@@ -50,8 +50,12 @@ public class WCBlockBreak implements Listener{
 			        paragonName.setDisplayName("§4§lINFERNO PARAGON");
 			        paragonName.addEnchant(Enchantment.DURABILITY, 10, true);
 			        paragon.setItemMeta(paragonName);
+			        	if (e.getPlayer().getInventory().getSize() == 36){
+			        		e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation(), paragon);
+			        	} else {
 			        e.getPlayer().getInventory().addItem(paragon);
 			        e.getPlayer().updateInventory();
+			        	}
 			        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §4inferno &dparagon from setting fires."));
 				}
 			}
