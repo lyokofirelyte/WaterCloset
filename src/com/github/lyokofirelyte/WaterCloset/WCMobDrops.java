@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Effect;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
@@ -25,6 +28,8 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
+
+import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 
 public class WCMobDrops implements Listener {
 
@@ -127,10 +132,11 @@ public class WCMobDrops implements Listener {
 		final World world = p.getWorld();
 		Location loc = new Location(world, x, y, z);
 		
-		final Location tp = new Location(world, x, y, z, 0, 180);
+		final Location tp = new Location(world, x, y+1, z, 0, 180);
 		Location loc2 = new Location(world, x, y+1, z);
 		final Location finalLoc = new Location(world, xTo, yTo+50, zTo, 0, 180);
 		final Location finalLocLanding = new Location(world, xTo, yTo, zTo, 0, 180);
+        p.teleport(tp);
 		world.playEffect(loc, Effect.ENDER_SIGNAL, 0);
 		world.playEffect(loc2, Effect.ENDER_SIGNAL, 0);
 		world.playEffect(loc, Effect.BLAZE_SHOOT, 0);
@@ -139,13 +145,15 @@ public class WCMobDrops implements Listener {
 		world.playEffect(loc2, Effect.SMOKE, 0);
 		p.setFoodLevel(0);
 		
+		fireWorkCrazyAssShit(loc, p);
+		
 		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
 		    {
 		      public void run()
 		      {
-		        p.teleport(tp);
 		        p.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 999999999, 0));
 		        p.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 60, 0));
+		        p.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999999, 5));
 		        plugin.datacore.set("Users." + p.getName() + ".NoDamage", true);
 		      }
 		    }
@@ -175,6 +183,7 @@ public class WCMobDrops implements Listener {
 		      public void run()
 		      {
 		    	p.teleport(finalLoc);
+		    	fireWorkCrazyAssShit(finalLocLanding, p);
 		      }
 		    }
 		    , 70L);	 
@@ -205,6 +214,51 @@ public class WCMobDrops implements Listener {
 		      }
 		    }
 		    , 105L);
+		 
+		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+		    {
+		      public void run()
+		      {
+		    	  p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+		      }
+		    }
+		    , 135L);
+	}
+
+
+
+
+	public void fireWorkCrazyAssShit(Location loc, final Player p) {
+		
+	int w = 0;
+		
+	while (w <= 50){
+        List<Location> circleblocks = WCBlockBreak.circle(p, loc, 5, 1, true, false, w);
+        long delay =  0L;
+        
+        	for (final Location l : circleblocks){
+        		delay = delay + 3L;
+        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+        	    {
+        	      public void run()
+        	      {
+        	        	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(p.getWorld(), l,
+							FireworkEffect.builder().with(Type.BURST).withColor(Color.WHITE).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}        	      }
+        	    }
+        	    , delay);
+        	}
+        	
+        w++;
+
+	}
+		
 	}
 
 

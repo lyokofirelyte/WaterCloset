@@ -16,10 +16,6 @@ commands:
       description: Staff Chat
       usage: /o <message>
       permission: wa.staff
-   reboot:
-      description: Force-reboot the server.
-      usage: /reboot
-      permission: spleef.admin
    l:
       description: Alliance Chat
       usage: /l <message>

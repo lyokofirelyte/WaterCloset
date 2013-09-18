@@ -529,6 +529,10 @@ public void globalChat(Player p, String chatColor, String message){
         String secondHalfColors = "&" + color2 + secondHalf;
         String allianceRank2 = this.plugin.WAAlliancesconfig.getString("Users." + sender.getName() + ".AllianceRank2");
         String message = createString(args, 0);
+        String customColor = plugin.WAAlliancesdatacore.getString("Users." + sender.getName() + ".CustomColor");
+        	if (customColor == null){
+        		plugin.WAAlliancesdatacore.set("Users." + sender.getName() + ".CustomColor", "b");
+        	}
 
         for (String p : chatUsers)
         {
@@ -536,7 +540,7 @@ public void globalChat(Player p, String chatColor, String message){
           {
             Bukkit.getPlayer(p).sendMessage(ChatColor.translateAlternateColorCodes('&', firstHalfColors) + 
               ChatColor.translateAlternateColorCodes('&', secondHalfColors) + ChatColor.GRAY + " // " + ChatColor.DARK_GRAY + "*" + ChatColor.GRAY + 
-              allianceRank2 + ChatColor.DARK_GRAY + "* " + p2.getDisplayName() + ChatColor.WHITE + ": " + ChatColor.translateAlternateColorCodes('&', new StringBuilder().append(ChatColor.AQUA).append(message).toString()));
+              allianceRank2 + ChatColor.DARK_GRAY + "* " + p2.getDisplayName() + ChatColor.WHITE + ": " + ChatColor.translateAlternateColorCodes('&', "&" + customColor + (message)));
           }
         }
 

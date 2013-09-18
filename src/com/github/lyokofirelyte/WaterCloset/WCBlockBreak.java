@@ -5,6 +5,10 @@ import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
+import org.bukkit.FireworkEffect;
+import org.bukkit.FireworkEffect.Type;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -13,8 +17,11 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 
 public class WCBlockBreak implements Listener{
 	
@@ -30,12 +37,49 @@ public class WCBlockBreak implements Listener{
     }
 	
 	@SuppressWarnings("deprecation")
+	
 	@EventHandler(priority = EventPriority.NORMAL)
-		public void setFiah(BlockIgniteEvent e){
+	public void onFish(PlayerFishEvent e) throws IllegalArgumentException, Exception{
+		
+		Random rand = new Random();
+		int randomNumber = rand.nextInt(800) + 1;
+		
+		if (randomNumber == 500){
+
+	        ItemStack paragon = new ItemStack(Material.STAINED_CLAY, 1, (short) 3);
+	        ItemMeta paragonName = paragon.getItemMeta();
+	        lore = new ArrayList<String>();
+	        
+	        lore.add("§7§oI should return this");
+	        lore.add("§7§oto the shrine near spawn.");
+	        paragonName.setLore(lore);
+	        
+	        paragonName.setDisplayName("§a§lAQUATIC PARAGON");
+	        paragonName.addEnchant(Enchantment.DURABILITY, 10, true);
+	        paragon.setItemMeta(paragonName);
+	        	if (e.getPlayer().getInventory().firstEmpty() == -1){
+	        		Location loc = e.getPlayer().getLocation();
+	        		loc.getWorld().dropItemNaturally(loc, paragon);
+	        	} else {
+	        e.getPlayer().getInventory().addItem(paragon);
+	        e.getPlayer().updateInventory();
+	        	}
+	        
+	        FireworkShenans fplayer = new FireworkShenans();
+	        fplayer.playFirework(e.getPlayer().getWorld(), e.getPlayer().getLocation(),
+                    FireworkEffect.builder().with(Type.BURST).withColor(Color.BLUE).build());
+	        		
+	        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §aaquatic &dparagon from fishing!"));
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.NORMAL)
+		public void setFiah(BlockIgniteEvent e) throws IllegalArgumentException, Exception{
 			
 			if (e.getCause().toString().equals("FLINT_AND_STEEL")){
 				Random rand = new Random();
-				int randomNumber = rand.nextInt(1000) + 1;
+				int randomNumber = rand.nextInt(800) + 1;
 				
 				if (randomNumber == 500){
 	
@@ -50,12 +94,18 @@ public class WCBlockBreak implements Listener{
 			        paragonName.setDisplayName("§4§lINFERNO PARAGON");
 			        paragonName.addEnchant(Enchantment.DURABILITY, 10, true);
 			        paragon.setItemMeta(paragonName);
-			        	if (e.getPlayer().getInventory().getSize() == 36){
-			        		e.getPlayer().getWorld().dropItem(e.getPlayer().getLocation(), paragon);
+			        	if (e.getPlayer().getInventory().firstEmpty() == -1){
+			        		Location loc = e.getPlayer().getLocation();
+			        		loc.getWorld().dropItemNaturally(loc, paragon);
 			        	} else {
 			        e.getPlayer().getInventory().addItem(paragon);
 			        e.getPlayer().updateInventory();
 			        	}
+			        
+			        FireworkShenans fplayer = new FireworkShenans();
+			        fplayer.playFirework(e.getPlayer().getWorld(), e.getPlayer().getLocation(),
+		                    FireworkEffect.builder().with(Type.BURST).withColor(Color.RED).build());
+			        		
 			        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §4inferno &dparagon from setting fires."));
 				}
 			}
@@ -64,7 +114,7 @@ public class WCBlockBreak implements Listener{
 
 	
 	@EventHandler(priority = EventPriority.NORMAL)
-	public void onBlockBreak(BlockBreakEvent e) {
+	public void onBlockBreak(BlockBreakEvent e) throws IllegalArgumentException, Exception {
 		
 		blocks = plugin.config.getStringList("Paragons.Blocks");
 		
@@ -130,7 +180,8 @@ public class WCBlockBreak implements Listener{
 	}
 	}
 	
-	public void dropParagon(BlockBreakEvent e, Player p, int color, Material mat, String disp, String type){
+	@SuppressWarnings("deprecation")
+	public void dropParagon(final BlockBreakEvent e, Player p, int color, Material mat, String disp, String type) throws IllegalArgumentException, Exception{
 		
 		e.setCancelled(true);
         e.getBlock().setType(Material.AIR);
@@ -146,11 +197,57 @@ public class WCBlockBreak implements Listener{
         paragonName.setDisplayName(disp);
         paragonName.addEnchant(Enchantment.DURABILITY, 10, true);
         paragon.setItemMeta(paragonName);
-        e.getPlayer().getInventory().addItem(paragon);
+        	if (e.getPlayer().getInventory().firstEmpty() == -1 && e.getPlayer().getInventory().contains(paragon) == false){
+    			Location loc = e.getPlayer().getLocation();
+    			loc.getWorld().dropItemNaturally(loc, paragon);
+    			e.getPlayer().sendMessage(WCMail.WC + "Your inventory was full so we dropped it for you. YOU'RE WELCOME.");
+        	} else {
+        		e.getPlayer().getInventory().addItem(paragon);
+        		e.getPlayer().updateInventory();
+        	}
         e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(mat, 2));
+        
+        List<Location> circleblocks = circle(e.getPlayer(), e.getPlayer().getLocation(), 5, 1, true, false, 1);
+        long delay =  0L;
+        	for (final Location l : circleblocks){
+        		delay = delay + 2L;
+        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+        	    {
+        	      public void run()
+        	      {
+        	        	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(e.getPlayer().getWorld(), l,
+							FireworkEffect.builder().with(Type.BURST).withColor(Color.WHITE).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}        	      }
+        	    }
+        	    , delay);
+        	}
         Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found a(n) " + type + " &dparagon from harvesting " + mat.toString().toLowerCase() + "&d."));
 		
 	}
+	
+    public static List<Location> circle (Player player, Location loc, Integer r, Integer h, Boolean hollow, Boolean sphere, int plus_y) {
+        List<Location> circleblocks = new ArrayList<Location>();
+        int cx = loc.getBlockX();
+        int cy = loc.getBlockY();
+        int cz = loc.getBlockZ();
+        for (int x = cx - r; x <= cx +r; x++)
+            for (int z = cz - r; z <= cz +r; z++)
+                for (int y = (sphere ? cy - r : cy); y < (sphere ? cy + r : cy + h); y++) {
+                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
+                    if (dist < r*r && !(hollow && dist < (r-1)*(r-1))) {
+                        Location l = new Location(loc.getWorld(), x, y + plus_y, z);
+                        circleblocks.add(l);
+                        }
+                    }
+     
+        return circleblocks;
+    }
 	
 
 }

@@ -10,6 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
+import com.github.lyokofirelyte.WaterCloset.WCMail;
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.WCVault;
 
@@ -94,6 +95,7 @@ public class WACommandEx
               this.waheader + "/waa chat admin rem <player> " + ChatColor.WHITE + "- " + ChatColor.AQUA + "Remove <player> from admin in your alliance chat (LEADER)", 
               this.waheader + "/waa chat visit <alliance> " + ChatColor.WHITE + "- " + ChatColor.AQUA + "Visit a different alliance chat as a guest", 
               this.waheader + "/waa chat list " + ChatColor.WHITE + "- " + ChatColor.AQUA + "List the users in your current alliance chat channel", 
+              this.waheader + "/waa chat color <color> " + ChatColor.WHITE + "- " + ChatColor.AQUA + "Change your default chat color. See /news 2 for the list.", 
               this.waheader + "/l <message> " + ChatColor.WHITE + "- " + ChatColor.AQUA + "Quick message alliance chat" });
 
             return true;
@@ -112,6 +114,20 @@ public class WACommandEx
 
         if (args[0].equalsIgnoreCase("chat"))
         {
+        	
+        	if (args.length == 3 && args[1].equalsIgnoreCase("color")){
+        		
+        		String allowedColors = "1 2 3 4 5 6 7 8 9 0 a b c d e f o l m k n r";
+        			if (!allowedColors.contains(args[2])){
+        				sender.sendMessage(waaprefix + "That's not a color. See /news 2.");
+        				return true;
+        			} else {
+        				plugin.WAAlliancesdatacore.set("Users." + sender.getName() + ".CustomColor", args[2]);
+        				sender.sendMessage(WCMail.AS(waaprefix + "You've set your color as &" + args[2] + "this."));
+        				return true;
+        			}
+        	}
+        	
           if (args.length == 1)
           {
             Boolean inChat = Boolean.valueOf(this.plugin.WAAlliancesconfig.getBoolean("Users." + pl + ".inChat"));
@@ -1012,8 +1028,27 @@ public class WACommandEx
                 String Leader = this.plugin.WAAlliancesconfig.getString("Alliances." + args[1] + ".Leader");
                 String color1 = this.plugin.WAAlliancesconfig.getString("Alliances." + args[1] + ".Color1");
                 String color2 = this.plugin.WAAlliancesconfig.getString("Alliances." + args[1] + ".Color2");
-                Boolean doors = Boolean.valueOf(this.plugin.WAAlliancesconfig.getBoolean("Alliances." + args[1] + ".DoorLock"));
-                Boolean mobs = Boolean.valueOf(this.plugin.WAAlliancesconfig.getBoolean("Alliances." + args[1] + ".MobSpawn"));
+                List <String> users = WCMain.mail.getStringList("Users.Total");
+                plugin.datacore.set("AllianceDataDisplay", "");
+                
+                	for (String lol : users){
+                	Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + lol + ".InAlliance");
+                	
+                		if (inAlliance){
+                			String allianceCheck = plugin.WAAlliancesconfig.getString("Users." + lol + ".Alliance");
+                	
+                				if (allianceCheck.equals(args[1])){
+                					String userDisplay = plugin.datacore.getString("AllianceDataDisplay");
+                					int midpoint = lol.length() / 2;
+                		            String firstHalf = lol.substring(0, midpoint);
+                		            String secondHalf = lol.substring(midpoint);
+                					String lolColor1 = "&" + color1 + firstHalf;
+                					String lolColor2 = "&" + color2 + secondHalf;
+                					String complete = lolColor1 + lolColor2;
+                					plugin.datacore.set("AllianceDataDisplay", userDisplay + "&f, " + complete);
+                				}
+                		}
+                }
 
                 sender.sendMessage(new String[] { 
                   this.waaprefix + "Selected Alliance: " + args[1], 
@@ -1021,9 +1056,8 @@ public class WACommandEx
                   ChatColor.GREEN + "| Bank: " + bank, 
                   ChatColor.GREEN + "| Members: " + members, 
                   ChatColor.GREEN + "| Leader: " + Leader, 
-                  ChatColor.GREEN + "| Colors: " + "&" + color1 + "," + " " + "&" + color2, 
-                  ChatColor.GREEN + "| Doors Locks: " + doors, 
-                  ChatColor.GREEN + "| Mob Spawning: " + mobs });
+                  ChatColor.GREEN + "| Colors: " + "&" + color1 + "," + " " + "&" + color2,
+                  ChatColor.GREEN + "| Users: " + WCMail.AS(plugin.datacore.getString("AllianceDataDisplay"))});
               }
 
             }

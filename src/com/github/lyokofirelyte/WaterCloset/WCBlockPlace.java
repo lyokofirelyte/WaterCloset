@@ -170,6 +170,11 @@ public class WCBlockPlace implements Listener{
 			paragonUpdate("inferno", p, 2);
 			break;
 			
+		case "§a§lAQUATIC PARAGON":
+			
+			paragonUpdate("aquatic", p, 3);
+			break;
+			
 		default: break;
 			
 		}
@@ -239,8 +244,8 @@ public class WCBlockPlace implements Listener{
 		        lore.add("§7§oIt's currency!");
 		        name.setLore(lore);
 		        token.setItemMeta((ItemMeta)name);
-		        	if (p.getInventory().getSize() == 36){
-		        		p.getPlayer().getWorld().dropItem(p.getPlayer().getLocation(), token);
+		        	if (p.getInventory().firstEmpty() == -1){
+		        		p.getWorld().dropItemNaturally(p.getLocation(), token);
 		        	} else {
 		        		p.getInventory().addItem(token);
 		        		p.updateInventory();
@@ -257,8 +262,8 @@ public class WCBlockPlace implements Listener{
         lore.add("§7§oIt's currency!");
         name.setLore(lore);
         token.setItemMeta((ItemMeta)name);
-        	if (p.getInventory().getSize() == 36){
-        		p.getPlayer().getWorld().dropItem(p.getPlayer().getLocation(), token);
+        	if (p.getInventory().firstEmpty() == -1){
+        		p.getWorld().dropItemNaturally(p.getLocation(), token);
         	} else {
         		p.getInventory().addItem(token);
         		p.updateInventory();

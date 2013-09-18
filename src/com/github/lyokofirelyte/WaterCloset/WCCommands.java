@@ -1,14 +1,26 @@
 package com.github.lyokofirelyte.WaterCloset;
 
+import java.util.ArrayList;
 import java.util.List;
+
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Color;
+import org.bukkit.Effect;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
+
+import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 
 public class WCCommands implements CommandExecutor {
   WCMain plugin;
@@ -21,6 +33,169 @@ public class WCCommands implements CommandExecutor {
   
     this.plugin = instance;
   }
+  
+  public static boolean isInteger(String str) {
+	    try {
+	        Integer.parseInt(str);
+	        return true;
+	    } catch (NumberFormatException nfe) {
+	        return false;
+	    }
+	}
+  
+  	public void spawnWorks(Location loc, Player p){
+  		
+  		int xBase = loc.getBlockX();
+  		int yBase = loc.getBlockY();
+  		int zBase = loc.getBlockZ();
+  		World world = p.getWorld();
+  		
+  		List <Location> borderLocations = new ArrayList<Location>();
+  		List <Location> borderLocations2 = new ArrayList<Location>();
+  		List <Location> borderLocations3 = new ArrayList<Location>();
+  		List <Location> borderLocations4 = new ArrayList<Location>();
+  		int x = 0;
+  		
+  			while (x <= 10){
+  				Location temp = new Location(world, xBase+x, yBase, zBase);
+  				borderLocations.add(temp);
+  				x++;
+  			}
+  			
+  			x = 0;
+  			
+  			while (x <= 10){
+  				Location temp = new Location(world, xBase-x, yBase, zBase);
+  				borderLocations2.add(temp);
+  				x++;
+  			}
+  			
+  			x = 0;
+  			
+  			while (x <= 10){
+  				Location temp = new Location(world, xBase, yBase, zBase+x);
+  				borderLocations3.add(temp);
+  				x++;
+  			}
+  			
+ 			x = 0;
+  			
+  			while (x <= 10){
+  				Location temp = new Location(world, xBase, yBase, zBase-x);
+  				borderLocations4.add(temp);
+  				x++;
+  			}
+
+  			int h = 0;
+  			long delay = 0L;
+  			long delay2 = 0L;
+  			
+  			while (h <= 10){
+  				
+  				for (Location bleh : borderLocations){
+  					int xBase2 = bleh.getBlockX();
+  			  		int yBase2 = bleh.getBlockY();
+  			  		int zBase2 = bleh.getBlockZ();
+  			  		Location newLoc = new Location(world, xBase2, yBase2+h, zBase2);
+  			  		delay = delay+10L;
+  			  		spawnGO(newLoc, p, delay);
+  				}
+  				
+  				delay = delay2;
+  				
+  				for (Location bleh : borderLocations2){
+  					int xBase2 = bleh.getBlockX();
+  			  		int yBase2 = bleh.getBlockY();
+  			  		int zBase2 = bleh.getBlockZ();
+  			  		Location newLoc = new Location(world, xBase2, yBase2+h, zBase2);
+  			  		delay = delay+10L;
+  			  		spawnGO(newLoc, p, delay); 
+  				}
+  				
+  				delay = delay2;
+  				
+  				for (Location bleh : borderLocations3){
+  					int xBase2 = bleh.getBlockX();
+  			  		int yBase2 = bleh.getBlockY();
+  			  		int zBase2 = bleh.getBlockZ();
+  			  		Location newLoc = new Location(world, xBase2, yBase2+h, zBase2);
+  			  		delay = delay+10L;
+  			  		spawnGO(newLoc, p, delay);
+  				}
+  				
+  				delay = delay2;
+  				
+  				for (Location bleh : borderLocations4){
+  					int xBase2 = bleh.getBlockX();
+  			  		int yBase2 = bleh.getBlockY();
+  			  		int zBase2 = bleh.getBlockZ();
+  			  		Location newLoc = new Location(world, xBase2, yBase2+h, zBase2);
+  			  		delay = delay+10L;
+  			  		spawnGO(newLoc, p, delay);
+  				}
+  				
+  				delay2 = delay2+10L;
+  				h++;
+  			}
+  		
+  	}
+  	
+  	public void spawnGO(final Location l, final Player p, long delay){
+
+      		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+      	    {
+      	      public void run()
+      	      {
+      	    	  	
+      	        	FireworkShenans fplayer = new FireworkShenans();
+      	        	try {
+    			
+							fplayer.playFirework(p.getWorld(), l,
+							FireworkEffect.builder().with(Type.BURST).withColor(Color.WHITE).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}        	      }
+      	    }
+      	    , delay);
+      	}
+      
+  
+	public void fireWorkCrazyAssShit2(Location loc, final Player p) {
+		
+	int w = 0;
+		
+	while (w <= 50){
+      List<Location> circleblocks = WCBlockBreak.circle(p, loc, 5, 1, true, false, w);
+      long delay =  0L;
+	
+      
+      	for (final Location l : circleblocks){
+      		delay = delay + 2L;
+      		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+      	    {
+      	      public void run()
+      	      {
+      	    	  	
+      	        	FireworkShenans fplayer = new FireworkShenans();
+      	        	try {
+    			
+							fplayer.playFirework(p.getWorld(), l,
+							FireworkEffect.builder().with(Type.BURST).withColor(Color.WHITE).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}        	      }
+      	    }
+      	    , delay);
+      	}
+      	
+      w++;
+	}
+
+	}
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	  
@@ -40,8 +215,196 @@ public class WCCommands implements CommandExecutor {
       
       switch (args[0]){
       
+      case "supertp":
+    	  
+    	  if (sender.hasPermission("wa.admin") == false){
+    		  sender.sendMessage(WCMail.WC + "You don't have permission to use the super awesome teleport of crazy.");
+    		  break;
+    	  }
+    	  
+    	  if (args.length != 2){
+    		  sender.sendMessage(WCMail.WC + "/wc supertp <player>");
+    		  break;
+    	  }
+    	  
+    	  if (Bukkit.getPlayer(args[1]) == null){
+    		  sender.sendMessage(WCMail.WC + "That player is not online.");
+    		  break;
+    	  }
+    	  
+    	  final World world = Bukkit.getPlayer(args[1]).getWorld();
+    	  double LocX = Bukkit.getPlayer(args[1]).getLocation().getBlockX();
+    	  double LocY = Bukkit.getPlayer(args[1]).getLocation().getBlockY();
+    	  double LocZ = Bukkit.getPlayer(args[1]).getLocation().getBlockZ();
+    	  
+    	  final Player p2 = (Player) sender;
+    	  double LocXME = p2.getLocation().getBlockX();
+    	  double LocYME = p2.getLocation().getBlockY();
+    	  double LocZME = p2.getLocation().getBlockZ();
+    	  
+    	  final Location tpLocation = new Location(world, LocX, LocY, LocZ, 0, 180);
+    	  final Location tpLocationSKY = new Location(world, LocX, LocY+50, LocZ, 0, 180);
+    	  final Location ME = new Location(world, LocXME, LocYME+1, LocZME, 0, 180);
+    	  
+        p2.teleport(ME);
+  		world.playEffect(ME, Effect.ENDER_SIGNAL, 0);
+  		world.playEffect(ME, Effect.BLAZE_SHOOT, 0);
+  		world.playEffect(ME, Effect.SMOKE, 0);
+  		
+  		fireWorkCrazyAssShit2(ME, p2);
+  		
+  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+  		    {
+  		      public void run()
+  		      {
+  		        p2.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 999999999, 0));
+  		        p2.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 60, 0));
+  		        p2.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999999, 5));
+  		        plugin.datacore.set("Users." + p2.getName() + ".NoDamage", true);
+  		      }
+  		    }
+  		    , 10L);
+  		 
+  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+  		    {
+  		      public void run()
+  		      {
+  		    	p2.setVelocity(new Vector(0, 3, 0));
+  		      }
+  		    }
+  		    , 15L);
+  		 
+  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+  		    {
+  		      public void run()
+  		      {
+  		    	  p2.setVelocity(new Vector(0, 5, 0));
+  		    	  world.playEffect(p2.getLocation(), Effect.GHAST_SHOOT, 0);
+  		      }
+  		    }
+  		    , 55L);
+  		 
+  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+  		    {
+  		      public void run()
+  		      {
+  		    	p2.teleport(tpLocationSKY);
+  		    	fireWorkCrazyAssShit2(tpLocation, p2);
+  		      }
+  		    }
+  		    , 70L);	 
+  			 
+  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+  		    {
+  		      public void run()
+  		      {
+  		    	  p2.setVelocity(new Vector(0, -5, 0));
+  		    	  world.playEffect(p2.getLocation(), Effect.GHAST_SHOOT, 0);
+  		      }
+  		    }
+  		    , 83L);
+  		 
+  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+  		    {
+  		      public void run()
+  		      {
+  		    	  for (Entity e1 : p2.getNearbyEntities(5.0D, 5.0D, 5.0D)){
+  		    		e1.setVelocity(e1.getLocation().getDirection().multiply(-2));
+  		    			if (e1 instanceof Player){
+  		    				((Player) e1).sendMessage(WCMail.WC + "You were shoved out of the way because of an incoming teleport!");
+  		    			}
+  	          	  }
+  		    	world.playEffect(tpLocation, Effect.ENDER_SIGNAL, 0);
+  		  		world.playEffect(tpLocation, Effect.BLAZE_SHOOT, 0);
+  		  		world.playEffect(tpLocation, Effect.MOBSPAWNER_FLAMES, 0);
+  		  		world.playEffect(tpLocation, Effect.SMOKE, 0);
+  		  		p2.removePotionEffect(PotionEffectType.CONFUSION);
+  		  		p2.removePotionEffect(PotionEffectType.NIGHT_VISION);
+  		  		plugin.datacore.set("Users." + p2.getName() + ".NoDamage", null);
+  		      }
+  		    }
+  		    , 105L);
+  		 
+		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+		    {
+		      public void run()
+		      {
+		    	  p2.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+		      }
+		    }
+		    , 115L);
+  	
+      break;
       
-      
+      case "spawnworks":
+
+    	  	Player p7 = (Player) sender;
+    	  	spawnWorks(p7.getLocation(), p7);
+    	  	break;
+    	  
+      case "exp": case "xp":
+
+    	  if (args.length == 1 || args.length == 2){
+    		  
+    		  if (args.length == 2 && args[1].equalsIgnoreCase("toggle")){
+        		  
+    			  Boolean toggle = plugin.datacore.getBoolean("Users." + sender.getName() + ".expWarn");
+    		  		if (toggle){
+    		  			plugin.datacore.set("Users." + sender.getName() + ".expWarn", false);
+    		  			sender.sendMessage(WCMail.WC + "You will recieve notifications when your XP is stored into the database.");
+    		  		} else {
+    		  			plugin.datacore.set("Users." + sender.getName() + ".expWarn", true);
+    		  			sender.sendMessage(WCMail.WC + "You will NOT recieve notifications when your XP is stored into the database.");
+    		  		}
+    		  	
+    		  		break;
+    		  }
+    		  
+    		  int xp = plugin.datacore.getInt("Users." + sender.getName() + ".MasterExp");
+    		  sender.sendMessage(WC + "You currently have §6" + xp + " §dexp stored. (/wc xp take <amount>)");
+    		  int l30 = (xp / 825);
+    		  sender.sendMessage(WC + "That's §6" + l30 + "§d level 30's.");
+    		  break;
+    	  }
+     
+    	  
+    	  if (args[1].equalsIgnoreCase("take")){
+    		  
+    		  Player p = (Player) sender;
+    		  
+    		  if (isInteger(args[2]) == false){
+    			  sender.sendMessage(WC + "Do you even KNOW what a number is? You can't withdraw fish amount of xp, you silly human.");
+    			  break;
+    		  }
+    		  
+    		  int xp = plugin.datacore.getInt("Users." + sender.getName() + ".MasterExp");
+    		  
+    		  if (xp < Integer.parseInt(args[2])){
+    			  sender.sendMessage(WC + "I know math isn't your strong suit, but did you really think you had THAT much xp?");
+    			  break;
+    		  }
+    		  
+    		  if (args[2].startsWith("0") || args[2].startsWith("-") || args[2].startsWith("+")){
+    			  sender.sendMessage(WC + "You can't withdrawl / deposit 0 or negitive amounts of xp. I'm a little concerned about you now.");
+    			  break;
+    		  }
+    		  
+    		  plugin.datacore.set("Users." + sender.getName() + ".expDeposit", true);
+    		  plugin.datacore.set("Users." + sender.getName() + ".MasterExp", (xp-Integer.parseInt(args[2])));
+    		  p.giveExp(Integer.parseInt(args[2]));
+    		  p.sendMessage(WC + "You've taken some XP out of your storage facility.");
+    		  plugin.datacore.set("Users." + sender.getName() + ".expDeposit", false);
+    		  break;
+    	  }
+    	  
+    	  if (args[1].equalsIgnoreCase("store")){
+    		  
+    		  sender.sendMessage(WCMail.WC + "Sorry, you can't put the xp back because of a Bukkit bug I can't do anything about.");
+    		  break;
+    		  
+    	  }	
+
+    	  
        case "paragons": case "paragon":
     	   
     	   if (args.length == 1){
@@ -233,6 +596,86 @@ public class WCCommands implements CommandExecutor {
         	}
       
         break;
+        
+        case "top":
+        	
+        	List <String> playerList = WCMain.mail.getStringList("Users.Total");
+        	List <Integer> levels = new ArrayList<Integer>();
+        	int s = 0;
+        		
+        		for (String current : playerList){
+        			int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
+        				if (levels.contains(Integer.valueOf(paragonLevel)) == false){
+        					levels.add(Integer.valueOf(paragonLevel));
+        				}
+        		}
+        		
+        		for (int top : levels){
+        			if (top > s){
+        				s = top;
+        			}
+        		}
+        		
+        	   levels.remove(Integer.valueOf(s));
+        		
+        		int firstPlace = s;
+        		s = 0;
+        		
+        		for (int top : levels){
+        			if (top > s){
+        				s = top;
+        			}
+        		}
+        		
+        		levels.remove(Integer.valueOf(s));
+        		
+        		int secondPlace = s;
+        		s = 0;
+        		
+        		for (int top : levels){
+        			if (top > s){
+        				s = top;
+        			}
+        		}
+        		
+        		levels.remove(Integer.valueOf(s));
+        		
+        		int thirdPlace = s;
+
+        		sender.sendMessage(new String[]{
+        			WCMail.WC + "Paragon Leaderboards",
+        			WCMail.AS("&f>>> >>> <<< <<<"),
+        			WCMail.AS("&7&ofirst place @ level " + firstPlace)});
+        		
+					for (String current : playerList){
+						int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
+							if (paragonLevel == firstPlace){
+								sender.sendMessage(WCMail.AS("&b&o" + current));
+							}
+					}
+					
+					sender.sendMessage(WCMail.AS("&7&osecond place @ level " + secondPlace));
+        		  
+					for (String current : playerList){
+						int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
+							if (paragonLevel == secondPlace){
+								sender.sendMessage(WCMail.AS("&b&o" + current));
+							}
+					}
+					
+					sender.sendMessage(WCMail.AS("&7&othird place @ level " + thirdPlace));
+	        		  
+					for (String current : playerList){
+						int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
+							if (paragonLevel == thirdPlace){
+								sender.sendMessage(WCMail.AS("&b&o" + current));
+							}
+					}
+					
+					break;
+        		
+        		
+        		
         
         case "addobelisk":
         	
