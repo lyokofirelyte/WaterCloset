@@ -1,9 +1,12 @@
 package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.bukkit.FireworkEffect.Type;
+import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.Bukkit;
@@ -18,6 +21,7 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
@@ -140,6 +144,24 @@ public class WCCommands implements CommandExecutor {
   		
   	}
   	
+    public static List<Location> circle (Player player, Location loc, Integer r, Integer h, Boolean hollow, Boolean sphere, int plus_y) {
+        List<Location> circleblocks = new ArrayList<Location>();
+        int cx = loc.getBlockX();
+        int cy = loc.getBlockY();
+        int cz = loc.getBlockZ();
+        for (int x = cx - r; x <= cx +r; x++)
+            for (int z = cz - r; z <= cz +r; z++)
+                for (int y = (sphere ? cy - r : cy); y < (sphere ? cy + r : cy + h); y++) {
+                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
+                    if (dist < r*r && !(hollow && dist < (r-1)*(r-1))) {
+                        Location l = new Location(loc.getWorld(), x, y + plus_y, z);
+                        circleblocks.add(l);
+                        }
+                    }
+     
+        return circleblocks;
+    }
+  	
   	public void spawnGO(final Location l, final Player p, long delay){
 
       		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
@@ -197,7 +219,46 @@ public class WCCommands implements CommandExecutor {
 
 	}
 
+	 public static Entity getTarget(final Player player) {
+		 
+	        BlockIterator iterator = new BlockIterator(player.getWorld(), player
+	                .getLocation().toVector(), player.getEyeLocation()
+	                .getDirection(), 0, 100);
+	        Entity target = null;
+	        while (iterator.hasNext()) {
+	            Block item = iterator.next();
+	            for (Entity entity : player.getNearbyEntities(100, 100, 100)) {
+	                int acc = 2;
+	                for (int x = -acc; x < acc; x++)
+	                    for (int z = -acc; z < acc; z++)
+	                        for (int y = -acc; y < acc; y++)
+	                            if (entity.getLocation().getBlock()
+	                                    .getRelative(x, y, z).equals(item)) {
+	                                return target = entity;
+	                            }
+	            }
+	        }
+	        return target;
+	    }
+	 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+	  
+	  if (cmd.getName().equalsIgnoreCase("blame")){
+		  
+			Random rand = new Random();
+			int randomNumber = rand.nextInt(Bukkit.getOnlinePlayers().length);
+			int x = 0;
+			
+				for (Player bleh : Bukkit.getOnlinePlayers()){
+					x++;
+					
+					if (x == randomNumber){
+						Bukkit.broadcastMessage(WCMail.AS(((Player) sender).getDisplayName() + " &dblames " + bleh.getDisplayName() + "!"));
+						break;
+					}
+				}
+		
+	  }
 	  
     if (cmd.getName().equalsIgnoreCase("wc") || cmd.getName().equalsIgnoreCase("watercloset"))
     {
@@ -214,6 +275,67 @@ public class WCCommands implements CommandExecutor {
       }
       
       switch (args[0]){
+      
+      
+      case "booth":
+    	  
+    	  if (args.length == 2 && args[1].equalsIgnoreCase("list")){
+    		  sender.sendMessage(WCMail.WC + "List:");
+    		  for (String b : WCMain.mail.getStringList("Users.Total")){
+    			  if (plugin.datacore.getString("Users." + b + ".Booth") != null){
+    				  String booth = plugin.datacore.getString("Users." + b + ".Booth");
+    				  sender.sendMessage(WCMail.AS("&a| &b" + b + " &f// &b" + booth));
+    			  }
+    		  }
+    		  break;
+    	  }
+    	  
+    	  String booth = plugin.datacore.getString("Users." + sender.getName() + ".Booth");
+    	  
+    	  	if (booth == null){
+    	  		int booths = plugin.datacore.getInt("BoothCount");
+    	  		booths++;
+    	  		plugin.datacore.set("BoothCount", booths);
+    	  		plugin.datacore.set("Users." + sender.getName() + ".Booth", booths);
+    	  		sender.sendMessage(WCMail.WC + "You didn't have a booth, so we made one for you. You are booth " + booths + ".");
+    	  		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "warp xtbooth" + booths + " " + sender.getName());
+    	  		break;
+    	  	}
+
+    	  	Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "warp xtbooth" + booth + " " + sender.getName());
+    	  	break;
+    	  	
+    	  
+      
+      case "ALLSPAM":
+    	  
+    	  if (sender.hasPermission("wa.admin") == false){
+    		  sender.sendMessage(WCMail.WC + "You don't have permission to use the super awesome teleport of crazy.");
+    		  break;
+    	  }
+    	  
+    	  
+    	  
+    	 List <String> users = WCMain.mail.getStringList("Users.Total");
+    	 long gg = 0L;
+    	 
+    	 	for (final String bleh : users){
+    	 		 final List <String> colors = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "0", "a", "b", "c", "d", "e", "f");
+    	 	     Random rand = new Random();
+				 final int randomNumber = rand.nextInt(colors.size()) + 1;
+    	 		 gg = gg + 4L;
+    	  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+    	  		    {
+    	  		      public void run()
+    	  		      {
+    	      	 		Bukkit.broadcastMessage(WCMail.AS("&" + colors.get(randomNumber) + bleh));
+    	  		      }
+    	  		    }
+    	  		    , gg);
+
+    	 	}
+    	 	
+    	 break;
       
       case "supertp":
     	  
@@ -437,6 +559,9 @@ public class WCCommands implements CommandExecutor {
     		   int life = plugin.datacore.getInt("Users." + sender.getName() + ".Paragons.life");
     		   int inferno = plugin.datacore.getInt("Users." + sender.getName() + ".Paragons.inferno");
     		   int death = plugin.datacore.getInt("Users." + sender.getName() + ".Paragons.death");
+    		   int aquatic = plugin.datacore.getInt("Users." + sender.getName() + ".Paragons.aquatic");
+    		   int refined = plugin.datacore.getInt("Users." + sender.getName() + ".Paragons.refined");
+    		   int frost = plugin.datacore.getInt("Users." + sender.getName() + ".Paragons.frost");
     		   int total = plugin.datacore.getInt("Users." + sender.getName() + ".Paragons.Total");
     		   
     		   sender.sendMessage(new String[]{
@@ -454,7 +579,10 @@ public class WCCommands implements CommandExecutor {
     				WCMail.AS("&1| &bEarth &f// &b" + earth),
     				WCMail.AS("&1| &bIndustrial &f// &b" + industrial),
     				WCMail.AS( "&1| &bLife &f// &b" + life),
-    				WCMail.AS("&1| &bInferno &f// &b" + inferno )     
+    				WCMail.AS("&1| &bInferno &f// &b" + inferno),
+    				WCMail.AS("&1| &bAquatic &f// &b" + aquatic),
+    				WCMail.AS("&1| &bRefined &f// &b" + refined),
+    				WCMail.AS("&1| &bFrost &f// &b" + frost),
     	   });
     		   
     		   break;
@@ -597,6 +725,110 @@ public class WCCommands implements CommandExecutor {
       
         break;
         
+        case "dr":
+        	
+        	if (sender.hasPermission("wa.admin")){
+        	
+        	final Player P2 = (Player) sender;
+        	Entity target = getTarget(P2);
+        		if (target == null){
+        			sender.sendMessage(WCMail.WC + "HOLY TWAT-MUFFIN SHIT COCK THERE'S NO ONE THERE TO FIRE AT!");
+        			break;
+        		}
+        		
+        	Location loc2 = target.getLocation();
+        	Location loc1 = P2.getLocation();
+        	
+        	List <Location> zapLocs = new ArrayList<Location>();
+        	
+            int topBlockX = (loc1.getBlockX() < loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
+            int bottomBlockX = (loc1.getBlockX() > loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
+     
+            int topBlockY = (loc1.getBlockY() < loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
+            int bottomBlockY = (loc1.getBlockY() > loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
+     
+            int topBlockZ = (loc1.getBlockZ() < loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
+            int bottomBlockZ = (loc1.getBlockZ() > loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
+     
+            for(int xX = bottomBlockX; xX <= topBlockX; xX++)
+            {
+                for(int zZ = bottomBlockZ; zZ <= topBlockZ; zZ++)
+                {
+                    for(int yY = bottomBlockY; yY <= topBlockY; yY++)
+                    {
+            			Location heh = new Location(P2.getWorld(), xX, yY, zZ);
+            			zapLocs.add(heh);
+                    }
+                }
+            }
+        	
+        		
+        	long zapDelay = 0L;
+        	
+        	for (final Location bleh : zapLocs){
+        		 
+        		zapDelay = zapDelay + 2L;
+        		
+        		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+       		    {
+       		      public void run()
+       		      {
+              		
+              		FireworkShenans fplayer = new FireworkShenans();
+              	
+      	        	try {
+      		
+      					fplayer.playFirework(P2.getWorld(), bleh,
+      					FireworkEffect.builder().with(Type.BURST).withColor(Color.GREEN).build());
+      				} catch (IllegalArgumentException e) {
+      					e.printStackTrace();
+      				} catch (Exception e) {
+      					e.printStackTrace();
+      				}        
+              	}
+       		      }
+       
+       		    
+       		    , zapDelay);
+        	}
+        	
+        	final List<Location> circleblocks = circle(P2, loc2, 5, 1, true, false, 1);
+        	long zapDelay2 = zapLocs.size() * 5L;
+        	
+		       for (final Location bleh : circleblocks){
+		    	   
+		    	   zapDelay2 = zapDelay2 + 3L;
+		    	   
+		    	   Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+		    	   {
+		    		   public void run()
+		    		   {
+		    			
+		    	   
+		    			   FireworkShenans fplayer = new FireworkShenans();
+		    			   
+                  	
+		    			   try {
+      	        		
+		    				   fplayer.playFirework(P2.getWorld(), bleh,
+		    						   FireworkEffect.builder().with(Type.BURST).withColor(Color.RED).build());
+		    			   } catch (IllegalArgumentException e) {
+		    				   e.printStackTrace();
+		    			   } catch (Exception e) {
+		    				   e.printStackTrace();
+			    			   }   
+	       		       }
+       	
+		      }
+		       
+		    
+		       , zapDelay2);
+		    	   
+      }
+        	}
+        	
+	      break;
+        
         case "top":
         	
         	List <String> playerList = WCMain.mail.getStringList("Users.Total");
@@ -675,7 +907,32 @@ public class WCCommands implements CommandExecutor {
 					break;
         		
         		
-        		
+        case "stafftp":
+        	
+        	if (sender.hasPermission("wa.staff") == false){
+        		sender.sendMessage(WCMail.WC + "No.");
+        		break;
+        	}
+        	
+        	if (args.length != 2){
+        		sender.sendMessage(WCMail.WC + "/wc stafftp <player>.");
+        		break;
+        	}
+        	
+        	if (Bukkit.getPlayer(args[1]) == null){
+        		sender.sendMessage(WCMail.WC + "That player is not online.");
+        		break;
+        	}
+        	
+        	if (Bukkit.getPlayer(args[1]).getName().equals(sender.getName())){
+        		sender.sendMessage(WCMail.WC + "You can't check yourself.");
+        		break;
+        	}
+        	
+        		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tp " + sender.getName() + " " + args[1]);
+        		Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + ((Player) sender).getDisplayName() + " &chas used a grief-check teleport for " + Bukkit.getPlayer(args[1]).getDisplayName()));
+        		break;
+        	
         
         case "addobelisk":
         	

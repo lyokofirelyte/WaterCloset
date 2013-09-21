@@ -1,5 +1,6 @@
 package com.github.lyokofirelyte.WaterCloset;
 
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,6 +16,8 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
+
+
 import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
@@ -168,6 +171,7 @@ public class WCMain extends JavaPlugin
       Bukkit.getServer().getPluginManager().disablePlugin(this);
     }
 
+    
     registerCommands();
     
     
@@ -227,6 +231,8 @@ public class WCMain extends JavaPlugin
     getCommand("mail").setExecutor(new WCMail(this));
     
     getCommand("search").setExecutor(new WCHelp(this));
+    
+    getCommand("blame").setExecutor(new WCCommands(this));
   }
 
   private void copy(InputStream in, File file)
@@ -413,6 +419,7 @@ public class WCMain extends JavaPlugin
       copy(getResource("WAAlliancesdatacore.yml"), this.WAAlliancesdatacoreFile);
     }
   }
+  
   
 
 }

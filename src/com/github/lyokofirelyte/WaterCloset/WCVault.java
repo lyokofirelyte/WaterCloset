@@ -25,10 +25,12 @@ public class WCVault
       setupEconomy();
       setupPermissions();
       setupChat();
+     // setupUrl2();
     }
 
     return this.vaultHooked;
   }
+
 
   @SuppressWarnings("rawtypes")
 private boolean setupEconomy()

@@ -15,6 +15,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+
 public class WCChannels implements CommandExecutor, Listener {
 	
   WCMain plugin;
@@ -125,6 +126,7 @@ public class WCChannels implements CommandExecutor, Listener {
 		  return;
 	  }
 	  
+  
 	  if (event.getMessage().startsWith("!stats")){
 		  event.setCancelled(true);
 		  stats(event.getMessage(), event.getPlayer());

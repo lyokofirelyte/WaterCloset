@@ -41,6 +41,9 @@ commands:
       description: VTE Command
       usage: You don't.
       permission: vte.timestamp
+   blame:
+      description: Blame someone!
+      usage: /blame
    msg:
       description: Message people all the things.
       usage: I don't know, maybe /msg <player> <message>?

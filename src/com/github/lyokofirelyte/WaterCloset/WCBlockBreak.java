@@ -10,6 +10,7 @@ import org.bukkit.FireworkEffect;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,6 +18,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockIgniteEvent;
+import org.bukkit.event.inventory.FurnaceExtractEvent;
 import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -36,8 +38,53 @@ public class WCBlockBreak implements Listener{
     plugin = instance;
     }
 	
-	@SuppressWarnings("deprecation")
+
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onFurance(FurnaceExtractEvent e) throws IllegalArgumentException, Exception{
+		FEE(e.getPlayer(), e.getBlock(), e.getItemType(), e.getItemAmount(), e.getExpToDrop());
+	}
 	
+	
+	
+	@SuppressWarnings("deprecation")
+	public void FEE(Player p, Block block, Material itemType, int itemAmount, int exp) throws IllegalArgumentException, Exception{
+		
+		if (exp > 0){
+			
+			Random rand = new Random();
+			int randomNumber = rand.nextInt(200) + 1;
+			
+			if (randomNumber == 100){
+
+		        ItemStack paragon = new ItemStack(Material.HARD_CLAY, 1);
+		        ItemMeta paragonName = paragon.getItemMeta();
+		        lore = new ArrayList<String>();
+		        
+		        lore.add("§7§oI should return this");
+		        lore.add("§7§oto the shrine near spawn.");
+		        paragonName.setLore(lore);
+		        
+		        paragonName.setDisplayName("§9§lREFINED PARAGON");
+		        paragonName.addEnchant(Enchantment.DURABILITY, 10, true);
+		        paragon.setItemMeta(paragonName);
+		        	if (p.getInventory().firstEmpty() == -1){
+		        		Location loc = p.getLocation();
+		        		loc.getWorld().dropItemNaturally(loc, paragon);
+		        	} else {
+		        p.getInventory().addItem(paragon);
+		        p.updateInventory();
+		        	}
+		        
+		        FireworkShenans fplayer = new FireworkShenans();
+		        fplayer.playFirework(p.getWorld(), p.getLocation(),
+	                    FireworkEffect.builder().with(Type.BURST).withColor(Color.BLACK).build());
+		        		
+		        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + p.getDisplayName() + " &dhas found an &9refined &dparagon from smelting!"));
+		}
+		}
+	}
+	
+	@SuppressWarnings("deprecation")
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onFish(PlayerFishEvent e) throws IllegalArgumentException, Exception{
 		
@@ -83,7 +130,7 @@ public class WCBlockBreak implements Listener{
 				
 				if (randomNumber == 500){
 	
-			        ItemStack paragon = new ItemStack(Material.STAINED_CLAY, 1, (short) 2);
+			        ItemStack paragon = new ItemStack(Material.HARD_CLAY, 1);
 			        ItemMeta paragonName = paragon.getItemMeta();
 			        lore = new ArrayList<String>();
 			        
@@ -91,7 +138,7 @@ public class WCBlockBreak implements Listener{
 			        lore.add("§7§oto the shrine near spawn.");
 			        paragonName.setLore(lore);
 			        
-			        paragonName.setDisplayName("§4§lINFERNO PARAGON");
+			        paragonName.setDisplayName("§6§lINFERNO PARAGON");
 			        paragonName.addEnchant(Enchantment.DURABILITY, 10, true);
 			        paragon.setItemMeta(paragonName);
 			        	if (e.getPlayer().getInventory().firstEmpty() == -1){
@@ -104,7 +151,7 @@ public class WCBlockBreak implements Listener{
 			        
 			        FireworkShenans fplayer = new FireworkShenans();
 			        fplayer.playFirework(e.getPlayer().getWorld(), e.getPlayer().getLocation(),
-		                    FireworkEffect.builder().with(Type.BURST).withColor(Color.RED).build());
+		                    FireworkEffect.builder().with(Type.BURST).withColor(Color.ORANGE).build());
 			        		
 			        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §4inferno &dparagon from setting fires."));
 				}
@@ -170,6 +217,11 @@ public class WCBlockBreak implements Listener{
 		case WATER_LILY: case CACTUS: case YELLOW_FLOWER: case RED_ROSE: case PUMPKIN: case MELON_BLOCK: case SUGAR_CANE_BLOCK:
 			
 			dropParagon(e, e.getPlayer(), 1, e.getBlock().getType(), "§6§lLIFE PARAGON", "&6life");
+			break;
+			
+		case ICE: case SNOW_BLOCK: case SNOW: case SNOW_BALL:
+			
+			dropParagon(e, e.getPlayer(), 15, e.getBlock().getType(), "§1§lFRO§9§lST PARAGON", "&1fro&9st");
 			break;
 		
 		default: 

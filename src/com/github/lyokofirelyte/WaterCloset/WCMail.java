@@ -14,6 +14,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import ru.tehkode.permissions.bukkit.PermissionsEx;
+
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 
 public class WCMail implements CommandExecutor {
@@ -79,7 +81,9 @@ String message;
 		        
 		    default:
 		    	
-		    	for (String help : WCHelp.WCHelpMail){
+		    	List <String> WCHelpMail = WCMain.help.getStringList("WC.Mail");
+		    	
+		    	for (String help : WCHelpMail){
 		    		sender.sendMessage(AS(help));
 		    	}
 		    	
@@ -95,7 +99,9 @@ String message;
 		  
 		  default:
 		    	
-		    	for (String help : WCHelp.WCHelpMail){
+			  List <String> WCHelpMail = WCMain.help.getStringList("WC.Mail");
+		    	
+		    	for (String help : WCHelpMail){
 		    		sender.sendMessage(AS(help));
 		    	}
 		    	
@@ -104,6 +110,17 @@ String message;
 		  case "send":
 			  
 			  switch (args[1]){
+			  
+		        
+		      case "alliance":
+		    	
+		    	mailAlliance(p, TimeStampEX.createString(args, 2));
+		    	break;
+		    	
+		      case "staff":
+		    	mailStaff(p, TimeStampEX.createString(args, 2));
+		    	break;
+		      
 			  
 			  case "website":		  
 				  message = TimeStampEX.createString(args, 2);
@@ -127,7 +144,7 @@ String message;
 				  	
 					  message = TimeStampEX.createString(args, 2);
 					  mail = WCMain.mail.getStringList("Users." + current + ".Mail");
-					  mail.add(p.getDisplayName() + " &9// &3" + message);
+					  mail.add(p.getDisplayName() + " &f-> &2Global &9// &3" + message);
 					  WCMain.mail.set("Users." + current + ".Mail", mail);
 					  	if (sendTo.isOnline()){
 					  		Bukkit.getPlayer(current).sendMessage(AS(WC + "You've recieved a new mail! Check it with /mail read."));
@@ -150,7 +167,31 @@ String message;
 				  		break;
 				  	}
 				  	
+
 				  	message = TimeStampEX.createString(args, 2);
+				  	String lastWord = message.substring(message.lastIndexOf(" ")+1);
+				  	
+				  		if (message.contains("!exp") && WCCommands.isInteger(lastWord)){
+				  			 int xp = plugin.datacore.getInt("Users." + sender.getName() + ".MasterExp");
+				  			 int xpOther = plugin.datacore.getInt("Users." + args[1] + ".MasterExp");
+				  			 	if (xp < Integer.parseInt(lastWord)){
+				  			 		sender.sendMessage(WC + "You don't have that much XP! You tried to send: " + lastWord + ".");
+				  			 		break;
+				  			 	}
+				  			 plugin.datacore.set("Users." + args[1] + ".MasterExp", (xpOther + Integer.parseInt(lastWord)));
+				  			 plugin.datacore.set("Users." + sender.getName() + ".MasterExp", (xp - Integer.parseInt(lastWord)));
+				  			 
+				  			 mail = WCMain.mail.getStringList("Users." + sendTo.getName() + ".Mail");
+				  			 mail.add(p.getDisplayName() + " &9// &3" + message.replaceAll("!exp", "").replaceAll(lastWord, ""));
+				  			 mail.add(p.getDisplayName() + " &3 has included &c" + lastWord + " &3exp in this mail.");
+				  			 WCMain.mail.set("Users." + sendTo.getName() + ".Mail", mail);
+				  			 sender.sendMessage(AS(WC + "Message sent!"));
+						  		if (sendTo.isOnline()){
+						  			Bukkit.getPlayer(args[1]).sendMessage(AS(WC + "You've recieved a new mail! Check it with /mail read."));
+						  		}
+						  	break;
+				  		}
+				  		
 				  	mail = WCMain.mail.getStringList("Users." + sendTo.getName() + ".Mail");
 				  	mail.add(p.getDisplayName() + " &9// &3" + message);
 				  	WCMain.mail.set("Users." + sendTo.getName() + ".Mail", mail);
@@ -168,7 +209,91 @@ String message;
 	return true;
 	}
 	
+	public static boolean hasPerms(OfflinePlayer player, String usepermission) {
+		return PermissionsEx.getUser(player.getName()).has(usepermission);
+		}
 	
+	
+	private void mailStaff(Player p, String message) {
+		
+		if (p.hasPermission("wa.staff") == false){
+			p.sendMessage(WCMail.WC + "You don't have permission to send mail to staff.");
+			return;
+		}
+		
+		List<String> players = WCMain.mail.getStringList("Users.Total");
+		
+			for (String bleh : players){
+				
+				if (hasPerms(Bukkit.getOfflinePlayer(bleh), "wa.staff")){
+					
+					  mail = WCMain.mail.getStringList("Users." + bleh + ".Mail");
+					  mail.add(p.getDisplayName() + " &f-> &aStaff &9// &3" + message);
+					  WCMain.mail.set("Users." + bleh + ".Mail", mail);
+					  OfflinePlayer sendTo = Bukkit.getOfflinePlayer(bleh);
+					  
+					  	if (sendTo.isOnline()){
+					  		Bukkit.getPlayer(bleh).sendMessage(AS(WC + "You've recieved a new mail! Check it with /mail read."));
+					  	}
+				}
+			}
+			
+		
+	}
+
+
+	private void mailAlliance(Player p, String message) {
+		
+		Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
+		
+			if (inAlliance == false){
+				p.sendMessage(WCMail.WC + "You're not in alliance. You're.... you're... FOREVER ALONE! ASHHEAHEHAHEaha.. .ah.");
+				return;
+			}
+			
+		String alliance = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".Alliance");
+		String rank = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".AllianceRank");
+		List<String> players = WCMain.mail.getStringList("Users.Total");
+		Boolean chatAdmin = plugin.WAAlliancesconfig.getBoolean("Alliances." + alliance + ".chatAdmins." + p.getName());
+		
+			if (rank.equals("Leader") || chatAdmin){
+			
+				p.sendMessage(AS(WC + "Message sent!"));
+				
+				for (String bleh : players){
+					String allianceCheck = plugin.WAAlliancesconfig.getString("Users." + bleh + ".Alliance"); 
+					Boolean inAlliance2 = plugin.WAAlliancesconfig.getBoolean("Users." + bleh + ".InAlliance");
+					if (inAlliance2){
+						if (allianceCheck.equals(alliance)){
+							OfflinePlayer sendTo = Bukkit.getOfflinePlayer(bleh);
+							
+							String color1 = plugin.WAAlliancesconfig.getString("Alliances." + allianceCheck + ".Color1");
+							String color2 = plugin.WAAlliancesconfig.getString("Alliances." + allianceCheck + ".Color2");
+        					int midpoint = allianceCheck.length() / 2;
+        		            String firstHalf = allianceCheck.substring(0, midpoint);
+        		            String secondHalf = allianceCheck.substring(midpoint);
+        					String lolColor1 = "&" + color1 + firstHalf;
+        					String lolColor2 = "&" + color2 + secondHalf;
+        					String complete = lolColor1 + lolColor2;
+        					
+							  mail = WCMain.mail.getStringList("Users." + bleh + ".Mail");
+							  mail.add(p.getDisplayName() + " &f-> " + complete + " &9// &3" + message);
+							  WCMain.mail.set("Users." + bleh + ".Mail", mail);
+							  	if (sendTo.isOnline()){
+							  		Bukkit.getPlayer(bleh).sendMessage(AS(WC + "You've recieved a new mail! Check it with /mail read."));
+							  	}
+						}
+					}
+				}
+
+			} else {
+				p.sendMessage(WCMail.WC + "You don't have the correct roles (Leader or Chat Admin) to use this.");
+				return;
+			}
+		
+	}
+
+
 	public void mailSite(String name, String message){
 		
 		String url = plugin.config.getString("urlMail");

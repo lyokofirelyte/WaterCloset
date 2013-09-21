@@ -19,7 +19,7 @@ public class WCHelp implements CommandExecutor {
 static List <String> AdministratumHelpGlobal = WCMain.help.getStringList("Help.Administratum");
 
 // WC HELP
-static List <String> WCHelpMail = WCMain.help.getStringList("Help.WC.Mail");
+static List <String> WCHelpMail = WCMain.help.getStringList("WC.Mail");
 
 
 
