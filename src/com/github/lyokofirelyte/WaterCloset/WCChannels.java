@@ -98,6 +98,14 @@ public class WCChannels implements CommandExecutor, Listener {
   @EventHandler(priority=EventPriority.HIGH)
   public void onPlayerChat(AsyncPlayerChatEvent event){
 	  
+	  String globalColor = plugin.datacore.getString("Users." + event.getPlayer().getName() + ".GlobalColor");
+		
+	  if (globalColor == null){
+			plugin.datacore.set("Users." + event.getPlayer().getName() + ".GlobalColor", "&f");
+	  }
+		
+	  globalColor = plugin.datacore.getString("Users." + event.getPlayer().getName() + ".GlobalColor");
+	  
 	  if (event.isCancelled()){
 		  return;
 	  }
@@ -159,10 +167,14 @@ public class WCChannels implements CommandExecutor, Listener {
 	    	  int midpoint = town.length() / 2; 
 	    	  String firstHalf = town.substring(0, midpoint); 
 	    	  String secondHalf = town.substring(midpoint); 
-	    	  event.setMessage(event.getMessage().replaceAll("%t", c1 + firstHalf + c2 + secondHalf + "§r"));
+	    	  event.setMessage(event.getMessage().replaceAll("%t", c1 + firstHalf + c2 + secondHalf + "§r§" + globalColor));
 	      }  
 	      
 	      } 
+	  
+	  if (event.getMessage().contains("&r")){
+		  event.setMessage(event.getMessage().replace("&r", "§r§" + globalColor));
+	  }
 	  
 	  Player p = event.getPlayer(); 
 	  String message = event.getMessage(); 
