@@ -2,10 +2,9 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
-	<classpathentry kind="lib" path="C:/Users/WS/Desktop/eclipse/bukkit-1.6.4-R0.1-20130920.192155-2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/WS/Desktop/eclipse/JARs/Vault.jar"/>
-	<classpathentry kind="lib" path="C:/Users/WS/Desktop/eclipse/JARs/Essentials.jar"/>
-	<classpathentry kind="lib" path="C:/Users/WS/Desktop/eclipse/JARs/PermissionsEx.jar"/>
-	<classpathentry kind="lib" path="lib/google-api-spelling-java-1.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Downloads/compilelatest2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/Essentials.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/PermissionsEx.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/VaultCompile.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
