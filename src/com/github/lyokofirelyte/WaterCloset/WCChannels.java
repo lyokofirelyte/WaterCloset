@@ -157,7 +157,7 @@ public class WCChannels implements CommandExecutor, Listener {
 		  String town = this.plugin.WAAlliancesconfig.getString("Users." + event.getPlayer().getName() + ".Alliance"); 
 		  
 		  if (town == null) {
-			  event.setMessage(event.getMessage().replaceAll("%t", "§7Forever§8Alone§r")); 
+			  event.setMessage(event.getMessage().replaceAll("%t", "&7Forever&8Alone&r")); 
 		  }
 		  
 	      if (town != null) { 
@@ -167,14 +167,11 @@ public class WCChannels implements CommandExecutor, Listener {
 	    	  int midpoint = town.length() / 2; 
 	    	  String firstHalf = town.substring(0, midpoint); 
 	    	  String secondHalf = town.substring(midpoint); 
-	    	  event.setMessage(event.getMessage().replaceAll("%t", c1 + firstHalf + c2 + secondHalf + "§r§" + globalColor));
+	    	  event.setMessage(event.getMessage().replaceAll("%t", c1 + firstHalf + c2 + secondHalf + "&r&" + globalColor));
 	      }  
 	      
 	      } 
-	  
-	  if (event.getMessage().contains("&r")){
-		  event.setMessage(event.getMessage().replace("&r", "§r§" + globalColor));
-	  }
+
 	  
 	  Player p = event.getPlayer(); 
 	  String message = event.getMessage(); 
@@ -191,6 +188,8 @@ public void globalChat(Player p, String message){
 		
 		for (Player bleh : Bukkit.getOnlinePlayers()){
 			
+			String finalMessage = message;
+			
 			String globalColor = plugin.datacore.getString("Users." + bleh.getName() + ".GlobalColor");
 			
 				if (globalColor == null){
@@ -198,15 +197,18 @@ public void globalChat(Player p, String message){
 				}
 				
 				globalColor = plugin.datacore.getString("Users." + bleh.getName() + ".GlobalColor");
-				
+				  
+				  if (finalMessage.contains("&r")){
+					 finalMessage = finalMessage.replace("&r", globalColor);
+				  }
 				
 				if (p.hasPermission("wa.staff") || p.hasPermission("wa.citizen")){
 				
-					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor + message));  
+					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor + finalMessage));  
 				
 				} else {
 					
-					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor) + message);  
+					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor) + finalMessage);  
 				}
 		}
 		
