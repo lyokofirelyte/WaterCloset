@@ -79,7 +79,7 @@ public class WCBlockBreak implements Listener{
 		        fplayer.playFirework(p.getWorld(), p.getLocation(),
 	                    FireworkEffect.builder().with(Type.BURST).withColor(Color.BLACK).build());
 		        		
-		        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + p.getDisplayName() + " &dhas found an &9refined &dparagon from smelting!"));
+		        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + p.getDisplayName() + " &dhas found a &9refined &dparagon from smelting!"));
 		}
 		}
 	}
@@ -174,9 +174,9 @@ public class WCBlockBreak implements Listener{
 	
 		switch (e.getBlock().getType()){
 	
-		case STONE:
+		case STONE: case MOSSY_COBBLESTONE: case COBBLESTONE:
 			
-			dropParagon(e, e.getPlayer(), 9, Material.STONE, "§7§lMINERAL PARAGON", "&7mineral");
+			dropParagon(e, e.getPlayer(), 9, e.getBlock().getType(), "§7§lMINERAL PARAGON", "&7mineral");
 			break;
 			
 		case ENDER_STONE:

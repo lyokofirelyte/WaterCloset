@@ -53,6 +53,9 @@ public class WCMobDrops implements Listener {
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.STONE_BUTTON){
 	    	  		paragonCheckout(event, event.getPlayer());
 	    	  	}
+	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK){
+	    	  		cookie(event, event.getPlayer());
+	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.GLOWSTONE){
 	    	  		obeliskCheck(event, event.getPlayer());
 	    	  	}
@@ -84,6 +87,37 @@ public class WCMobDrops implements Listener {
 	 
 	
 	
+	private void cookie(PlayerInteractEvent e, Player p) {
+		
+		
+		double x = e.getClickedBlock().getX();
+		double y = e.getClickedBlock().getY();
+		double z = e.getClickedBlock().getZ();
+		
+		if (x == -270.0 && y == 64.0 && z == -42.0){
+  	  	
+			int cookies = plugin.datacore.getInt("Users." + p.getName() + ".Cookies");
+			cookies++;
+			plugin.datacore.set("Users." + p.getName() + ".Cookies", cookies);
+			
+			int goalCount = plugin.datacore.getInt("Users." + p.getName() + ".GoalCount");
+			
+				if (goalCount >= 100){
+					p.sendMessage(WCMail.WC + "Cookie count: " + cookies);
+					plugin.datacore.set("Users." + p.getName() + ".GoalCount", 0);
+				}
+				
+			goalCount = plugin.datacore.getInt("Users." + p.getName() + ".GoalCount");
+			goalCount++;
+			plugin.datacore.set("Users." + p.getName() + ".GoalCount", goalCount);
+			
+			
+		}
+	}
+
+
+
+
 	private void obeliskCheck(PlayerInteractEvent e, Player p) {
 		
 		double x = e.getClickedBlock().getX();

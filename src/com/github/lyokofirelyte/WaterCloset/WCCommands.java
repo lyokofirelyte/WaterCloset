@@ -15,6 +15,7 @@ import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
@@ -28,7 +29,7 @@ import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 
 public class WCCommands implements CommandExecutor {
   WCMain plugin;
-  String WC = "�dWC �5// �d";
+  String WC = "§dWC §5// §d";
   Boolean home;
   Boolean homeSet;
 
@@ -241,7 +242,7 @@ public class WCCommands implements CommandExecutor {
 	        return target;
 	    }
 	 
-  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+  public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
 	  
 	  if (cmd.getName().equalsIgnoreCase("blame")){
 		  
@@ -262,11 +263,7 @@ public class WCCommands implements CommandExecutor {
 	  
     if (cmd.getName().equalsIgnoreCase("wc") || cmd.getName().equalsIgnoreCase("watercloset"))
     {
-      if (!(sender instanceof Player))
-      {
-        sender.sendMessage(this.WC + "Sorry console, these commands are for players only.");
-        return true;
-      }
+
 
       if (args.length < 1)
       {
@@ -274,20 +271,256 @@ public class WCCommands implements CommandExecutor {
         return true;
       }
       
+      if (!(sender instanceof Player) && !args[0].equals("con"))
+      {
+        sender.sendMessage(this.WC + "Sorry console, these commands are for players only.");
+        return true;
+      }
+      
       switch (args[0]){
       
+      case "con":
+    	  
+    	  if (sender instanceof Player == false){
+    		  for (Player bleh : Bukkit.getOnlinePlayers()){
+    				
+    				String globalColor = plugin.datacore.getString("Users." + bleh.getName() + ".GlobalColor");
+    				
+    					if (globalColor == null){
+    						plugin.datacore.set("Users." + bleh.getName() + ".GlobalColor", "&f");
+    					}
+    					
+    					globalColor = plugin.datacore.getString("Users." + bleh.getName() + ".GlobalColor");
+    					String message = WCChannels.createString2(args, 1);
+    					bleh.sendMessage(WCMail.AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + globalColor + message));   
+    			}
+    	  }
       
+      break;
+      
+      case "globalcolor":
+    	  
+    	  if (args.length != 2){
+    		  sender.sendMessage(WCMail.WC + "/wc globalcolor <color>.");
+    		  break;
+    	  }
+    	  
+    	  List <String> c1 = Arrays.asList("&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&0", "&a", "&b", "&c", "&d", "&e", "&f", "&k");
+    	  
+    	  if (c1.contains(args[1]) == false){
+    		  sender.sendMessage(WCMail.WC + "That's not a color! Choose from " + c1 + ".");
+    		  break;
+    	  }
+    	  
+    	  sender.sendMessage(WCMail.AS(WCMail.WC + "You've changed your color to " + args[1] + "this."));
+    	  plugin.datacore.set("Users." + sender.getName() + ".GlobalColor", args[1]);
+    	  break;
+      
+      case "fork":
+    	  
+    	  sender.sendMessage(WCMail.WC + "LET'S DO THE FORK IN THE GARBAGE DISPOSAL!");
+    	  final Location self = ((Player)sender).getLocation();
+    	  final double x1 = self.getX();
+    	  final double y1 = self.getY();
+    	  final double z1 = self.getZ();
+    	  int c = 100;
+    	  long dl = 0L;
+  	  	
+  	  while (c > 0){	  
+  	  
+  		  c--;
+  		  dl = dl+2L;
+  		  
+    	  Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+    	    {
+    	      public void run()
+    	      {
+
+    	    		  ((Player)sender).sendMessage("DING");
+    	    		  Random rand = new Random();
+    	  			  int randomNumber = rand.nextInt(7);
+    	  			  int randomNumber2 = rand.nextInt(7);
+    	  			  int yawRandom = rand.nextInt(360);
+    	  			  int pitchRandom = rand.nextInt(90);
+    	  			  int plusMinus = rand.nextInt(1);
+    	  			  ((Player)sender).getWorld().playSound(self, Sound.NOTE_BASS_DRUM, 3.0F, 0.5F);
+    	  			  
+    	  			  if (plusMinus == 0){
+    	  				  Location current = new Location(((Player)sender).getWorld(), x1+randomNumber, y1, z1+randomNumber2, yawRandom, pitchRandom);
+    	  				  ((Player)sender).teleport(current);
+    	  			  }
+    	  			  
+    	  			if (plusMinus == 1){
+  	  				  Location current = new Location(((Player)sender).getWorld(), x1-randomNumber, y1, z1-randomNumber2, yawRandom, (pitchRandom)-(pitchRandom*2));
+  	  				  ((Player)sender).teleport(current);
+  	  			  }
+    	  			
+    	  			if (randomNumber2 == 5){
+    	  				FireworkShenans fplayer = new FireworkShenans();
+          	        	try {
+        			
+    							fplayer.playFirework(((Player)sender).getWorld(), self,
+    							FireworkEffect.builder().with(Type.BURST).withColor(Color.FUCHSIA).build());
+    						} catch (IllegalArgumentException e) {
+    							e.printStackTrace();
+    						} catch (Exception e) {
+    							e.printStackTrace();
+    						}        	      }
+    	  			}
+    	      }
+    	    
+    	    , dl);
+      
+      }
+  	  
+  	  break;
+  	  
+  	  
+      case "QTY236HGWRH4":
+
+    	  plugin.datacore.set("Users." + sender.getName() + ".Cookies", Integer.parseInt(args[1]));
+    	  sender.sendMessage(WCMail.WC + "@VT -> @WC [ Accepted Score Input ]");
+    	  plugin.saveYamls();
+    	  break;
+    	  
+      case "cookietop":
+    	  
+      	List <String> cookieUsers = WCMain.mail.getStringList("Users.Total");
+      	List <Integer> Cookielevels = new ArrayList<Integer>();
+      	int s = 0;
+      		
+      		for (String current : cookieUsers){
+      			int paragonLevel = plugin.datacore.getInt("Users." + current + ".Cookies");
+      				if (Cookielevels.contains(Integer.valueOf(paragonLevel)) == false){
+      					Cookielevels.add(Integer.valueOf(paragonLevel));
+      				}
+      		}
+      		
+      		for (int top : Cookielevels){
+      			if (top > s){
+      				s = top;
+      			}
+      		}
+      		
+      		Cookielevels.remove(Integer.valueOf(s));
+      		
+      		int firstPlace = s;
+      		s = 0;
+      		
+      		for (int top : Cookielevels){
+      			if (top > s){
+      				s = top;
+      			}
+      		}
+      		
+      		Cookielevels.remove(Integer.valueOf(s));
+      		
+      		int secondPlace = s;
+      		s = 0;
+      		
+      		for (int top : Cookielevels){
+      			if (top > s){
+      				s = top;
+      			}
+      		}
+      		
+      		Cookielevels.remove(Integer.valueOf(s));
+      		
+      		int thirdPlace = s;
+
+      		sender.sendMessage(new String[]{
+      			WCMail.WC + "Cookie Leaderboards",
+      			WCMail.AS("&f>>> >>> <<< <<<"),
+      			WCMail.AS("&7&ofirst place @ " + firstPlace)});
+      		
+					for (String current : cookieUsers){
+						int paragonLevel = plugin.datacore.getInt("Users." + current + ".Cookies");
+							if (paragonLevel == firstPlace){
+								sender.sendMessage(WCMail.AS("&b&o" + current));
+							}
+					}
+					
+					sender.sendMessage(WCMail.AS("&7&osecond place @ " + secondPlace));
+      		  
+					for (String current : cookieUsers){
+						int paragonLevel = plugin.datacore.getInt("Users." + current + ".Cookies");
+							if (paragonLevel == secondPlace){
+								sender.sendMessage(WCMail.AS("&b&o" + current));
+							}
+					}
+					
+					sender.sendMessage(WCMail.AS("&7&othird place @ " + thirdPlace));
+	        		  
+					for (String current : cookieUsers){
+						int paragonLevel = plugin.datacore.getInt("Users." + current + ".Cookies");
+							if (paragonLevel == thirdPlace){
+								sender.sendMessage(WCMail.AS("&b&o" + current));
+							}
+					}
+					
+					break;
+      
+      case "spellcheck":
+    	  
+    	  if (plugin.datacore.getBoolean("Users." + ((Player)sender).getName() + ".SpellCheck")){
+    		  plugin.datacore.set("Users." + ((Player)sender).getName() + ".SpellCheck", false);
+    		  sender.sendMessage(WCMail.WC + "Spellcheck disabled!");
+    		  break;
+    	  }
+    	  
+    	  plugin.datacore.set("Users." + ((Player)sender).getName() + ".SpellCheck", true);
+		  sender.sendMessage(WCMail.WC + "Spellcheck enabled!");
+		  break;
+		  
+      case "pmcolor":
+    	  
+    	  if (args.length != 2){
+    		  sender.sendMessage(WCMail.WC + "/wc pmcolor <color>. EX: /wc pmcolor &5.");
+    		  break;
+    	  }
+    	  
+    	  List <String> colorAvail = Arrays.asList("&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&0", "&a", "&b", "&c", "&d", "&e", "&f");
+    	  
+    	  if (colorAvail.contains(args[1]) == false){
+    		  sender.sendMessage(WCMail.WC + "That's not a color! Choose from " + colorAvail + ".");
+    		  break;
+    	  }
+    	  
+    	  sender.sendMessage(WCMail.AS(WCMail.WC + "You've changed your color to " + args[1] + "this."));
+    	  plugin.datacore.set("Users." + sender.getName() + ".CustomColor", args[1]);
+    	  plugin.datacore.set("Users." + sender.getName() + ".HasCustomColor", true);
+    	  break;
+    	  
       case "booth":
     	  
     	  if (args.length == 2 && args[1].equalsIgnoreCase("list")){
     		  sender.sendMessage(WCMail.WC + "List:");
+    		  List <String> boothList = new ArrayList<String>();
+    		  
     		  for (String b : WCMain.mail.getStringList("Users.Total")){
     			  if (plugin.datacore.getString("Users." + b + ".Booth") != null){
     				  String booth = plugin.datacore.getString("Users." + b + ".Booth");
-    				  sender.sendMessage(WCMail.AS("&a| &b" + b + " &f// &b" + booth));
+    				  boothList.add("&a| &b" + b + " &f// &b" + booth);
     			  }
     		  }
+    		  
+    		  int x = 1;
+    		  
+    		  while (x <= boothList.size()){
+    			  
+    			  for (String b : boothList){
+    				  String a = b.substring(b.lastIndexOf(" ")+1);
+    				  	if (a.equals("&b" + Integer.valueOf(x).toString())){
+    				  		sender.sendMessage(WCMail.AS(b));
+    				  		x++;
+    				  	}
+    			  }
+    			  
+    		  }
+    		  
     		  break;
+    		  
+    		  
     	  }
     	  
     	  String booth = plugin.datacore.getString("Users." + sender.getName() + ".Booth");
@@ -483,9 +716,9 @@ public class WCCommands implements CommandExecutor {
     		  }
     		  
     		  int xp = plugin.datacore.getInt("Users." + sender.getName() + ".MasterExp");
-    		  sender.sendMessage(WC + "You currently have �6" + xp + " �dexp stored. (/wc xp take <amount>)");
+    		  sender.sendMessage(WC + "You currently have §6" + xp + " §dexp stored. (/wc xp take <amount>)");
     		  int l30 = (xp / 825);
-    		  sender.sendMessage(WC + "That's �6" + l30 + "�d level 30's.");
+    		  sender.sendMessage(WC + "That's §6" + l30 + "§d level 30's.");
     		  break;
     	  }
      
@@ -833,7 +1066,7 @@ public class WCCommands implements CommandExecutor {
         	
         	List <String> playerList = WCMain.mail.getStringList("Users.Total");
         	List <Integer> levels = new ArrayList<Integer>();
-        	int s = 0;
+        	s = 0;
         		
         		for (String current : playerList){
         			int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
@@ -850,7 +1083,7 @@ public class WCCommands implements CommandExecutor {
         		
         	   levels.remove(Integer.valueOf(s));
         		
-        		int firstPlace = s;
+        		firstPlace = s;
         		s = 0;
         		
         		for (int top : levels){
@@ -861,7 +1094,7 @@ public class WCCommands implements CommandExecutor {
         		
         		levels.remove(Integer.valueOf(s));
         		
-        		int secondPlace = s;
+        		secondPlace = s;
         		s = 0;
         		
         		for (int top : levels){
@@ -872,7 +1105,7 @@ public class WCCommands implements CommandExecutor {
         		
         		levels.remove(Integer.valueOf(s));
         		
-        		int thirdPlace = s;
+        		thirdPlace = s;
 
         		sender.sendMessage(new String[]{
         			WCMail.WC + "Paragon Leaderboards",

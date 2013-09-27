@@ -121,7 +121,7 @@ public class WCMain extends JavaPlugin
     
     this.helpFile = new File(getDataFolder(), "help.yml");
     this.helpFileBACKUP = new File(getDataFolder(), "helpBACKUP.yml");
-    
+
 
     this.vaultMgr.hookSetup();
     try
@@ -202,6 +202,7 @@ public class WCMain extends JavaPlugin
       e.printStackTrace();
     }
   }
+
   
   private void registerCommands()
   {

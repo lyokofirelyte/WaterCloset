@@ -167,29 +167,40 @@ public class WCChannels implements CommandExecutor, Listener {
 	  Player p = event.getPlayer(); 
 	  String message = event.getMessage(); 
 	  event.setCancelled(true);
-	  rankCheck(p, message);
+	  globalChat(p, message);
  
   }
   
-  
-  
-  private void rankCheck(Player p, String message) {
-	  
-	if (p.hasPermission("wa.staff")){
-		globalChat(p, "§f", message);
-	} else {
-		globalChat(p, "§f", message);
-	}
+
+
+public void globalChat(Player p, String message){
+
+
+		
+		for (Player bleh : Bukkit.getOnlinePlayers()){
+			
+			String globalColor = plugin.datacore.getString("Users." + bleh.getName() + ".GlobalColor");
+			
+				if (globalColor == null){
+					plugin.datacore.set("Users." + bleh.getName() + ".GlobalColor", "&f");
+				}
+				
+				globalColor = plugin.datacore.getString("Users." + bleh.getName() + ".GlobalColor");
+				
+				
+				if (p.hasPermission("wa.staff") || p.hasPermission("wa.citizen")){
+				
+					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor + message));  
+				
+				} else {
+					
+					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor) + message);  
+				}
+		}
+		
 	
-}
+		Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + message));
 
-
-public void globalChat(Player p, String chatColor, String message){
-	if (p.hasPermission("wa.staff") || p.hasPermission("wa.statesman")){
-	  Bukkit.broadcastMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + chatColor + message));  
-  } else {
-	  Bukkit.broadcastMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p)) + " §f// " + p.getDisplayName() + "§f: " + chatColor + message);  
-  }
 }
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
@@ -221,14 +232,38 @@ public void globalChat(Player p, String chatColor, String message){
         }
 
         Player p = (Player)sender;
+        
+        Boolean hasCustomColor = plugin.datacore.getBoolean("Users." + p.getName() + ".HasCustomColor");
+        
+        	if (hasCustomColor)
+        	{
+        		plugin.datacore.set("Users." + p.getName() + ".CustomColorActive", plugin.datacore.getString("Users." + p.getName() + ".CustomColor"));
+        	} else {
+        		plugin.datacore.set("Users." + p.getName() + ".CustomColorActive", "&d");
+        	}
 
+        	
+        	String customColor = plugin.datacore.getString("Users." + p.getName() + ".CustomColorActive");
+        	
         for (Player currentPlayer : Bukkit.getServer().getOnlinePlayers())
         {
           if (currentPlayer.getName().toLowerCase().contains(args[0].toLowerCase()))
           {
+          	
+          	Boolean hasCustomColorOther = plugin.datacore.getBoolean("Users." + currentPlayer.getName() + ".HasCustomColor");
+              
+          	if (hasCustomColorOther)
+          	{
+          		plugin.datacore.set("Users." + currentPlayer.getName() + ".CustomColorActive", plugin.datacore.getString("Users." + currentPlayer.getName() + ".CustomColor"));
+          	} else {
+          		plugin.datacore.set("Users." + currentPlayer.getName() + ".CustomColorActive", "&d");
+          	}
+          	
+          	String customColorOther = plugin.datacore.getString("Users." + currentPlayer.getName() + ".CustomColorActive");
+          	
             this.plugin.datacore.set("Users." + Bukkit.getPlayer(args[0]).getName() + ".LastMessage", sender.getName());
-            currentPlayer.sendMessage("§d<- " + p.getDisplayName() + " §f// §d" + ChatColor.translateAlternateColorCodes('&', message2));
-            sender.sendMessage("§d-> " + currentPlayer.getDisplayName() + " §f// §d" + ChatColor.translateAlternateColorCodes('&', message2));
+            currentPlayer.sendMessage(WCMail.AS(customColorOther + "<- " + p.getDisplayName() + " §f// " + customColorOther + message2));
+            sender.sendMessage(WCMail.AS(customColor + "-> " + currentPlayer.getDisplayName() + " §f// " + customColor + message2));
             break;
           }
 
@@ -238,17 +273,40 @@ public void globalChat(Player p, String chatColor, String message){
         
     case "r":
 
-      Player p2 = (Player)sender;
+      p = (Player)sender;
       String message3 = createString(args, 0);
       String recent = this.plugin.datacore.getString("Users." + sender.getName() + ".LastMessage");
+      
+      hasCustomColor = plugin.datacore.getBoolean("Users." + p.getName() + ".HasCustomColor");
+      
+  	if (hasCustomColor)
+  	{
+  		plugin.datacore.set("Users." + p.getName() + ".CustomColorActive", plugin.datacore.getString("Users." + p.getName() + ".CustomColor"));
+  	} else {
+  		plugin.datacore.set("Users." + p.getName() + ".CustomColorActive", "&d");
+  	}
+  	
+  	customColor = plugin.datacore.getString("Users." + p.getName() + ".CustomColorActive");
 
         for (Player currentPlayer : Bukkit.getServer().getOnlinePlayers())
         {
           if (currentPlayer.getName().toLowerCase().contains(((String)recent).toLowerCase()))
           {
+        	  
+        	  Boolean hasCustomColorOther = plugin.datacore.getBoolean("Users." + currentPlayer.getName() + ".HasCustomColor");
+              
+            	if (hasCustomColorOther)
+            	{
+            		plugin.datacore.set("Users." + currentPlayer.getName() + ".CustomColorActive", plugin.datacore.getString("Users." + currentPlayer.getName() + ".CustomColor"));
+            	} else {
+            		plugin.datacore.set("Users." + currentPlayer.getName() + ".CustomColorActive", "&d");
+            	}
+            	
+            	String customColorOther = plugin.datacore.getString("Users." + currentPlayer.getName() + ".CustomColorActive");
+            	
             this.plugin.datacore.set("Users." + currentPlayer.getName() + ".LastMessage", sender.getName());
-            currentPlayer.sendMessage("§d<- " + p2.getDisplayName() + " §f// §d" + ChatColor.translateAlternateColorCodes('&', (String)message3));
-            sender.sendMessage("§d-> " + currentPlayer.getDisplayName() + " §f// §d" + ChatColor.translateAlternateColorCodes('&', (String)message3));
+            currentPlayer.sendMessage(WCMail.AS(customColorOther + "<- " + p.getDisplayName() + " §f// " + customColorOther + message3));
+            sender.sendMessage(WCMail.AS(customColor + "-> " + currentPlayer.getDisplayName() + " §f// " + customColor + message3));
             break;
           }
         }
@@ -572,7 +630,7 @@ public static String createString(String[] args, int i)
     return message;
   }
 
-  private String createString2(String[] args, int i)
+  static String createString2(String[] args, int i)
   {
     StringBuilder sb = new StringBuilder();
     for (i = 1; i < args.length; i++)

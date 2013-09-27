@@ -6,6 +6,6 @@
 	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Downloads/VaultCompile.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/Essentials.jar"/>
 	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/PermissionsEx.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Lyoko Firelyte/Desktop/JavaLibs/bitlyj-2.0.0.jar"/>
+	<classpathentry kind="lib" path="lib/google-api-spelling-java-1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -175,12 +175,12 @@ public class WCBlockPlace implements Listener{
 			paragonUpdate("aquatic", p, 3);
 			break;
 			
-		case "§a§9REFINED PARAGON":
+		case "§9§lREFINED PARAGON":
 			
 			paragonUpdate("refined", p, 14);
 			break;
 			
-		case "§1§lFRO§9§lst PARAGON":
+		case "§1§lFRO§9§lST PARAGON":
 			
 			paragonUpdate("frost", p, 15);
 			break;
