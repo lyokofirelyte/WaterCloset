@@ -199,6 +199,10 @@ public class WCBlockPlace implements Listener{
 		int total = plugin.datacore.getInt("Paragons.Total");
 		int size = plugin.config.getInt("Paragons.NewList.Size");
 		int tempTotal = plugin.datacore.getInt("Users." + p.getName() + ".Paragons.TempTotal");
+		
+			if (tempTotal < 0){
+				tempTotal = 0;
+			}
 
 		global++;
 		self++;
@@ -274,6 +278,7 @@ public class WCBlockPlace implements Listener{
         token.setItemMeta((ItemMeta)name);
         	if (p.getInventory().firstEmpty() == -1){
         		p.getWorld().dropItemNaturally(p.getLocation(), token);
+        		updateCheck(p);
         	} else {
         		p.getInventory().addItem(token);
         		p.updateInventory();

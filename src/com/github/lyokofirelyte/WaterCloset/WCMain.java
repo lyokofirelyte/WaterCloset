@@ -19,7 +19,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
-import com.github.lyokofirelyte.WaterCloset.Extras.Overwatch;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
@@ -99,7 +98,6 @@ public class WCMain extends JavaPlugin
     pm.registerEvents(new WCBlockPlace(this), this);
     pm.registerEvents(new WCExpSystem(this), this);
     pm.registerEvents(new WCDeath(this), this);
-    pm.registerEvents(new Overwatch(this), this);
 
     this.WASpleefconfigFile = new File(getDataFolder() + File.separator + "WASpleef", "config.yml");
     this.WASpleefdatacoreFile = new File(getDataFolder() + File.separator + "WASpleef", "datacore.yml");
@@ -238,7 +236,6 @@ public class WCMain extends JavaPlugin
     
     getCommand("blame").setExecutor(new WCCommands(this));
     
-    getCommand("ov").setExecutor(new Overwatch(this));
   }
 
   private void copy(InputStream in, File file)

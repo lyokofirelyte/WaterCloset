@@ -16,9 +16,6 @@ commands:
       description: Staff Chat
       usage: /o <message>
       permission: wa.staff
-   ov:
-      description: Overwatch
-      usage: /ov
    l:
       description: Alliance Chat
       usage: /l <message>

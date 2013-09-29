@@ -256,7 +256,7 @@ public class WCMobDrops implements Listener {
 		    	  p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
 		      }
 		    }
-		    , 135L);
+		    , 175L);
 	}
 
 

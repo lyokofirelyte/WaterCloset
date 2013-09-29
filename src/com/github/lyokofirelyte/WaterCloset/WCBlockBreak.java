@@ -88,6 +88,8 @@ public class WCBlockBreak implements Listener{
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onFish(PlayerFishEvent e) throws IllegalArgumentException, Exception{
 		
+		if (e.getExpToDrop() > 0){
+		
 		Random rand = new Random();
 		int randomNumber = rand.nextInt(800) + 1;
 		
@@ -117,6 +119,7 @@ public class WCBlockBreak implements Listener{
                     FireworkEffect.builder().with(Type.BURST).withColor(Color.BLUE).build());
 	        		
 	        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §aaquatic &dparagon from fishing!"));
+		}
 		}
 	}
 	
