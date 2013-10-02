@@ -94,11 +94,11 @@ Mobs:
   - WOLF
   - MOOSHROOM
   - HORSE
-url: jdbc:mysql://localhost:3306/WA2
-username: root
-password: _O13piKm
-url2: jdbc:mysql://localhost:3306/website
-urlMail: jdbc:mysql://localhost:3306/website
+url: -snip-
+username: -snip-
+password: -snip-
+url2: -snip-
+urlMail: -snip-
 Paragons:
   Blocks:
   - STONE
