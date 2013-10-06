@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.PluginManager;
@@ -24,15 +25,15 @@ import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 import com.github.lyokofirelyte.WaterCloset.Extras.waOSReport;
 
-public class WCMain extends JavaPlugin
-{
+public class WCMain extends JavaPlugin {
+	
   public WCVault vaultMgr = new WCVault(this);
   
-  File WASpleefconfigFile;
-  File WASpleefdatacoreFile;
+  File WAGamesconfigFile;
+  File WAGamesdatacoreFile;
   
-  File WASpleefconfigFileBACKUP;
-  File WASpleefdatacoreFileBACKUP;
+  File WAGamesconfigFileBACKUP;
+  File WAGamesdatacoreFileBACKUP;
   
   File configFile;
   File datacoreFile;
@@ -52,11 +53,11 @@ public class WCMain extends JavaPlugin
   File mailFileBACKUP;
   File helpFileBACKUP;
   
-  public FileConfiguration WASpleefconfig;
-  public FileConfiguration WASpleefdatacore;
+  public FileConfiguration WAGamesconfig;
+  public FileConfiguration WAGamesdatacore;
   
-  public FileConfiguration WASpleefconfigBACKUP;
-  public FileConfiguration WASpleefdatacoreBACKUP;
+  public FileConfiguration WAGamesconfigBACKUP;
+  public FileConfiguration WAGamesdatacoreBACKUP;
   
   public FileConfiguration config;
   public FileConfiguration datacore;
@@ -84,8 +85,6 @@ public class WCMain extends JavaPlugin
   public void onEnable()
   {
 
-
-    
     PluginManager pm = getServer().getPluginManager();
     pm.registerEvents(new WACommandEx(this), this);
     pm.registerEvents(new WCJoin(this), this);
@@ -99,29 +98,29 @@ public class WCMain extends JavaPlugin
     pm.registerEvents(new WCExpSystem(this), this);
     pm.registerEvents(new WCDeath(this), this);
 
-    this.WASpleefconfigFile = new File(getDataFolder() + File.separator + "WASpleef", "config.yml");
-    this.WASpleefdatacoreFile = new File(getDataFolder() + File.separator + "WASpleef", "datacore.yml");
+    this.WAGamesconfigFile = new File(getDataFolder() + File.separator + "WAGames", "config.yml");
+    this.WAGamesdatacoreFile = new File(getDataFolder() + File.separator + "WAGames", "datacore.yml");
     
-    this.WASpleefconfigFileBACKUP = new File(getDataFolder() + File.separator + "WASpleef", "configBACKUP.yml");
-    this.WASpleefdatacoreFileBACKUP = new File(getDataFolder() + File.separator + "WASpleef", "datacoreBACKUP.yml");
+    this.WAGamesconfigFileBACKUP = new File(getDataFolder() + File.separator + "Backups", "WAGamesconfigBACKUP.yml");
+    this.WAGamesdatacoreFileBACKUP = new File(getDataFolder() + File.separator + "Backups", "WAGamesdatacoreBACKUP.yml");
 
     this.WAAlliancesconfigFile = new File(getDataFolder() + File.separator + "WAAlliances", "config.yml");
     this.WAAlliancesdatacoreFile = new File(getDataFolder() + File.separator + "WAAlliances", "datacore.yml");
     
-    this.WAAlliancesconfigFileBACKUP = new File(getDataFolder() + File.separator + "WAAlliances", "configBACKUP.yml");
-    this.WAAlliancesdatacoreFileBACKUP = new File(getDataFolder() + File.separator + "WAAlliances", "datacoreBACKUP.yml");
+    this.WAAlliancesconfigFileBACKUP = new File(getDataFolder() + File.separator + "Backups", "WAAlliancesconfigBACKUP.yml");
+    this.WAAlliancesdatacoreFileBACKUP = new File(getDataFolder() + File.separator + "Backups", "WAAlliancesdatacoreBACKUP.yml");
 
     this.configFile = new File(getDataFolder(), "config.yml");
-    this.configFileBACKUP = new File(getDataFolder(), "configBACKUP.yml");
+    this.configFileBACKUP = new File(getDataFolder() + File.separator + "Backups", "configBACKUP.yml");
     
     this.datacoreFile =  new File(getDataFolder(), "datacore.yml");
-    this.datacoreFileBACKUP =  new File(getDataFolder(), "datacoreBACKUP.yml");
+    this.datacoreFileBACKUP =  new File(getDataFolder() + File.separator + "Backups", "datacoreBACKUP.yml");
     
     this.mailFile = new File(getDataFolder(), "mail.yml");
-    this.mailFileBACKUP = new File(getDataFolder(), "mailBACKUP.yml");
+    this.mailFileBACKUP = new File(getDataFolder() + File.separator + "Backups", "mailBACKUP.yml");
     
     this.helpFile = new File(getDataFolder(), "help.yml");
-    this.helpFileBACKUP = new File(getDataFolder(), "helpBACKUP.yml");
+    this.helpFileBACKUP = new File(getDataFolder() + File.separator + "Backups", "helpBACKUP.yml");
 
 
     this.vaultMgr.hookSetup();
@@ -138,11 +137,11 @@ public class WCMain extends JavaPlugin
     this.WAAlliancesconfigBACKUP = new YamlConfiguration();
     this.WAAlliancesdatacoreBACKUP = new YamlConfiguration();
     
-    this.WASpleefconfig = new YamlConfiguration();
-    this.WASpleefdatacore = new YamlConfiguration();
+    this.WAGamesconfig = new YamlConfiguration();
+    this.WAGamesdatacore = new YamlConfiguration();
     
-    this.WASpleefconfigBACKUP = new YamlConfiguration();
-    this.WASpleefdatacoreBACKUP = new YamlConfiguration();
+    this.WAGamesconfigBACKUP = new YamlConfiguration();
+    this.WAGamesdatacoreBACKUP = new YamlConfiguration();
     
     this.config = new YamlConfiguration();
     this.configBACKUP = new YamlConfiguration();
@@ -157,10 +156,6 @@ public class WCMain extends JavaPlugin
     WCMain.helpBACKUP = new YamlConfiguration();
     
     loadYamls();
-    int v = datacore.getInt("V");
-    v++;
-    datacore.set("V", v);
-    Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + "&o- watercloset has updated (v2.1." + v + "&d&o) -"));
 
     url = config.getString("url");
     username = config.getString("username");
@@ -236,9 +231,11 @@ public class WCMain extends JavaPlugin
     
     getCommand("blame").setExecutor(new WCCommands(this));
     
+    getCommand("member").setExecutor(new WCCommands(this));
+    
   }
 
-  private void copy(InputStream in, File file)
+  public void copy(InputStream in, File file)
   {
     try
     {
@@ -252,11 +249,11 @@ public class WCMain extends JavaPlugin
       out.close();
       in.close();
     } catch (Exception e) {
-      e.printStackTrace();
+  //  e.printStackTrace();
     }
   }
   
-  public void backupYamls(){
+  public void backupYamls() throws InvalidConfigurationException {
 	    
 	  try
 	    {
@@ -265,11 +262,21 @@ public class WCMain extends JavaPlugin
 	      WCMain.mail.save(this.mailFileBACKUP);
 	      WCMain.help.save(this.helpFileBACKUP);
 
-	      this.WASpleefconfig.save(this.WASpleefconfigFileBACKUP);
-	      this.WASpleefdatacore.save(this.WASpleefdatacoreFileBACKUP);
+	      this.WAGamesconfig.save(this.WAGamesconfigFileBACKUP);
+	      this.WAGamesdatacore.save(this.WAGamesdatacoreFileBACKUP);
 
 	      this.WAAlliancesconfig.save(this.WAAlliancesconfigFileBACKUP);
 	      this.WAAlliancesdatacore.save(this.WAAlliancesdatacoreFileBACKUP);
+	      
+	      List <String> users = datacore.getStringList("FileSystem.Users");
+	      
+	      	for (String user : users){
+	      		FileConfiguration userConfig = new YamlConfiguration();
+	      		File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+	      		File userFileBackup = new File(getDataFolder() + File.separator + "Backups" + File.separator + "Users", user + ".yml");
+	      		userConfig.load(userFile);
+	      		userConfig.save(userFileBackup);
+	      	}
 	    
 	    } catch (IOException e) {
 	      e.printStackTrace();
@@ -285,8 +292,8 @@ public class WCMain extends JavaPlugin
       WCMain.mail.save(this.mailFile);
       WCMain.help.save(this.helpFile);
 
-      this.WASpleefconfig.save(this.WASpleefconfigFile);
-      this.WASpleefdatacore.save(this.WASpleefdatacoreFile);
+      this.WAGamesconfig.save(this.WAGamesconfigFile);
+      this.WAGamesdatacore.save(this.WAGamesdatacoreFile);
 
       this.WAAlliancesconfig.save(this.WAAlliancesconfigFile);
       this.WAAlliancesdatacore.save(this.WAAlliancesdatacoreFile);
@@ -308,22 +315,22 @@ public class WCMain extends JavaPlugin
     }
   }
 
-  public void saveWASpleef()
+  public void saveWAGames()
   {
     try {
-      this.WASpleefconfig.save(this.WASpleefconfigFile);
-      this.WASpleefdatacore.save(this.WASpleefdatacoreFile);
+      this.WAGamesconfig.save(this.WAGamesconfigFile);
+      this.WAGamesdatacore.save(this.WAGamesdatacoreFile);
     } catch (IOException e) {
       e.printStackTrace();
     }
   }
 
-  public void loadWASpleef()
+  public void loadWAGames()
   {
     try
     {
-      this.WASpleefconfig.load(this.WASpleefconfigFile);
-      this.WASpleefdatacore.load(this.WASpleefdatacoreFile);
+      this.WAGamesconfig.load(this.WAGamesconfigFile);
+      this.WAGamesdatacore.load(this.WAGamesdatacoreFile);
     } catch (Exception e) {
       e.printStackTrace();
     }
@@ -360,8 +367,8 @@ public class WCMain extends JavaPlugin
       WCMain.mail.load(this.mailFile);
       WCMain.help.load(this.helpFile);
 
-      this.WASpleefconfig.load(this.WASpleefconfigFile);
-      this.WASpleefdatacore.load(this.WASpleefdatacoreFile);
+      this.WAGamesconfig.load(this.WAGamesconfigFile);
+      this.WAGamesdatacore.load(this.WAGamesdatacoreFile);
 
       this.WAAlliancesconfig.load(this.WAAlliancesconfigFile);
       this.WAAlliancesdatacore.load(this.WAAlliancesdatacoreFile);
@@ -397,9 +404,9 @@ public class WCMain extends JavaPlugin
         copy(getResource("help.yml"), this.helpFile);
     }
     
-    if (!this.WASpleefconfigFile.exists()){
-        this.WASpleefconfigFile.getParentFile().mkdirs();
-        copy(getResource("WASpleefconfig.yml"), this.WASpleefconfigFile);
+    if (!this.WAGamesconfigFile.exists()){
+        this.WAGamesconfigFile.getParentFile().mkdirs();
+        copy(getResource("WAGamesconfig.yml"), this.WAGamesconfigFile);
     }
     
     if (!this.WAAlliancesconfigFile.exists()){
@@ -412,9 +419,9 @@ public class WCMain extends JavaPlugin
         copy(getResource("datacore.yml"), this.datacoreFile);
     }
     
-    if (!this.WASpleefdatacoreFile.exists()){
-      this.WASpleefdatacoreFile.getParentFile().mkdirs();
-      copy(getResource("WASpleefdatacore.yml"), this.WASpleefdatacoreFile);
+    if (!this.WAGamesdatacoreFile.exists()){
+      this.WAGamesdatacoreFile.getParentFile().mkdirs();
+      copy(getResource("WAGamesdatacore.yml"), this.WAGamesdatacoreFile);
     }
     
     if (!this.WAAlliancesdatacoreFile.exists()){ 	
@@ -423,6 +430,151 @@ public class WCMain extends JavaPlugin
     }
   }
   
+FileConfiguration loadedFile;
   
+	public void userCreate(String user) throws Exception {
+		
+		loadedFile = new YamlConfiguration();
+		File fileToCheck = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+
+		    if (!fileToCheck.exists()) {
+		    	fileToCheck.getParentFile().mkdirs();
+		    	copy(getResource(user + ".yml"), fileToCheck);
+		    	userLogUpdate(user);
+		    	getServer().getConsoleSender().sendMessage(WCMail.AS(WCMail.WC + "&aNEW USER FILE CREATED FOR " + user.toUpperCase() + "&c!"));
+		    	
+		    }
+
+	}
+	
+
+	  public void userWriteS(String user, String path, String data){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+			
+			try {
+				  loadedFile.load(userFile);
+			} catch (Exception e) {
+				  e.printStackTrace();
+				}
+			
+		  loadedFile.set(path, data);
+		  
+		  try {
+			loadedFile.save(userFile);
+		  } catch (IOException e) {
+			e.printStackTrace();
+			Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCMail.WC + "&cISSUE WRITING FILE FOR " + user + "!"));
+		      }
+		  
+	  }
+	  
+
+	  public void userWriteI(String user, String path, int data){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+			
+			try {
+				  loadedFile.load(userFile);
+			} catch (Exception e) {
+				  e.printStackTrace();
+				}
+			
+		  loadedFile.set(path, data);
+		  
+		  try {
+			loadedFile.save(userFile);
+		  } catch (IOException e) {
+			e.printStackTrace();
+			Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCMail.WC + "&cISSUE WRITING FILE FOR " + user + "!"));
+		      }
+		  
+	  }
+	  
+	  public void userWriteB(String user, String path, Boolean data){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+			
+			try {
+				  loadedFile.load(userFile);
+			} catch (Exception e) {
+				  e.printStackTrace();
+				}
+			
+		  loadedFile.set(path, data);
+		  
+		  try {
+			loadedFile.save(userFile);
+		  } catch (IOException e) {
+			e.printStackTrace();
+			Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCMail.WC + "&cISSUE WRITING FILE FOR " + user + "!"));
+		      }
+		  
+	  }
+	  
+	  public Boolean userGrabB(String user, String path){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+		  
+		  try {
+			  loadedFile.load(userFile);
+		} catch (Exception e) {
+			  e.printStackTrace();
+			}
+		  
+		  return loadedFile.getBoolean(path);
+	  }
+	  
+	  public String userGrabS(String user, String path){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+		  
+		  try {
+			  loadedFile.load(userFile);
+		} catch (Exception e) {
+			  e.printStackTrace();
+			}
+		  
+		  return loadedFile.getString(path);
+	  }
+	  
+	  public int userGrabI(String user, String path){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+		  
+		  try {
+			  loadedFile.load(userFile);
+		} catch (Exception e) {
+			  e.printStackTrace();
+			}
+		  
+		  return loadedFile.getInt(path);
+	  }
+	  
+	  public List <String> userGrabSL(String user, String path){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+		  
+		  try {
+			  loadedFile.load(userFile);
+		} catch (Exception e) {
+			  e.printStackTrace();
+			}
+		  
+		  return loadedFile.getStringList(path);
+	  }
+	  
+	  public void userLogUpdate(String user){
+		  List <String> users = datacore.getStringList("FileSystem.Users");
+		  users.add(user);
+		  datacore.set("FileSystem.Users", users);
+	  }
 
 }

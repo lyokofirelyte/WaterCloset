@@ -45,21 +45,20 @@ public class WCMobDrops implements Listener {
 	 @EventHandler(priority = EventPriority.NORMAL)
 	  public void onPlayerBadTouch(PlayerInteractEvent event){
 		 		 
-	      if ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK)){
-	    	  
+	  
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.WALL_SIGN){
 	    	  		paragonSign(event, event.getPlayer());
 	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.STONE_BUTTON){
 	    	  		paragonCheckout(event, event.getPlayer());
 	    	  	}
-	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK){
-	    	  		cookie(event, event.getPlayer());
-	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.GLOWSTONE){
 	    	  		obeliskCheck(event, event.getPlayer());
 	    	  	}
-	    	  
+	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL){
+	    	  		cookie(event, event.getPlayer());
+	    	  	} 
+	    	  	
 	    	if (event.getPlayer().getInventory().getItemInHand().getTypeId() == 371) {
 
 	 		  Player player = event.getPlayer();
@@ -82,11 +81,7 @@ public class WCMobDrops implements Listener {
 	        }
 	      }
 	    }
-	  }
-	    
-	 
-	
-	
+
 	private void cookie(PlayerInteractEvent e, Player p) {
 		
 		
@@ -110,9 +105,109 @@ public class WCMobDrops implements Listener {
 			goalCount = plugin.datacore.getInt("Users." + p.getName() + ".GoalCount");
 			goalCount++;
 			plugin.datacore.set("Users." + p.getName() + ".GoalCount", goalCount);
-			
+			return;
 			
 		}
+		
+		if (p.getItemInHand().hasItemMeta()){
+			if (p.getItemInHand().getItemMeta().hasLore() && p.getItemInHand().getItemMeta().hasDisplayName()){
+				if (p.getItemInHand().getItemMeta().getDisplayName().toString().contains("HAMDRAX")){
+					String block = e.getClickedBlock().getType().toString();
+					short dur = p.getItemInHand().getDurability();
+
+					List <String> picks = plugin.config.getStringList("Hamdrax.Pick");
+					List <String> shovels = plugin.config.getStringList("Hamdrax.Shovel");
+					List <String> axes = plugin.config.getStringList("Hamdrax.Axe");
+					List <String> shears = plugin.config.getStringList("Hamdrax.Shears");
+					List <String> swords = plugin.config.getStringList("Hamdrax.Sword");
+					
+						if (picks.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_PICKAXE, p, dur, "Pick");
+									return;
+								}
+								swapDrax(Material.DIAMOND_PICKAXE, p, dur, "Pick");
+							}
+							
+						}
+						
+						if (shovels.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_SPADE)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_SPADE, p, dur, "Shovel");
+									return;
+								}
+								swapDrax(Material.DIAMOND_SPADE, p, dur, "Shovel");
+							}
+							
+						}
+
+						if (axes.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_AXE)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_AXE, p, dur, "Axe");
+									return;
+								}
+								swapDrax(Material.DIAMOND_AXE, p, dur, "Axe");
+							}
+							
+						}
+						
+						if (shears.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.SHEARS)){
+								swapDrax(Material.SHEARS, p, (short) 0, "Shears");
+								plugin.datacore.set("Users." + p.getName() + ".HamDur", dur);
+							}
+							
+						}	
+						
+						if (swords.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_SWORD)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_SWORD, p, dur, "Sword");
+									return;
+								}
+								swapDrax(Material.DIAMOND_SWORD, p, dur, "Sword");
+							}
+							
+						}
+				}
+			}
+		}
+	}
+
+
+
+
+	@SuppressWarnings("deprecation")
+	static void swapDrax(Material type, Player p, short dur, String form) {
+
+	    ArrayList<String> lore;
+	    ItemStack token = new ItemStack(type, 1);
+        ItemMeta name = token.getItemMeta();
+        lore = new ArrayList<String>();
+        name.addEnchant(Enchantment.DIG_SPEED, 5, true);
+        name.addEnchant(Enchantment.DURABILITY, 3, true);
+        name.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 10, true);
+        name.addEnchant(Enchantment.DAMAGE_ALL, 3, true);
+        name.addEnchant(Enchantment.FIRE_ASPECT, 3, true);
+        name.setDisplayName("§a§o§lHAMDRAX OF " + p.getDisplayName());
+        lore.add("§7§oForm: " + form);
+        name.setLore(lore);
+        token.setItemMeta((ItemMeta)name);
+        p.getInventory().setItemInHand(token);
+        p.getItemInHand().setDurability(dur);
+        p.updateInventory();	
 	}
 
 
@@ -354,6 +449,14 @@ public class WCMobDrops implements Listener {
 						paragonAmountCheck(45, p, action);
 						break;
 						
+					case 10:
+						paragonAmountCheck(64, p, action);
+						break;
+						
+					case 11:
+						paragonAmountCheck(15, p, action);
+						break;
+						
 					default:
 						p.sendMessage(WCMail.WC + "You've not selected anything to purchase!");
 						break;
@@ -502,6 +605,33 @@ public class WCMobDrops implements Listener {
 				Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco give " + p.getName() + " 85000");
 				p.getInventory().getItemInHand().setAmount((amount - (cost-1)));
 				break;
+				
+		case 10:
+			
+			Boolean aval = plugin.datacore.getBoolean("Users." + p.getName() + ".Hamdrax");
+				if (aval == false){
+					plugin.datacore.set("Users." + p.getName() + ".Hamdrax", true);
+					p.sendMessage(WCMail.WC + "You need to claim this with /wc hamdrax!");
+					p.getInventory().getItemInHand().setAmount((amount - (cost-1)));
+					break;
+				} else {
+					p.sendMessage(WCMail.WC + "You need to claim this with /wc hamdrax!");
+				}
+				
+			break;
+			
+		case 11:
+			
+			Boolean aval2 = plugin.datacore.getBoolean("Users." + p.getName() + ".HamdraxRepair");
+			if (aval2 == false){
+				plugin.datacore.set("Users." + p.getName() + ".HamdraxRepair", true);
+				p.sendMessage(WCMail.WC + "You need to claim this with /wc hamrepair!");
+				p.getInventory().getItemInHand().setAmount((amount - (cost-1)));
+				break;
+			} else {
+				p.sendMessage(WCMail.WC + "You need to claim this with /wc hamrepair!");
+			}
+			
 		}
 		
 		

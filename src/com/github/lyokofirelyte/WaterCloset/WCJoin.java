@@ -14,9 +14,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-public class WCJoin
-  implements Listener
-{
+public class WCJoin implements Listener {
+	
   WCMain plugin;
 
   public WCJoin(WCMain instance)
@@ -26,8 +25,15 @@ public class WCJoin
 
   @SuppressWarnings("deprecation")
 @EventHandler(priority=EventPriority.HIGH)
-  public boolean onPlayerJoin(final PlayerJoinEvent event)
+  public boolean onPlayerJoin(final PlayerJoinEvent event) throws Exception
   {
+	  try
+	    {
+		  plugin.userCreate(event.getPlayer().getName());
+	    } catch (Exception e) {
+	      e.printStackTrace();
+	    }
+
 	  
 		if (plugin.datacore.getBoolean("Users." + event.getPlayer().getName() + ".needsExp")){
 			float xp = plugin.datacore.getInt("Users." + event.getPlayer().getName() + ".exp");

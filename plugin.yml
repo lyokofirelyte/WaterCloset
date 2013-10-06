@@ -3,7 +3,7 @@ main: com.github.lyokofirelyte.WaterCloset.WCMain
 author: lyokofirelyte
 prefix: WC
 depend: [Vault]
-version: 2
+version: 3
 
 commands:
    watercloset:
@@ -12,6 +12,9 @@ commands:
    wc:
       description: WC Root Command
       usage: /wc
+   member:
+      description: Member Command
+      usage: /member <player>
    o:
       description: Staff Chat
       usage: /o <message>

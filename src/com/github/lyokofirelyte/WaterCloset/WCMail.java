@@ -19,7 +19,7 @@ import ru.tehkode.permissions.bukkit.PermissionsEx;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 
 public class WCMail implements CommandExecutor {
-static String WC = "§dWC §5// §d";
+public static String WC = "§dWC §5// §d";
 static List <String> mail;
 private Connection conn;
 private PreparedStatement pst;

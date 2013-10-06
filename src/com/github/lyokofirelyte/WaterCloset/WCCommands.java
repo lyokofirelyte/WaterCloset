@@ -3,6 +3,7 @@ package com.github.lyokofirelyte.WaterCloset;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Random;
 
 import org.bukkit.FireworkEffect.Type;
@@ -15,11 +16,16 @@ import org.bukkit.Color;
 import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.InvalidConfigurationException;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
@@ -183,6 +189,499 @@ public class WCCommands implements CommandExecutor {
       	    }
       	    , delay);
       	}
+  	
+  	
+  	public void halloweenWorks(final World w, Player p){
+  		
+  		// spawn coords
+  		
+  		double x = -267.0;
+  		double y = 64.0;
+  		double z = -47.0;
+  		
+  		final Location startLoc = new Location(w, x, y, z); // middle of spawn
+  		final List <Location> sideALeft = new ArrayList<Location>(); // setup for collecting locations
+  		final List <Location> sideARight = new ArrayList<Location>(); 
+  		final List <Location> sideBLeft = new ArrayList<Location>(); 
+  		final List <Location> sideBRight = new ArrayList<Location>(); 
+  		
+  		final List <Location> sideALeft2 = new ArrayList<Location>(); // reverse
+  		final List <Location> sideARight2 = new ArrayList<Location>(); 
+  		final List <Location> sideBLeft2 = new ArrayList<Location>(); 
+  		final List <Location> sideBRight2 = new ArrayList<Location>(); 
+  		
+  		// let's get all of the locations on roadside A, on the Z axis, going <---- (We want dual schedules later on, so we'll split)
+  		
+  		for (int i = 1; i <= 50; i++){ // four statemint
+  			
+  			Location temp = new Location (w, x+4, y+3, z+i);
+  			sideALeft.add(temp); 
+  		}
+  		
+  		// Let's get reverse direction ----> , then the other two.
+  		
+  		for (int i = 1; i <= 50; i++){
+  			
+  			Location temp = new Location (w, x+4, y+3, z-i);
+  			sideARight.add(temp); 
+  		}
+  		
+  		for (int i = 1; i <= 50; i++){ 
+  			
+  			Location temp = new Location (w, x-4, y+3, z+i);
+  			sideBLeft.add(temp); 
+  		}
+  		
+  		for (int i = 1; i <= 50; i++){ 
+  			
+  			Location temp = new Location (w, x-4, y+3, z-i);
+  			sideBRight.add(temp); 
+  		}
+  		
+  		// Ok so now we have 4 lists of the ----> directions (50 each) for 200 firework spots.
+  		// First, however, we're going to make a circle list to display before we activate the <-> lists.
+  		
+  		final List<Location> circleblocks = circle(p, startLoc, 5, 1, true, false, 1);
+  		final List<Location> circleblocksBig = circle(p, startLoc, 10, 1, true, false, 2);
+  		
+        long delay =  0L;
+        	for (final Location l : circleblocks){
+        		delay = delay + 2L;
+        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+        	    {
+        	      public void run()
+        	      {
+        	        	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(w, l,
+							FireworkEffect.builder().with(Type.BURST).withColor(Color.FUCHSIA).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}        	      }
+        	    }
+        	    , delay);
+        	}
+        	
+        	
+        	
+        // Let's set a delay to cast the lists we just created so that the circle can finish first.
+  		
+        	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+    	    {
+
+
+			public void run()
+    	      {
+    	        	  
+    	    	  for (Location temp : sideALeft){
+    	    		  w.strikeLightning(temp);
+    	    	  }
+    	    	  
+    	    	  for (Location temp : sideARight){
+    	    		  w.strikeLightning(temp);
+    	    	  }
+    	    	  
+    	    	  for (Location temp : sideBLeft){
+    	    		  w.strikeLightning(temp);
+    	    	  }
+    	    	  
+    	    	  for (Location temp : sideBRight){
+    	    		  w.strikeLightning(temp);
+    	    	  }
+    	    	  
+    	    	ListIterator<Location> liA = sideALeft.listIterator(sideALeft.size());
+    	    	ListIterator<Location> liB = sideARight.listIterator(sideARight.size());
+    	    	ListIterator<Location> liC = sideBLeft.listIterator(sideBLeft.size());
+    	    	ListIterator<Location> liD = sideBRight.listIterator(sideBRight.size());
+
+    	    	// Iterate in reverse.
+    	    	
+    	    	while(liA.hasPrevious()) {
+    	    		sideALeft2.add(liA.previous());
+    	    	}
+    	    	
+    	    	while(liB.hasPrevious()) {
+    	    		sideARight2.add(liB.previous());
+    	    	}
+    	    	
+    	    	while(liC.hasPrevious()) {
+    	    		sideBLeft2.add(liC.previous());
+    	    	}
+    	    	
+    	    	while(liD.hasPrevious()) {
+    	    		sideBRight2.add(liD.previous());
+    	    	}
+
+    	    	  long delay =  20L;
+ 	    	  
+          	        	for (final Location temp : sideALeft){
+          	        		
+          	        		delay = delay + 2L; // Each iteration we're adding 2 ticks to the delay (20L = 1 second)
+
+          	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+          	        	    {
+          	        	      public void run()
+          	        	      {
+          	        	    	Random rand = new Random();
+              	        		int colorChosen = rand.nextInt(1)+1;
+              	        		
+              	        		Color[] colors = new Color[] { 
+              	        		Color.BLACK, Color.ORANGE
+              	        		};
+              	        		
+          	        	    	FireworkShenans fplayer = new FireworkShenans();
+                	        	try {
+        							fplayer.playFirework(w, temp,
+        							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+        						} catch (IllegalArgumentException e) {
+        							e.printStackTrace();
+        						} catch (Exception e) {
+        							e.printStackTrace();
+        						}   
+          	        	    	  
+          	        	      }
+          	        	    }
+          	        	    , delay); // Timed fireworks
+
+          	        	} // Ok now we're done with 50/200... Let's do it three more times. :D.. and then 4 more in reverse.
+          	        	
+          	        		delay = 0L;
+          	        		
+          	        	for (final Location temp : sideARight){
+          	        		
+          	        		delay = delay + 2L;
+          	        		
+          	        		Random rand = new Random();
+          	        		final int colorChosen = rand.nextInt(1)+1;
+          	        		
+          	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+          	        	    {
+          	        	      public void run()
+          	        	      {
+          	        	    	
+              	        		
+              	        		Color[] colors = new Color[] { 
+              	        		Color.BLACK, Color.ORANGE
+              	        		};
+              	        		
+          	        	    	FireworkShenans fplayer = new FireworkShenans();
+                	        	try {
+        							fplayer.playFirework(w, temp,
+        							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+        						} catch (IllegalArgumentException e) {
+        							e.printStackTrace();
+        						} catch (Exception e) {
+        							e.printStackTrace();
+        						}   
+          	        	    	  
+          	        	      }
+          	        	    }
+          	        	    , delay);
+
+          	        	}
+          	        	
+          	      	delay = 0L;
+  	        		
+      	        	for (final Location temp : sideBLeft){
+      	        		
+      	        		delay = delay + 2L;
+
+      	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+      	        	    {
+      	        	      public void run()
+      	        	      {
+      	        	    	Random rand = new Random();
+          	        		int colorChosen = rand.nextInt(1)+1;
+          	        		
+          	        		Color[] colors = new Color[] { 
+          	        		Color.BLACK, Color.ORANGE
+          	        		};
+          	        		
+      	        	    	FireworkShenans fplayer = new FireworkShenans();
+            	        	try {
+    							fplayer.playFirework(w, temp,
+    							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+    						} catch (IllegalArgumentException e) {
+    							e.printStackTrace();
+    						} catch (Exception e) {
+    							e.printStackTrace();
+    						}   
+      	        	    	  
+      	        	      }
+      	        	    }
+      	        	    , delay);
+
+      	        	}
+      	        	
+      	      	delay = 0L;
+	        		
+  	        	for (final Location temp : sideBRight){
+  	        		
+  	        		delay = delay + 2L;
+
+  	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+  	        	    {
+  	        	      public void run()
+  	        	      {
+  	        	    	Random rand = new Random();
+      	        		int colorChosen = rand.nextInt(1)+1;
+      	        		
+      	        		Color[] colors = new Color[] { 
+      	        		Color.BLACK, Color.ORANGE
+      	        		};
+      	        		
+  	        	    	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(w, temp,
+							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}   
+  	        	    	  
+  	        	      }
+  	        	    }
+  	        	    , delay);
+
+  	        	}
+  	        	
+  	        	delay = 100L;  // Set delay to catch up
+        		
+  	        	for (final Location temp : sideALeft2){
+  	        		
+  	        		delay = delay + 2L;
+
+  	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+  	        	    {
+  	        	      public void run()
+  	        	      {
+  	        	    	Random rand = new Random();
+      	        		int colorChosen = rand.nextInt(1)+1;
+      	        		
+      	        		Color[] colors = new Color[] { 
+      	        		Color.BLACK, Color.ORANGE
+      	        		};
+      	        		
+  	        	    	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(w, temp,
+							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}   
+  	        	    	  
+  	        	      }
+  	        	    }
+  	        	    , delay);
+
+  	        	}
+  	        	
+  	        	delay = 100L; 
+        		
+  	        	for (final Location temp : sideARight2){
+  	        		
+  	        		delay = delay + 2L;
+
+  	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+  	        	    {
+  	        	      public void run()
+  	        	      {
+  	        	    	Random rand = new Random();
+      	        		int colorChosen = rand.nextInt(1)+1;
+      	        		
+      	        		Color[] colors = new Color[] { 
+      	        		Color.BLACK, Color.ORANGE
+      	        		};
+      	        		
+  	        	    	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(w, temp,
+							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}   
+  	        	    	  
+  	        	      }
+  	        	    }
+  	        	    , delay);
+
+  	        	}
+  	        	
+  	        	delay = 100L; 
+        		
+  	        	for (final Location temp : sideBLeft2){
+  	        		
+  	        		delay = delay + 2L;
+
+  	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+  	        	    {
+  	        	      public void run()
+  	        	      {
+  	        	    	Random rand = new Random();
+      	        		int colorChosen = rand.nextInt(1)+1;
+      	        		
+      	        		Color[] colors = new Color[] { 
+      	        		Color.BLACK, Color.ORANGE
+      	        		};
+      	        		
+  	        	    	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(w, temp,
+							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}   
+  	        	    	  
+  	        	      }
+  	        	    }
+  	        	    , delay);
+
+  	        	}
+  	        	
+  	        	delay = 100L; 
+        		
+  	        	for (final Location temp : sideBRight2){
+  	        		
+  	        		delay = delay + 2L;
+
+  	        		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+  	        	    {
+  	        	      public void run()
+  	        	      {
+  	        	    	Random rand = new Random();
+      	        		int colorChosen = rand.nextInt(1)+1;
+      	        		
+      	        		Color[] colors = new Color[] { 
+      	        		Color.BLACK, Color.ORANGE
+      	        		};
+      	        		
+  	        	    	FireworkShenans fplayer = new FireworkShenans();
+        	        	try {
+							fplayer.playFirework(w, temp,
+							FireworkEffect.builder().with(Type.BURST).withColor(colors[colorChosen]).build());
+						} catch (IllegalArgumentException e) {
+							e.printStackTrace();
+						} catch (Exception e) {
+							e.printStackTrace();
+						}   
+  	        	    	  
+  	        	      }
+  	        	    }
+  	        	    , delay);
+
+  	        	}
+  	        	
+  	            delay =  130L; // creeper circle, after the return  (120 -> 130 adjusted from tests)
+  	            
+  	          	for (final Location l : circleblocks){
+  	          		delay = delay + 2L;
+  	          		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+  	          	    {
+  	          	      public void run()
+  	          	      {
+  	          	        	FireworkShenans fplayer = new FireworkShenans();
+  	          	        	try {
+  	  							fplayer.playFirework(w, l,
+  	  							FireworkEffect.builder().with(Type.CREEPER).withColor(Color.BLACK).build());
+  	  						} catch (IllegalArgumentException e) {
+  	  							e.printStackTrace();
+  	  						} catch (Exception e) {
+  	  							e.printStackTrace();
+  	  						}        	      }
+  	          	    }
+  	          	    , delay);
+  	          	}
+  	          	
+  	          	
+  	            delay =  150L; // Extra second.
+  	            
+  	          	for (final Location l : circleblocksBig){  // BIG MAMA!
+  	          		delay = delay + 2L;
+  	          		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+  	          	    {
+  	          	      public void run()
+  	          	      {
+  	          	        	FireworkShenans fplayer = new FireworkShenans();
+  	          	        	try {
+  	  							fplayer.playFirework(w, l,
+  	  							FireworkEffect.builder().with(Type.BALL_LARGE).withColor(Color.FUCHSIA).build());
+  	  						} catch (IllegalArgumentException e) {
+  	  							e.printStackTrace();
+  	  						} catch (Exception e) {
+  	  							e.printStackTrace();
+  	  						}        	      }
+  	          	    }
+  	          	    , delay);
+  	          	}
+  	          	
+  	          delay =  170L; // Extra second, again, this will be right behind it, smaller balls.
+	            
+	          	for (final Location l : circleblocksBig){ 
+	          		delay = delay + 2L;
+	          		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+	          	    {
+	          	      public void run()
+	          	      {
+	          	        	FireworkShenans fplayer = new FireworkShenans();
+	          	        	try {
+	  							fplayer.playFirework(w, l,
+	  							FireworkEffect.builder().with(Type.BURST).withColor(Color.GREEN).build());
+	  						} catch (IllegalArgumentException e) {
+	  							e.printStackTrace();
+	  						} catch (Exception e) {
+	  							e.printStackTrace();
+	  						}        	      }
+	          	    }
+	          	    , delay);
+	          	}
+	          	
+	  	          delay =  190L; // Extra second, again, this will be right behind it, stars this time.
+		            
+		          	for (final Location l : circleblocksBig){ 
+		          		delay = delay + 4L; // double delay, by slight for the finish.
+		          		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+		          	    {
+		          	      public void run()
+		          	      {
+		          	        	FireworkShenans fplayer = new FireworkShenans();
+		          	        	try {
+		  							fplayer.playFirework(w, l,
+		  							FireworkEffect.builder().with(Type.STAR).withColor(Color.ORANGE).build());
+		  						} catch (IllegalArgumentException e) {
+		  							e.printStackTrace();
+		  						} catch (Exception e) {
+		  							e.printStackTrace();
+		  						}        	      }
+		          	    }
+		          	    , delay);
+		          	}
+		          	
+		          	Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable()
+	          	    {
+	          	      public void run()
+	          	      {
+	          	    	w.strikeLightning(startLoc);  // Finally, zap the center of spawn.
+	          	      }
+	          	    }
+	          	    , 400L);  // Should be perfect timing.
+    	  
+    	      }
+			
+			
+    	    }
+        	
+        	
+    	    , 80L); // Start the thing in the first pLace
+  	}
       
   
 	public void fireWorkCrazyAssShit2(Location loc, final Player p) {
@@ -242,7 +741,8 @@ public class WCCommands implements CommandExecutor {
 	        return target;
 	    }
 	 
-  public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
+  @SuppressWarnings("deprecation")
+public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
 	  
 	  if (cmd.getName().equalsIgnoreCase("blame")){
 		  
@@ -259,6 +759,22 @@ public class WCCommands implements CommandExecutor {
 					}
 				}
 		
+	  }
+	  
+	  if (cmd.getName().equalsIgnoreCase("member") && sender.hasPermission("wa.staff")){
+		  
+		  if (args.length == 1){
+			  Bukkit.broadcastMessage(WCMail.AS("&b&lHEY THERE, " + "&4&l" + args[0] + "&b&l!"));
+			  Bukkit.broadcastMessage(WCMail.AS("&b&lWANT TO &aJOIN US AND BUILD?"));
+			  Bukkit.broadcastMessage(WCMail.AS("&e&lCLICK BELOW AND SCROLL DOWN TO &c&lMEMBER APPLICATION"));
+			  Bukkit.broadcastMessage(WCMail.AS("&f&o---> &f&lhttp://bit.ly/SxATSM &f&o<---"));
+		  } else {
+			  Bukkit.broadcastMessage(WCMail.AS("&b&lWANT TO &aJOIN US AND BUILD?"));
+			  Bukkit.broadcastMessage(WCMail.AS("&e&lCLICK BELOW AND SCROLL DOWN TO &c&lMEMBER APPLICATION"));
+			  Bukkit.broadcastMessage(WCMail.AS("&f&o---> &f&lhttp://bit.ly/SxATSM &f&o<---"));
+		  }
+		  
+		  return true;
 	  }
 	  
     if (cmd.getName().equalsIgnoreCase("wc") || cmd.getName().equalsIgnoreCase("watercloset"))
@@ -294,6 +810,9 @@ public class WCCommands implements CommandExecutor {
     					String message = WCChannels.createString2(args, 1);
     					bleh.sendMessage(WCMail.AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + globalColor + message));   
     			}
+    		  
+    		  String message = WCChannels.createString2(args, 1);
+    		  plugin.getServer().getConsoleSender().sendMessage(WCMail.AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + message)); 
     	  }
       
       break;
@@ -305,17 +824,76 @@ public class WCCommands implements CommandExecutor {
     		  break;
     	  }
     	  
-    	  List <String> c1 = Arrays.asList("&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&0", "&a", "&b", "&c", "&d", "&e", "&f", "&k");
+    	  List <String> c2 = Arrays.asList("&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&0", "&a", "&b", "&c", "&d", "&e", "&f", "&k");
     	  
-    	  if (c1.contains(args[1]) == false){
-    		  sender.sendMessage(WCMail.WC + "That's not a color! Choose from " + c1 + ".");
+    	  if (!c2.contains(args[1])){
+    		  sender.sendMessage(WCMail.WC + "That's not a color! Choose from " + c2 + ".");
     		  break;
     	  }
     	  
     	  sender.sendMessage(WCMail.AS(WCMail.WC + "You've changed your color to " + args[1] + "this."));
     	  plugin.datacore.set("Users." + sender.getName() + ".GlobalColor", args[1]);
     	  break;
-      
+    	  
+      case "hw":
+    	  
+    	  if (sender.hasPermission("wa.staff")){
+    	  	halloweenWorks(((Player) sender).getWorld(), ((Player)sender));
+    	  }
+    	  
+    	  break;
+    	  
+      case "hamdrax":
+    	  
+    	  	Player q = ((Player)sender);
+    	  	Boolean aval = plugin.datacore.getBoolean("Users." + q.getName() + ".Hamdrax");
+    	  		if (aval){
+    	  			plugin.datacore.set("Users." + q.getName() + ".Hamdrax", false);
+		    	    ArrayList<String> lore;
+		    	    ItemStack token = new ItemStack(Material.DIAMOND_PICKAXE, 1);
+			        ItemMeta name = token.getItemMeta();
+			        lore = new ArrayList<String>();
+			        name.addEnchant(Enchantment.DIG_SPEED, 5, true);
+			        name.addEnchant(Enchantment.DURABILITY, 3, true);
+			        name.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 10, true);
+			        name.addEnchant(Enchantment.PROTECTION_FIRE, 10, true);
+			        name.setDisplayName("§a§o§lHAMDRAX OF " + q.getDisplayName());
+			        lore.add("§7§oForm: Pick");
+			        name.setLore(lore);
+			        token.setItemMeta((ItemMeta)name);
+			        token.setDurability((short) 780);
+			        q.getInventory().addItem(token);
+			        q.updateInventory();
+    	  		} else {
+    	  			sender.sendMessage(WCMail.WC + "You need to purchase this @ the paragon shop!");
+    	  		}
+    	  		
+	        break;
+	        
+      case "hamrepair":
+    	  
+    	  q = ((Player)sender);
+    	  
+    	  aval = plugin.datacore.getBoolean("Users." + q.getName() + ".HamdraxRepair");
+    	  
+	  		if (aval){
+	    	  if (q.getItemInHand().hasItemMeta()){
+					if (q.getItemInHand().getItemMeta().hasLore() && q.getItemInHand().getItemMeta().hasDisplayName()){
+						if (q.getItemInHand().getItemMeta().getDisplayName().toString().contains("HAMDRAX")){
+							plugin.datacore.set("Users." + q.getName() + ".HamdraxRepair", false);
+							q.getItemInHand().setDurability((short) 0);
+							q.sendMessage(WCMail.WC + "All good! :D");
+							break;
+						}
+					}
+				}
+	    	  q.sendMessage(WCMail.WC + "Please hold the hamdrax in your hand!");
+	    	  break;
+	  		}
+			
+			q.sendMessage(WCMail.WC + "You need to purchase this @ the paragon shop!");
+			break;
+	        
       case "fork":
     	  
     	  sender.sendMessage(WCMail.WC + "LET'S DO THE FORK IN THE GARBAGE DISPOSAL!");
@@ -459,19 +1037,7 @@ public class WCCommands implements CommandExecutor {
 					}
 					
 					break;
-      
-      case "spellcheck":
-    	  
-    	  if (plugin.datacore.getBoolean("Users." + ((Player)sender).getName() + ".SpellCheck")){
-    		  plugin.datacore.set("Users." + ((Player)sender).getName() + ".SpellCheck", false);
-    		  sender.sendMessage(WCMail.WC + "Spellcheck disabled!");
-    		  break;
-    	  }
-    	  
-    	  plugin.datacore.set("Users." + ((Player)sender).getName() + ".SpellCheck", true);
-		  sender.sendMessage(WCMail.WC + "Spellcheck enabled!");
-		  break;
-		  
+
       case "pmcolor":
     	  
     	  if (args.length != 2){
@@ -543,7 +1109,7 @@ public class WCCommands implements CommandExecutor {
       case "ALLSPAM":
     	  
     	  if (sender.hasPermission("wa.admin") == false){
-    		  sender.sendMessage(WCMail.WC + "You don't have permission to use the super awesome teleport of crazy.");
+    		  sender.sendMessage(WCMail.WC + "You don't have permission to use the super awesome spam of crazy.");
     		  break;
     	  }
     	  
@@ -1279,7 +1845,11 @@ public class WCCommands implements CommandExecutor {
       		}
       		
           	if (sender.hasPermission("wa.staff")){
-          		plugin.backupYamls();
+          		try {
+					plugin.backupYamls();
+				} catch (InvalidConfigurationException e) {
+					e.printStackTrace();
+				}
           		sender.sendMessage(WC + "Backup saved!");
           		break;
           	} else {

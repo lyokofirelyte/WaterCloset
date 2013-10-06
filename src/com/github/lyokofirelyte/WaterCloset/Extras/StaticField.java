@@ -153,8 +153,10 @@ public class StaticField extends JavaPlugin
         }
       }
     }
+
   }
 
+  
   @EventHandler(priority=EventPriority.NORMAL)
   public boolean onPlayerQuit(PlayerQuitEvent event)
   {
