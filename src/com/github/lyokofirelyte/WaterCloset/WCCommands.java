@@ -781,7 +781,7 @@ public class WCCommands implements CommandExecutor {
 				 if (args.length == 1){
 				
 				sender.sendMessage(new String[]{
-						WCMail.AS("&5| &dParagon Information Complex"),
+					WCMail.AS("&5| &dParagon Information Complex"),
 					WCMail.AS("&5| &f--- ___ --- ___ --- ___ ---"),
 					WCMail.AS("&5| &bCommands&f:"),
 					WCMail.AS("&5| &a/wc rewards &f// &aShows your rewards!"),
@@ -1381,8 +1381,109 @@ public class WCCommands implements CommandExecutor {
 					
 					break;
 					
+				case "exptop":
+					
+					List<String> expUsers = WCMain.mail.getStringList("Users.Total");
+					List<String> serverExp = new ArrayList<String>();
+					
+					for (int i = 0; i < expUsers.size(); i++){
+						
+						String expI = expUsers.get(i);
+						int exp = plugin.datacore.getInt("Users." + expI + ".MasterExp");
+						String expU = expI + "," + exp;
+						
+						serverExp.add(expU);
+						
+					}
+					
+					sender.sendMessage(new String[]{
+							WCMail.AS(WC + "Exp Leaderboards"),
+							WCMail.AS(">>> >>> <<< <<<")
+					});
+					
+					String place = null;
+					String check = null;
+					int expAmount = 0;
+					
+					for (int i = 0; i < serverExp.size(); i++){
+						
+						String userE = serverExp.get(i);
+						String[] split = userE.split(",");
+						int fPN = Integer.parseInt(split[1]);
+						
+						if (fPN > expAmount){
+							
+							place = split[0];
+							expAmount = fPN;
+							check = userE;
+							
+						}
+						
+					}
+					
+					serverExp.remove(check);
+					sender.sendMessage(new String[]{
+							WCMail.AS("&7&ofirst place @ " + expAmount),
+							WCMail.AS("&b&o" + place)
+					});
+					
+					place = null;
+					check = null;
+					expAmount = 0;
+					
+					for (int i = 0; i < serverExp.size(); i++){
+						
+						String userE = serverExp.get(i);
+						String[] split = userE.split(",");
+						int fPN = Integer.parseInt(split[1]);
+						
+						if (fPN > expAmount){
+							
+							place = split[0];
+							expAmount = fPN;
+							check = userE;
+							
+						}
+						
+					}
+					
+					serverExp.remove(check);
+					sender.sendMessage(new String[]{
+							WCMail.AS("&7&osecond place @ " + expAmount),
+							WCMail.AS("&b&o" + place)
+					});
+					
+					place = null;
+					check = null;
+					expAmount = 0;
+					
+					for (int i = 0; i < serverExp.size(); i++){
+						
+						String userE = serverExp.get(i);
+						String[] split = userE.split(",");
+						int fPN = Integer.parseInt(split[1]);
+						
+						if (fPN > expAmount){
+							
+							place = split[0];
+							expAmount = fPN;
+							check = userE;
+							
+						}
+						
+					}
+					
+					serverExp.remove(check);
+					sender.sendMessage(new String[]{
+							WCMail.AS("&7&othird place @ " + expAmount),
+							WCMail.AS("&b&o" + place)
+					});
+					
+					break;
+					
 			}
 		}
+		
 		return true;
 	}
 }
