@@ -893,7 +893,22 @@ public boolean onCommand(final CommandSender sender, Command cmd, String label, 
 			
 			q.sendMessage(WCMail.WC + "You need to purchase this @ the paragon shop!");
 			break;
-	        
+			
+			
+      case "throw":
+    	  
+    	  Boolean throwAvail = plugin.datacore.getBoolean("Users." + sender.getName() + ".Throw");
+    	  
+    	  	if (throwAvail){
+    	  		plugin.datacore.set("Users." + sender.getName() + ".Throw", false);
+    	  		sender.sendMessage(WCMail.WC + "You won't throw items by shift-right clicking anymore.");
+    	  	} else {
+    	  		plugin.datacore.set("Users." + sender.getName() + ".Throw", true);
+    	  		sender.sendMessage(WCMail.WC + "You WILL throw items by shift-right clicking.");
+    	  	}
+    	  	
+      break;
+      
       case "fork":
     	  
     	  sender.sendMessage(WCMail.WC + "LET'S DO THE FORK IN THE GARBAGE DISPOSAL!");
@@ -1731,7 +1746,6 @@ public boolean onCommand(final CommandSender sender, Command cmd, String label, 
         		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tp " + sender.getName() + " " + args[1]);
         		Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + ((Player) sender).getDisplayName() + " &chas used a grief-check teleport for " + Bukkit.getPlayer(args[1]).getDisplayName()));
         		break;
-        	
         
         case "addobelisk":
         	

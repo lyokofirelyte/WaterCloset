@@ -1,7 +1,6 @@
 package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -11,10 +10,12 @@ import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +23,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -39,8 +39,6 @@ public class WCMobDrops implements Listener {
 	   plugin = instance;
     } 
 	
-	Inventory chest;
-	HashMap<String, Inventory> tempStorage = new HashMap<String, Inventory>();
 	
 	 @EventHandler(priority = EventPriority.NORMAL)
 	  public void onPlayerBadTouch(PlayerInteractEvent event){
@@ -55,7 +53,7 @@ public class WCMobDrops implements Listener {
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.GLOWSTONE){
 	    	  		obeliskCheck(event, event.getPlayer());
 	    	  	}
-	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL){
+	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR){
 	    	  		cookie(event, event.getPlayer());
 	    	  	} 
 	    	  	
@@ -84,7 +82,36 @@ public class WCMobDrops implements Listener {
 
 	private void cookie(PlayerInteractEvent e, Player p) {
 		
+	if (e.getAction() == Action.RIGHT_CLICK_AIR){
 		
+		Location loc = p.getLocation();
+		double y = loc.getY();
+		y++;
+		Location newLoc = new Location(p.getWorld(), loc.getX(),y,loc.getZ());
+		
+		if (p.isSneaking() &&  plugin.datacore.getBoolean("Users." + p.getName() + ".Throw")){
+			
+			ItemStack i = p.getItemInHand();
+			if (i.hasItemMeta() || i.getType().isEdible() || i.getType().toString().equals("EGG")
+				|| i.getType().toString().equals("POTION") || i.getType().toString().contains("SWORD") || i.getType().toString().contains("HELMET") ||
+				i.getType().toString().contains("CHESTPLATE") || i.getType().toString().contains("LEGGING") || i.getType().toString().contains("BOOTS")){
+				
+				p.sendMessage(WCMail.WC + "You can't throw that!");
+				return;
+			}
+			ItemStack cobble = new ItemStack(i.getType(), 1);
+			cobble.setDurability(i.getDurability());
+			Item dropped = p.getWorld().dropItem(newLoc, cobble);
+			dropped.setPickupDelay(20);
+			dropped.setVelocity(p.getLocation().getDirection().add(dropped.getVelocity().setY(0.5)));
+		    ItemStack old = new ItemStack(i.getType(), i.getAmount() - 1);
+		    p.setItemInHand(old);
+			p.getWorld().playSound(p.getLocation(), Sound.CLICK, 3.0F, 0.5F);
+			return;
+		}
+	
+		return;
+	}
 		double x = e.getClickedBlock().getX();
 		double y = e.getClickedBlock().getY();
 		double z = e.getClickedBlock().getZ();
@@ -636,6 +663,40 @@ public class WCMobDrops implements Listener {
 		
 		
 	}
+	
+	public void townSignUpdate(Player p, String type, String action){
+		
+		Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
+		
+		if (inAlliance){
+			String alliance = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".Alliance");
+			String allianceRank = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".AllianceRank");
+			int tier = plugin.WAAlliancesconfig.getInt("Alliances." + alliance + ".Tier");
+			List <String> chatMods = plugin.WAAlliancesconfig.getStringList("Alliances." + alliance + ".chatAdmins");
+			
+				if (tier < 2){
+					p.sendMessage(WCMail.WC + "You are not the correct Tier!");
+					return;
+				}
+				
+				if (tier < 3 && type.equals("mob-spawning")){
+					p.sendMessage(WCMail.WC + "You are not the correct Tier!");
+					return;
+				}
+				
+				if (!allianceRank.equals("Leader") && !chatMods.contains(p.getName())){
+					p.sendMessage(WCMail.WC + "You must be a chat admin or the leader to use this!");
+					return;
+				} else {
+					Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "rg flag " + alliance + " -w world " + type + " " + action);
+					p.sendMessage(WCMail.WC + "Updated " + alliance);
+					return;
+				}
+		} else {
+			p.sendMessage(WCMail.WC + "You must be in an alliance!");
+			return;
+		}
+	}
 
 
 	private void paragonSign(PlayerInteractEvent e, Player p) {
@@ -644,6 +705,30 @@ public class WCMobDrops implements Listener {
 		double y = e.getClickedBlock().getY();
 		double z = e.getClickedBlock().getZ();
 		String xyz = x + "," + y + "," + z;
+		
+			switch (xyz){
+			
+			case "-279.0,67.0,-34.0":
+				
+				townSignUpdate(p, "use", "allow");
+				break;
+			
+			case "-279.0,67.0,-33.0":
+				
+				townSignUpdate(p, "use", "deny");
+				break;
+				
+			case "-279.0,66.0,-34.0":
+				
+				townSignUpdate(p, "mob-spawning", "allow");
+				break;
+				
+			case "-279.0,66.0,-33.0":
+				
+				townSignUpdate(p, "mob-spawning", "deny");
+				break;
+					
+			}
 		
 		String rewardInfo = plugin.config.getString("Paragons.Rewards." + xyz + ".Info");
 		
