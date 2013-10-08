@@ -16,6 +16,8 @@ Core:
   - '&1| &3/wc placeholders &f// &3Chat PlaceHolder Menu'
   - '&1| &3/wc chat &f// &3Avalible Chat Channels / Messaging'
   - '&1| &3/wc paragons &f// &3Paragon Commands'
+  - '&1| &e/wc session &f// &3Minecraft Status'
+  - '&1| &e/wc rainoff &f// &3Turn off the rain! (EMPEROR+)'
   
   JoinMessages:
   - So it seems that %p has logged in!
