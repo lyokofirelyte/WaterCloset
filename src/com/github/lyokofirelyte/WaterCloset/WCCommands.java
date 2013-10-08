@@ -2,6 +2,7 @@ package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -28,6 +29,9 @@ import org.bukkit.util.Vector;
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 
 public class WCCommands implements CommandExecutor {
+	
+	private HashMap<String, Long> rainoffCooldown = new HashMap<String, Long>();
+	
 	WCMain plugin;
 	String WC = "§dWC §5// §d";
 	Boolean home;
@@ -187,7 +191,7 @@ public class WCCommands implements CommandExecutor {
 		
 		while (w <= 50){
 			List<Location> circleblocks = WCBlockBreak.circle(p, loc, 5, 1, true, false, w);
-			long delay =	0L;
+			long delay = 0L;
 			
 			for (final Location l : circleblocks){
 				delay = delay + 2L;
@@ -207,35 +211,36 @@ public class WCCommands implements CommandExecutor {
 					}
 				}, delay);
 			}
-				
+			
 			w++;
 		}
-
+		
 	}
-
-	 public static Entity getTarget(final Player player) {
-		 
-					BlockIterator iterator = new BlockIterator(player.getWorld(), player
-									.getLocation().toVector(), player.getEyeLocation()
-									.getDirection(), 0, 100);
-					Entity target = null;
-					while (iterator.hasNext()) {
-							Block item = iterator.next();
-							for (Entity entity : player.getNearbyEntities(100, 100, 100)) {
-									int acc = 2;
-									for (int x = -acc; x < acc; x++)
-											for (int z = -acc; z < acc; z++)
-													for (int y = -acc; y < acc; y++)
-															if (entity.getLocation().getBlock()
-																			.getRelative(x, y, z).equals(item)) {
-																	return target = entity;
-															}
+	
+	public static Entity getTarget(final Player player) {
+		BlockIterator iterator = new BlockIterator(player.getWorld(), player
+			.getLocation().toVector(), player.getEyeLocation()
+			.getDirection(), 0, 100);
+		Entity target = null;
+		while (iterator.hasNext()) {
+			Block item = iterator.next();
+			for (Entity entity : player.getNearbyEntities(100, 100, 100)) {
+				int acc = 2;
+				for (int x = -acc; x < acc; x++)
+					for (int z = -acc; z < acc; z++)
+						for (int y = -acc; y < acc; y++)
+							if (entity.getLocation().getBlock()
+									.getRelative(x, y, z).equals(item)) {
+								return target = entity;
 							}
-					}
-					return target;
 			}
-	 
+		}
+		return target;
+	}
+	
 	public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
+		
+		final Player p = (Player) sender;
 		
 		if (cmd.getName().equalsIgnoreCase("blame")){
 			
@@ -255,7 +260,6 @@ public class WCCommands implements CommandExecutor {
 		}
 		
 		if (cmd.getName().equalsIgnoreCase("wc") || cmd.getName().equalsIgnoreCase("watercloset") || cmd.getName().equalsIgnoreCase("worldscollide")){
-
 
 			if (args.length < 1)
 			{
@@ -286,6 +290,10 @@ public class WCCommands implements CommandExecutor {
 							String message = WCChannels.createString2(args, 1);
 							bleh.sendMessage(WCMail.AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + globalColor + message));	 
 					}
+				} else {
+					
+					sender.sendMessage(WC + "You're not the console, silly!");
+					
 				}
 			
 			break;
@@ -297,7 +305,25 @@ public class WCCommands implements CommandExecutor {
 					break;
 				}
 				
-				List <String> c1 = Arrays.asList("&1", "&2", "&3", "&4", "&5", "&6", "&7", "&8", "&9", "&0", "&a", "&b", "&c", "&d", "&e", "&f", "&k");
+				List <String> c1 = Arrays.asList(
+						"&1",
+						"&2",
+						"&3",
+						"&4",
+						"&5",
+						"&6",
+						"&7",
+						"&8",
+						"&9",
+						"&0",
+						"&a",
+						"&b",
+						"&c",
+						"&d",
+						"&e",
+						"&f",
+						"&k"
+				);
 				
 				if (c1.contains(args[1]) == false){
 					sender.sendMessage(WCMail.WC + "That's not a color! Choose from " + c1 + ".");
@@ -311,7 +337,7 @@ public class WCCommands implements CommandExecutor {
 			case "fork":
 				
 				sender.sendMessage(WCMail.WC + "LET'S DO THE FORK IN THE GARBAGE DISPOSAL!");
-				final Location self = ((Player)sender).getLocation();
+				final Location self = p.getLocation();
 				final double x1 = self.getX();
 				final double y1 = self.getY();
 				final double z1 = self.getZ();
@@ -328,30 +354,30 @@ public class WCCommands implements CommandExecutor {
 						public void run()
 						{
 
-								((Player)sender).sendMessage("DING");
+								p.sendMessage("DING");
 								Random rand = new Random();
 								int randomNumber = rand.nextInt(7);
 								int randomNumber2 = rand.nextInt(7);
 								int yawRandom = rand.nextInt(360);
 								int pitchRandom = rand.nextInt(90);
 								int plusMinus = rand.nextInt(1);
-								((Player)sender).getWorld().playSound(self, Sound.NOTE_BASS_DRUM, 3.0F, 0.5F);
+								p.getWorld().playSound(self, Sound.NOTE_BASS_DRUM, 3.0F, 0.5F);
 								
 								if (plusMinus == 0){
-									Location current = new Location(((Player)sender).getWorld(), x1+randomNumber, y1, z1+randomNumber2, yawRandom, pitchRandom);
-									((Player)sender).teleport(current);
+									Location current = new Location(p.getWorld(), x1+randomNumber, y1, z1+randomNumber2, yawRandom, pitchRandom);
+									p.teleport(current);
 								}
 								
 							if (plusMinus == 1){
-								Location current = new Location(((Player)sender).getWorld(), x1-randomNumber, y1, z1-randomNumber2, yawRandom, (pitchRandom)-(pitchRandom*2));
-								((Player)sender).teleport(current);
+								Location current = new Location(p.getWorld(), x1-randomNumber, y1, z1-randomNumber2, yawRandom, (pitchRandom)-(pitchRandom*2));
+								p.teleport(current);
 							}
 							
 							if (randomNumber2 == 5){
 								FireworkShenans fplayer = new FireworkShenans();
 											try {
 							
-									fplayer.playFirework(((Player)sender).getWorld(), self,
+									fplayer.playFirework(p.getWorld(), self,
 									FireworkEffect.builder().with(Type.BURST).withColor(Color.FUCHSIA).build());
 								} catch (IllegalArgumentException e) {
 									e.printStackTrace();
@@ -454,13 +480,13 @@ public class WCCommands implements CommandExecutor {
 			
 			case "spellcheck":
 				
-				if (plugin.datacore.getBoolean("Users." + ((Player)sender).getName() + ".SpellCheck")){
-					plugin.datacore.set("Users." + ((Player)sender).getName() + ".SpellCheck", false);
+				if (plugin.datacore.getBoolean("Users." + p.getName() + ".SpellCheck")){
+					plugin.datacore.set("Users." + p.getName() + ".SpellCheck", false);
 					sender.sendMessage(WCMail.WC + "Spellcheck disabled!");
 					break;
 				}
 				
-				plugin.datacore.set("Users." + ((Player)sender).getName() + ".SpellCheck", true);
+				plugin.datacore.set("Users." + p.getName() + ".SpellCheck", true);
 			sender.sendMessage(WCMail.WC + "Spellcheck enabled!");
 			break;
 			
@@ -717,8 +743,6 @@ public class WCCommands implements CommandExecutor {
 				
 				if (args[1].equalsIgnoreCase("take")){
 					
-					Player p = (Player) sender;
-					
 					if (isInteger(args[2]) == false){
 						sender.sendMessage(WC + "Do you even KNOW what a number is? You can't withdraw fish amount of xp, you silly human.");
 						break;
@@ -887,8 +911,6 @@ public class WCCommands implements CommandExecutor {
 				 	}
 				 	
 				 	plugin.datacore.set("Users." + sender.getName() + ".SpecialHomeSet", true);
-				 	
-				 	Player p = (Player) sender;
 				 	
 				 	double x = p.getLocation().getBlockX();
 				 	double y = p.getLocation().getBlockY();
@@ -1287,6 +1309,78 @@ public class WCCommands implements CommandExecutor {
 						sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
 					}
 				break;
+				
+				case "session":
+					
+					Bukkit.getServer().dispatchCommand(sender, "/wcs");
+					
+					break;
+				
+				case "rainoff":
+					
+					if (!(sender.hasPermission("wc.rainoff"))){
+						
+						sender.sendMessage(WC + "You are not the rank Emperor, silly!'");
+						
+						return true;
+						
+					}
+					
+					final int rainoffSeconds = 10800;
+					final long timeLeftRO;
+					
+					if (rainoffCooldown.containsKey(p.getName())){
+						
+						timeLeftRO = ((rainoffCooldown.get(p.getName()) / 1000) + rainoffSeconds) - (System.currentTimeMillis() / 1000);
+						
+						if (timeLeftRO > 0){
+							
+							if (timeLeftRO == 1){
+								
+								sender.sendMessage(WCMail.AS(WC + "You still have 1 second left on the cooldown, silly!"));
+								
+								return true;
+								
+							}
+							
+							sender.sendMessage(WCMail.AS(WC + "You still have " + timeLeftRO + " seconds left on the cooldown, silly!"));
+							
+							return true;
+							
+						}
+						
+					}
+					
+					World currentWorld = p.getWorld();
+					
+					if (currentWorld.hasStorm() == false){
+						
+						sender.sendMessage(WCMail.AS(WC + "You silly little thing! There is no storm occuring at the moment!"));
+						
+						return true;
+						
+					}
+					
+					currentWorld.setWeatherDuration(1);
+					
+					for (Player ep : Bukkit.getOnlinePlayers()){
+						
+						if (ep == p){
+							
+							sender.sendMessage(WCMail.AS(WC + "You have cleared the heavens!"));
+							
+						} else {
+							
+							ep.sendMessage(WCMail.AS(WC + p.getDisplayName() + " has cleared the heavens!"));
+							
+						}
+						
+					}
+					
+					rainoffCooldown.put(p.getName(), System.currentTimeMillis());
+					
+					break;
+					
 			}
 		}
 		return true;
