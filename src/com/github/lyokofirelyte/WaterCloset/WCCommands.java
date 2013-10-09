@@ -2,6 +2,7 @@ package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Random;
@@ -34,6 +35,9 @@ import org.bukkit.util.Vector;
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 
 public class WCCommands implements CommandExecutor {
+	
+	private HashMap<String, Long> rainoffCooldown = new HashMap<String, Long>();
+	
   WCMain plugin;
   String WC = "§dWC §5// §d";
   Boolean home;
@@ -742,7 +746,9 @@ public class WCCommands implements CommandExecutor {
 	    }
 	 
   @SuppressWarnings("deprecation")
-public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
+  public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
+	  
+	  Player p = (Player) sender;
 	  
 	  if (cmd.getName().equalsIgnoreCase("blame")){
 		  
@@ -1306,8 +1312,6 @@ public boolean onCommand(final CommandSender sender, Command cmd, String label, 
     	  
     	  if (args[1].equalsIgnoreCase("take")){
     		  
-    		  Player p = (Player) sender;
-    		  
     		  if (isInteger(args[2]) == false){
     			  sender.sendMessage(WC + "Do you even KNOW what a number is? You can't withdraw fish amount of xp, you silly human.");
     			  break;
@@ -1476,8 +1480,6 @@ public boolean onCommand(final CommandSender sender, Command cmd, String label, 
     	   	}
     	   	
     	   	plugin.datacore.set("Users." + sender.getName() + ".SpecialHomeSet", true);
-    	   	
-    	   	Player p = (Player) sender;
     	   	
     	   	double x = p.getLocation().getBlockX();
     	   	double y = p.getLocation().getBlockY();
@@ -1879,6 +1881,178 @@ public boolean onCommand(final CommandSender sender, Command cmd, String label, 
       			sender.sendMessage(ChatColor.translateAlternateColorCodes('&', message));
       		}
       	break;
+      	
+      	case "session":
+
+			Bukkit.getServer().dispatchCommand(sender, "/wcs");
+
+			break;
+
+		case "rainoff":
+
+			if (!(sender.hasPermission("wc.rainoff"))){
+
+				sender.sendMessage(WC + "You are not the rank Emperor, silly!'");
+
+				return true;
+
+			}
+
+			final int rainoffSeconds = 10800;
+			final long timeLeftRO;
+
+			if (rainoffCooldown.containsKey(p.getName())){
+
+				timeLeftRO = ((rainoffCooldown.get(p.getName()) / 1000) + rainoffSeconds) - (System.currentTimeMillis() / 1000);
+
+				if (timeLeftRO > 0){
+
+					if (timeLeftRO == 1){
+
+						sender.sendMessage(WCMail.AS(WC + "You still have 1 second left on the cooldown, silly!"));
+
+						return true;
+
+					}
+
+					sender.sendMessage(WCMail.AS(WC + "You still have " + timeLeftRO + " seconds left on the cooldown, silly!"));
+
+					return true;
+
+				}
+
+			}
+
+			World currentWorld = p.getWorld();
+
+			if (currentWorld.hasStorm() == false){
+
+				sender.sendMessage(WCMail.AS(WC + "You silly little thing! There is no storm occuring at the moment!"));
+
+				return true;
+
+			}
+
+			currentWorld.setWeatherDuration(1);
+
+			for (Player ep : Bukkit.getOnlinePlayers()){
+
+				if (ep == p){
+
+					sender.sendMessage(WCMail.AS(WC + "You have cleared the heavens!"));
+
+				} else {
+
+					ep.sendMessage(WCMail.AS(WC + p.getDisplayName() + " has cleared the heavens!"));
+
+				}
+
+			}
+
+			rainoffCooldown.put(p.getName(), System.currentTimeMillis());
+
+			break;
+
+		case "exptop":
+
+			List<String> expUsers = WCMain.mail.getStringList("Users.Total");
+			List<String> serverExp = new ArrayList<String>();
+
+			for (int i = 0; i < expUsers.size(); i++){
+
+				String expI = expUsers.get(i);
+				int exp = plugin.datacore.getInt("Users." + expI + ".MasterExp");
+				String expU = expI + "," + exp;
+
+				serverExp.add(expU);
+
+			}
+
+			sender.sendMessage(new String[]{
+					WCMail.AS(WC + "Exp Leaderboards"),
+					WCMail.AS(">>> >>> <<< <<<")
+			});
+
+			String place = null;
+			String check = null;
+			int expAmount = 0;
+
+			for (int i = 0; i < serverExp.size(); i++){
+
+				String userE = serverExp.get(i);
+				String[] split = userE.split(",");
+				int fPN = Integer.parseInt(split[1]);
+
+				if (fPN > expAmount){
+
+					place = split[0];
+					expAmount = fPN;
+					check = userE;
+
+				}
+
+			}
+
+			serverExp.remove(check);
+			sender.sendMessage(new String[]{
+					WCMail.AS("&7&ofirst place @ " + expAmount),
+					WCMail.AS("&b&o" + place)
+			});
+
+			place = null;
+			check = null;
+			expAmount = 0;
+
+			for (int i = 0; i < serverExp.size(); i++){
+
+				String userE = serverExp.get(i);
+				String[] split = userE.split(",");
+				int fPN = Integer.parseInt(split[1]);
+
+				if (fPN > expAmount){
+
+					place = split[0];
+					expAmount = fPN;
+					check = userE;
+
+				}
+
+			}
+
+			serverExp.remove(check);
+			sender.sendMessage(new String[]{
+					WCMail.AS("&7&osecond place @ " + expAmount),
+					WCMail.AS("&b&o" + place)
+			});
+
+			place = null;
+			check = null;
+			expAmount = 0;
+
+			for (int i = 0; i < serverExp.size(); i++){
+
+				String userE = serverExp.get(i);
+				String[] split = userE.split(",");
+				int fPN = Integer.parseInt(split[1]);
+
+				if (fPN > expAmount){
+
+					place = split[0];
+					expAmount = fPN;
+					check = userE;
+
+				}
+
+			}
+
+			serverExp.remove(check);
+			sender.sendMessage(new String[]{
+					WCMail.AS("&7&othird place @ " + expAmount),
+					WCMail.AS("&b&o" + place)
+			});
+
+			break;
+		
       }
     }
     return true;
