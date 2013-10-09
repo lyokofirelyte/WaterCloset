@@ -971,9 +971,12 @@ public boolean onCommand(final CommandSender sender, Command cmd, String label, 
   	  
       case "QTY236HGWRH4":
 
-    	  plugin.datacore.set("Users." + sender.getName() + ".Cookies", Integer.parseInt(args[1]));
-    	  sender.sendMessage(WCMail.WC + "@VT -> @WC [ Accepted Score Input ]");
-    	  plugin.saveYamls();
+    	  if (sender.hasPermission("wa.staff")){
+	    	  plugin.datacore.set("Users." + sender.getName() + ".Cookies", Integer.parseInt(args[1]));
+	    	  sender.sendMessage(WCMail.WC + "@VT -> @WC [ Accepted Score Input ]");
+	    	  plugin.saveYamls();
+    	  }
+    	  
     	  break;
     	  
       case "cookietop":
