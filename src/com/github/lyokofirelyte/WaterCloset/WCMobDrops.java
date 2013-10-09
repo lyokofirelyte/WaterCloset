@@ -1,7 +1,6 @@
 package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -11,10 +10,12 @@ import org.bukkit.Effect;
 import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -22,7 +23,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.potion.PotionEffect;
@@ -39,27 +39,24 @@ public class WCMobDrops implements Listener {
 	   plugin = instance;
     } 
 	
-	Inventory chest;
-	HashMap<String, Inventory> tempStorage = new HashMap<String, Inventory>();
 	
 	 @EventHandler(priority = EventPriority.NORMAL)
 	  public void onPlayerBadTouch(PlayerInteractEvent event){
 		 		 
-	      if ((event.getAction() == Action.RIGHT_CLICK_AIR) || (event.getAction() == Action.RIGHT_CLICK_BLOCK)){
-	    	  
+	  
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.WALL_SIGN){
 	    	  		paragonSign(event, event.getPlayer());
 	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.STONE_BUTTON){
 	    	  		paragonCheckout(event, event.getPlayer());
 	    	  	}
-	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK){
-	    	  		cookie(event, event.getPlayer());
-	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.GLOWSTONE){
 	    	  		obeliskCheck(event, event.getPlayer());
 	    	  	}
-	    	  
+	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR){
+	    	  		cookie(event, event.getPlayer());
+	    	  	} 
+	    	  	
 	    	if (event.getPlayer().getInventory().getItemInHand().getTypeId() == 371) {
 
 	 		  Player player = event.getPlayer();
@@ -82,14 +79,39 @@ public class WCMobDrops implements Listener {
 	        }
 	      }
 	    }
-	  }
-	    
-	 
-	
-	
+
 	private void cookie(PlayerInteractEvent e, Player p) {
 		
+	if (e.getAction() == Action.RIGHT_CLICK_AIR){
 		
+		Location loc = p.getLocation();
+		double y = loc.getY();
+		y++;
+		Location newLoc = new Location(p.getWorld(), loc.getX(),y,loc.getZ());
+		
+		if (p.isSneaking() &&  plugin.datacore.getBoolean("Users." + p.getName() + ".Throw")){
+			
+			ItemStack i = p.getItemInHand();
+			if (i.hasItemMeta() || i.getType().isEdible() || i.getType().toString().equals("EGG")
+				|| i.getType().toString().equals("POTION") || i.getType().toString().contains("SWORD") || i.getType().toString().contains("HELMET") ||
+				i.getType().toString().contains("CHESTPLATE") || i.getType().toString().contains("LEGGING") || i.getType().toString().contains("BOOTS")){
+				
+				p.sendMessage(WCMail.WC + "You can't throw that!");
+				return;
+			}
+			ItemStack cobble = new ItemStack(i.getType(), 1);
+			cobble.setDurability(i.getDurability());
+			Item dropped = p.getWorld().dropItem(newLoc, cobble);
+			dropped.setPickupDelay(20);
+			dropped.setVelocity(p.getLocation().getDirection().add(dropped.getVelocity().setY(0.5)));
+		    ItemStack old = new ItemStack(i.getType(), i.getAmount() - 1);
+		    p.setItemInHand(old);
+			p.getWorld().playSound(p.getLocation(), Sound.CLICK, 3.0F, 0.5F);
+			return;
+		}
+	
+		return;
+	}
 		double x = e.getClickedBlock().getX();
 		double y = e.getClickedBlock().getY();
 		double z = e.getClickedBlock().getZ();
@@ -110,9 +132,109 @@ public class WCMobDrops implements Listener {
 			goalCount = plugin.datacore.getInt("Users." + p.getName() + ".GoalCount");
 			goalCount++;
 			plugin.datacore.set("Users." + p.getName() + ".GoalCount", goalCount);
-			
+			return;
 			
 		}
+		
+		if (p.getItemInHand().hasItemMeta()){
+			if (p.getItemInHand().getItemMeta().hasLore() && p.getItemInHand().getItemMeta().hasDisplayName()){
+				if (p.getItemInHand().getItemMeta().getDisplayName().toString().contains("HAMDRAX")){
+					String block = e.getClickedBlock().getType().toString();
+					short dur = p.getItemInHand().getDurability();
+
+					List <String> picks = plugin.config.getStringList("Hamdrax.Pick");
+					List <String> shovels = plugin.config.getStringList("Hamdrax.Shovel");
+					List <String> axes = plugin.config.getStringList("Hamdrax.Axe");
+					List <String> shears = plugin.config.getStringList("Hamdrax.Shears");
+					List <String> swords = plugin.config.getStringList("Hamdrax.Sword");
+					
+						if (picks.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_PICKAXE)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_PICKAXE, p, dur, "Pick");
+									return;
+								}
+								swapDrax(Material.DIAMOND_PICKAXE, p, dur, "Pick");
+							}
+							
+						}
+						
+						if (shovels.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_SPADE)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_SPADE, p, dur, "Shovel");
+									return;
+								}
+								swapDrax(Material.DIAMOND_SPADE, p, dur, "Shovel");
+							}
+							
+						}
+
+						if (axes.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_AXE)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_AXE, p, dur, "Axe");
+									return;
+								}
+								swapDrax(Material.DIAMOND_AXE, p, dur, "Axe");
+							}
+							
+						}
+						
+						if (shears.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.SHEARS)){
+								swapDrax(Material.SHEARS, p, (short) 0, "Shears");
+								plugin.datacore.set("Users." + p.getName() + ".HamDur", dur);
+							}
+							
+						}	
+						
+						if (swords.contains(block)){
+							
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_SWORD)){
+								if (p.getItemInHand().getType().toString().equals("SHEARS")){
+									dur = (short) plugin.datacore.getInt("Users." + p.getName() + ".HamDur");
+									swapDrax(Material.DIAMOND_SWORD, p, dur, "Sword");
+									return;
+								}
+								swapDrax(Material.DIAMOND_SWORD, p, dur, "Sword");
+							}
+							
+						}
+				}
+			}
+		}
+	}
+
+
+
+
+	@SuppressWarnings("deprecation")
+	static void swapDrax(Material type, Player p, short dur, String form) {
+
+	    ArrayList<String> lore;
+	    ItemStack token = new ItemStack(type, 1);
+        ItemMeta name = token.getItemMeta();
+        lore = new ArrayList<String>();
+        name.addEnchant(Enchantment.DIG_SPEED, 5, true);
+        name.addEnchant(Enchantment.DURABILITY, 3, true);
+        name.addEnchant(Enchantment.PROTECTION_ENVIRONMENTAL, 10, true);
+        name.addEnchant(Enchantment.DAMAGE_ALL, 3, true);
+        name.addEnchant(Enchantment.FIRE_ASPECT, 3, true);
+        name.setDisplayName("§a§o§lHAMDRAX OF " + p.getDisplayName());
+        lore.add("§7§oForm: " + form);
+        name.setLore(lore);
+        token.setItemMeta((ItemMeta)name);
+        p.getInventory().setItemInHand(token);
+        p.getItemInHand().setDurability(dur);
+        p.updateInventory();	
 	}
 
 
@@ -354,6 +476,14 @@ public class WCMobDrops implements Listener {
 						paragonAmountCheck(45, p, action);
 						break;
 						
+					case 10:
+						paragonAmountCheck(64, p, action);
+						break;
+						
+					case 11:
+						paragonAmountCheck(15, p, action);
+						break;
+						
 					default:
 						p.sendMessage(WCMail.WC + "You've not selected anything to purchase!");
 						break;
@@ -502,9 +632,70 @@ public class WCMobDrops implements Listener {
 				Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco give " + p.getName() + " 85000");
 				p.getInventory().getItemInHand().setAmount((amount - (cost-1)));
 				break;
+				
+		case 10:
+			
+			Boolean aval = plugin.datacore.getBoolean("Users." + p.getName() + ".Hamdrax");
+				if (aval == false){
+					plugin.datacore.set("Users." + p.getName() + ".Hamdrax", true);
+					p.sendMessage(WCMail.WC + "You need to claim this with /wc hamdrax!");
+					p.getInventory().getItemInHand().setAmount((amount - (cost-1)));
+					break;
+				} else {
+					p.sendMessage(WCMail.WC + "You need to claim this with /wc hamdrax!");
+				}
+				
+			break;
+			
+		case 11:
+			
+			Boolean aval2 = plugin.datacore.getBoolean("Users." + p.getName() + ".HamdraxRepair");
+			if (aval2 == false){
+				plugin.datacore.set("Users." + p.getName() + ".HamdraxRepair", true);
+				p.sendMessage(WCMail.WC + "You need to claim this with /wc hamrepair!");
+				p.getInventory().getItemInHand().setAmount((amount - (cost-1)));
+				break;
+			} else {
+				p.sendMessage(WCMail.WC + "You need to claim this with /wc hamrepair!");
+			}
+			
 		}
 		
 		
+	}
+	
+	public void townSignUpdate(Player p, String type, String action){
+		
+		Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
+		
+		if (inAlliance){
+			String alliance = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".Alliance");
+			String allianceRank = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".AllianceRank");
+			int tier = plugin.WAAlliancesconfig.getInt("Alliances." + alliance + ".Tier");
+			List <String> chatMods = plugin.WAAlliancesconfig.getStringList("Alliances." + alliance + ".chatAdmins");
+			
+				if (tier < 2){
+					p.sendMessage(WCMail.WC + "You are not the correct Tier!");
+					return;
+				}
+				
+				if (tier < 3 && type.equals("mob-spawning")){
+					p.sendMessage(WCMail.WC + "You are not the correct Tier!");
+					return;
+				}
+				
+				if (!allianceRank.equals("Leader") && !chatMods.contains(p.getName())){
+					p.sendMessage(WCMail.WC + "You must be a chat admin or the leader to use this!");
+					return;
+				} else {
+					Bukkit.dispatchCommand(Bukkit.getServer().getConsoleSender(), "rg flag " + alliance + " -w world " + type + " " + action);
+					p.sendMessage(WCMail.WC + "Updated " + alliance);
+					return;
+				}
+		} else {
+			p.sendMessage(WCMail.WC + "You must be in an alliance!");
+			return;
+		}
 	}
 
 
@@ -514,6 +705,30 @@ public class WCMobDrops implements Listener {
 		double y = e.getClickedBlock().getY();
 		double z = e.getClickedBlock().getZ();
 		String xyz = x + "," + y + "," + z;
+		
+			switch (xyz){
+			
+			case "-279.0,67.0,-34.0":
+				
+				townSignUpdate(p, "use", "allow");
+				break;
+			
+			case "-279.0,67.0,-33.0":
+				
+				townSignUpdate(p, "use", "deny");
+				break;
+				
+			case "-279.0,66.0,-34.0":
+				
+				townSignUpdate(p, "mob-spawning", "allow");
+				break;
+				
+			case "-279.0,66.0,-33.0":
+				
+				townSignUpdate(p, "mob-spawning", "deny");
+				break;
+					
+			}
 		
 		String rewardInfo = plugin.config.getString("Paragons.Rewards." + xyz + ".Info");
 		

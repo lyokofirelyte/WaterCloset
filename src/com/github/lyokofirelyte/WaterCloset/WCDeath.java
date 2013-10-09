@@ -1,6 +1,7 @@
 package com.github.lyokofirelyte.WaterCloset;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.HumanEntity;
@@ -22,8 +23,28 @@ public class WCDeath implements Listener{
 	plugin = instance;
 	}
 	
+	  @EventHandler(priority=EventPriority.NORMAL)
+	  public void EDBEE(EntityDamageByEntityEvent e) {
+		  
+		  if (e.getDamager() instanceof Player){
+			  
+			  Player p = (Player) e.getDamager();
+			  
+			  if (p.getItemInHand().hasItemMeta()){
+					if (p.getItemInHand().getItemMeta().hasLore() && p.getItemInHand().getItemMeta().hasDisplayName()){
+						if (p.getItemInHand().getItemMeta().getDisplayName().toString().contains("HAMDRAX")){
+							short dur = p.getItemInHand().getDurability();
+							if (!p.getItemInHand().getType().equals(Material.DIAMOND_SWORD)){
+								WCMobDrops.swapDrax(Material.DIAMOND_SWORD, p, dur, "Sword");
+							}
+						}
+					}
+			  }
+		  }
+	  
+	  }
+	  
 	@EventHandler (priority = EventPriority.NORMAL)
-	
 	public void onKerSmashSplode(EntityDeathEvent e){
 	
 		Entity ent = e.getEntity();

@@ -49,4 +49,6 @@ public class WCQuit
   {
     event.setLeaveMessage(null);
   }
+  
+
 }
