@@ -1481,8 +1481,7 @@ public class WCCommands implements CommandExecutor {
 					
 					break;
 					
-			}
-			
+			}	
 		}
 		
 		return true;
