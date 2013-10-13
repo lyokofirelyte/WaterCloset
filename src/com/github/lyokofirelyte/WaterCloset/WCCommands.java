@@ -1892,7 +1892,7 @@ public class WCCommands implements CommandExecutor {
 
 			if (!(sender.hasPermission("wc.rainoff"))){
 
-				sender.sendMessage(WC + "You are not the rank Emperor, silly!'");
+				sender.sendMessage(WC + "You are not the rank Emperor! Sorry, I tried my hardest.'");
 
 				return true;
 
@@ -1909,13 +1909,13 @@ public class WCCommands implements CommandExecutor {
 
 					if (timeLeftRO == 1){
 
-						sender.sendMessage(WCMail.AS(WC + "You still have 1 second left on the cooldown, silly!"));
+						sender.sendMessage(WCMail.AS(WC + "Wow! You have the actual nerve to try the command when there is still 1 second left on the cooldown. Amazing.!"));
 
 						return true;
 
 					}
 
-					sender.sendMessage(WCMail.AS(WC + "You still have " + timeLeftRO + " seconds left on the cooldown, silly!"));
+					sender.sendMessage(WCMail.AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + timeLeftRO + "seconds left on the cooldown."));
 
 					return true;
 
@@ -1927,7 +1927,7 @@ public class WCCommands implements CommandExecutor {
 
 			if (currentWorld.hasStorm() == false){
 
-				sender.sendMessage(WCMail.AS(WC + "You silly little thing! There is no storm occuring at the moment!"));
+				sender.sendMessage(WCMail.AS(WC + "Look, I know you're not a meteorologist, but does it &llook &dlike it's raining?"));
 
 				return true;
 
@@ -1943,7 +1943,7 @@ public class WCCommands implements CommandExecutor {
 
 				} else {
 
-					ep.sendMessage(WCMail.AS(WC + p.getDisplayName() + " has cleared the heavens!"));
+					ep.sendMessage(WCMail.AS(WC + p.getDisplayName() + " &dhas cleared the heavens!"));
 
 				}
 
