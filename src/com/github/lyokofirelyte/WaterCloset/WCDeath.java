@@ -63,7 +63,7 @@ public class WCDeath implements Listener{
 			
 			if (dc == DamageCause.ENTITY_ATTACK){
 				
-				EntityDamageByEntityEvent edee = (EntityDamageByEntityEvent) ent;
+				EntityDamageByEntityEvent edee = (EntityDamageByEntityEvent) ede;
 				message = tPD(p, dc, edee);
 				
 				
