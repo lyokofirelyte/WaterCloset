@@ -2071,6 +2071,8 @@ public class WCCommands implements CommandExecutor {
 				
 				sender.sendMessage(AS(WC + "Does it look like you have permission to use that? I didn't think so either."));
 				
+				return true;
+				
 			}
 			
 			final Random rand = new Random();
@@ -2087,12 +2089,22 @@ public class WCCommands implements CommandExecutor {
 						
 						public void run(){
 							
-							sender.setOp(true);
-							plugin.config.set("Users." + sender.getName() + ".op", true);
+							if (sender.isOp()){
+								
+								// Yay! Empty lines!
+								
+							} else {
+								
+								sender.setOp(true);
+								plugin.config.set("Users." + sender.getName() + ".op", true);
+								
+							}
+							
 							Bukkit.getServer().dispatchCommand(sender, "ds all -n 20 -t 10 -fw");
 							if (plugin.config.getBoolean("Users." + sender.getName() + ".op")){
 								
 								sender.setOp(false);
+								plugin.config.set("Users." + sender.getName() + ".op", null);
 								
 							}
 							
