@@ -88,7 +88,7 @@ public class WCDeath implements Listener{
 							String weaponName = weapon.getItemMeta().getDisplayName();
 							Bukkit.broadcastMessage(WCMail.AS(p.getDisplayName() + " &f&otook on one too many " + attackerFinal + "&f&os, who used &b&o&l" + weaponName + "&f&o. &7(" + deaths + "&7)"));
 						} else {
-							String weaponName = weapon.getType().toString().toLowerCase().replaceAll("_", " ");
+							String weaponName = weapon.getType().name().toLowerCase().replaceAll("_", " ");
 							Bukkit.broadcastMessage(WCMail.AS(p.getDisplayName() + " &f&otook on one too many " + attackerFinal + "&f&os, who used &6" + weaponName + "&f&o. &7(" + deaths + "&7)"));
 						}
 						break;
