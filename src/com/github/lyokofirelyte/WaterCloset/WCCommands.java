@@ -33,6 +33,7 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
+import static com.github.lyokofirelyte.WaterCloset.WCMail.*;
 
 public class WCCommands implements CommandExecutor {
 	
@@ -760,7 +761,7 @@ public class WCCommands implements CommandExecutor {
 					x++;
 					
 					if (x == randomNumber){
-						Bukkit.broadcastMessage(WCMail.AS(((Player) sender).getDisplayName() + " &dblames " + bleh.getDisplayName() + "!"));
+						Bukkit.broadcastMessage(AS(((Player) sender).getDisplayName() + " &dblames " + bleh.getDisplayName() + "!"));
 						break;
 					}
 				}
@@ -770,14 +771,14 @@ public class WCCommands implements CommandExecutor {
 	  if (cmd.getName().equalsIgnoreCase("member") && sender.hasPermission("wa.staff")){
 		  
 		  if (args.length == 1){
-			  Bukkit.broadcastMessage(WCMail.AS("&b&lHEY THERE, " + "&4&l" + args[0] + "&b&l!"));
-			  Bukkit.broadcastMessage(WCMail.AS("&b&lWANT TO &aJOIN US AND BUILD?"));
-			  Bukkit.broadcastMessage(WCMail.AS("&e&lCLICK BELOW AND SCROLL DOWN TO &c&lMEMBER APPLICATION"));
-			  Bukkit.broadcastMessage(WCMail.AS("&f&o---> &f&lhttp://bit.ly/SxATSM &f&o<---"));
+			  Bukkit.broadcastMessage(AS("&b&lHEY THERE, " + "&4&l" + args[0] + "&b&l!"));
+			  Bukkit.broadcastMessage(AS("&b&lWANT TO &aJOIN US AND BUILD?"));
+			  Bukkit.broadcastMessage(AS("&e&lCLICK BELOW AND SCROLL DOWN TO &c&lMEMBER APPLICATION"));
+			  Bukkit.broadcastMessage(AS("&f&o---> &f&lhttp://bit.ly/SxATSM &f&o<---"));
 		  } else {
-			  Bukkit.broadcastMessage(WCMail.AS("&b&lWANT TO &aJOIN US AND BUILD?"));
-			  Bukkit.broadcastMessage(WCMail.AS("&e&lCLICK BELOW AND SCROLL DOWN TO &c&lMEMBER APPLICATION"));
-			  Bukkit.broadcastMessage(WCMail.AS("&f&o---> &f&lhttp://bit.ly/SxATSM &f&o<---"));
+			  Bukkit.broadcastMessage(AS("&b&lWANT TO &aJOIN US AND BUILD?"));
+			  Bukkit.broadcastMessage(AS("&e&lCLICK BELOW AND SCROLL DOWN TO &c&lMEMBER APPLICATION"));
+			  Bukkit.broadcastMessage(AS("&f&o---> &f&lhttp://bit.ly/SxATSM &f&o<---"));
 		  }
 		  
 		  return true;
@@ -814,11 +815,11 @@ public class WCCommands implements CommandExecutor {
     					
     					globalColor = plugin.datacore.getString("Users." + bleh.getName() + ".GlobalColor");
     					String message = WCChannels.createString2(args, 1);
-    					bleh.sendMessage(WCMail.AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + globalColor + message));   
+    					bleh.sendMessage(AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + globalColor + message));   
     			}
     		  
     		  String message = WCChannels.createString2(args, 1);
-    		  plugin.getServer().getConsoleSender().sendMessage(WCMail.AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + message)); 
+    		  plugin.getServer().getConsoleSender().sendMessage(AS("&4(づ｡◕‿‿◕｡)づ §f// &6Console§f: " + message)); 
     	  }
       
       break;
@@ -837,7 +838,7 @@ public class WCCommands implements CommandExecutor {
     		  break;
     	  }
     	  
-    	  sender.sendMessage(WCMail.AS(WCMail.WC + "You've changed your color to " + args[1] + "this."));
+    	  sender.sendMessage(AS(WCMail.WC + "You've changed your color to " + args[1] + "this."));
     	  plugin.datacore.set("Users." + sender.getName() + ".GlobalColor", args[1]);
     	  break;
     	  
@@ -1032,31 +1033,31 @@ public class WCCommands implements CommandExecutor {
 
       		sender.sendMessage(new String[]{
       			WCMail.WC + "Cookie Leaderboards",
-      			WCMail.AS("&f>>> >>> <<< <<<"),
-      			WCMail.AS("&7&ofirst place @ " + firstPlace)});
+      			AS("&f>>> >>> <<< <<<"),
+      			AS("&7&ofirst place @ " + firstPlace)});
       		
 					for (String current : cookieUsers){
 						int paragonLevel = plugin.datacore.getInt("Users." + current + ".Cookies");
 							if (paragonLevel == firstPlace){
-								sender.sendMessage(WCMail.AS("&b&o" + current));
+								sender.sendMessage(AS("&b&o" + current));
 							}
 					}
 					
-					sender.sendMessage(WCMail.AS("&7&osecond place @ " + secondPlace));
+					sender.sendMessage(AS("&7&osecond place @ " + secondPlace));
       		  
 					for (String current : cookieUsers){
 						int paragonLevel = plugin.datacore.getInt("Users." + current + ".Cookies");
 							if (paragonLevel == secondPlace){
-								sender.sendMessage(WCMail.AS("&b&o" + current));
+								sender.sendMessage(AS("&b&o" + current));
 							}
 					}
 					
-					sender.sendMessage(WCMail.AS("&7&othird place @ " + thirdPlace));
+					sender.sendMessage(AS("&7&othird place @ " + thirdPlace));
 	        		  
 					for (String current : cookieUsers){
 						int paragonLevel = plugin.datacore.getInt("Users." + current + ".Cookies");
 							if (paragonLevel == thirdPlace){
-								sender.sendMessage(WCMail.AS("&b&o" + current));
+								sender.sendMessage(AS("&b&o" + current));
 							}
 					}
 					
@@ -1076,7 +1077,7 @@ public class WCCommands implements CommandExecutor {
     		  break;
     	  }
     	  
-    	  sender.sendMessage(WCMail.AS(WCMail.WC + "You've changed your color to " + args[1] + "this."));
+    	  sender.sendMessage(AS(WCMail.WC + "You've changed your color to " + args[1] + "this."));
     	  plugin.datacore.set("Users." + sender.getName() + ".CustomColor", args[1]);
     	  plugin.datacore.set("Users." + sender.getName() + ".HasCustomColor", true);
     	  break;
@@ -1101,7 +1102,7 @@ public class WCCommands implements CommandExecutor {
     			  for (String b : boothList){
     				  String a = b.substring(b.lastIndexOf(" ")+1);
     				  	if (a.equals("&b" + Integer.valueOf(x).toString())){
-    				  		sender.sendMessage(WCMail.AS(b));
+    				  		sender.sendMessage(AS(b));
     				  		x++;
     				  	}
     			  }
@@ -1151,7 +1152,7 @@ public class WCCommands implements CommandExecutor {
     	  		    {
     	  		      public void run()
     	  		      {
-    	      	 		Bukkit.broadcastMessage(WCMail.AS("&" + colors.get(randomNumber) + bleh));
+    	      	 		Bukkit.broadcastMessage(AS("&" + colors.get(randomNumber) + bleh));
     	  		      }
     	  		    }
     	  		    , gg);
@@ -1353,16 +1354,16 @@ public class WCCommands implements CommandExecutor {
     	   if (args.length == 1){
     	  
     	  sender.sendMessage(new String[]{
-    		    WCMail.AS("&5| &dParagon Information Complex"),
-    			WCMail.AS("&5| &f--- ___ --- ___ --- ___ ---"),
-    			WCMail.AS("&5| &bCommands&f:"),
-    			WCMail.AS("&5| &a/wc rewards &f// &aShows your rewards!"),
-    			WCMail.AS("&5| &a/wc tp <player> &f// &aUse a TP token"),
-    			WCMail.AS("&5| &a/wc sethome &f// &aSet a special home!"),
-    			WCMail.AS("&5| &a/wc home &f// &aTP to your special home!"),
-    			WCMail.AS("&5| &a/wc back &f// &aUse a Back token!"),
-    			WCMail.AS("&5| &a/wc paragon self &f// &aSee your paragon stats!"),
-    			WCMail.AS("&5| &bSee&a ohsototes.com/?p=paragon &bfor full info on how to get and use them!")
+    		    AS("&5| &dParagon Information Complex"),
+    			AS("&5| &f--- ___ --- ___ --- ___ ---"),
+    			AS("&5| &bCommands&f:"),
+    			AS("&5| &a/wc rewards &f// &aShows your rewards!"),
+    			AS("&5| &a/wc tp <player> &f// &aUse a TP token"),
+    			AS("&5| &a/wc sethome &f// &aSet a special home!"),
+    			AS("&5| &a/wc home &f// &aTP to your special home!"),
+    			AS("&5| &a/wc back &f// &aUse a Back token!"),
+    			AS("&5| &a/wc paragon self &f// &aSee your paragon stats!"),
+    			AS("&5| &bSee&a ohsototes.com/?p=paragon &bfor full info on how to get and use them!")
     	  });
     	  
     	  break;
@@ -1388,22 +1389,22 @@ public class WCCommands implements CommandExecutor {
     		   sender.sendMessage(new String[]{
     				   
     		   
-    				WCMail.AS("&5| &dParagon Donation History"),
-    				WCMail.AS("&1| &aTotal &f// &a" + total),
-    				WCMail.AS("&1| &bMineral &f// &b" + mineral),
-    				WCMail.AS("&1| &bDragon &f// &b" + dragon),
-    				WCMail.AS("&1| &bNature &f// &b" + nature),
-    				WCMail.AS("&1| &bCrystal &f// &b" + crystal),
-    				WCMail.AS("&1| &bDeath &f// &b" + death),
-    				WCMail.AS("&1| &bSun &f// &b" + sun),
-    				WCMail.AS("&1| &bHell &f// &b" + hell),
-    				WCMail.AS("&1| &bEarth &f// &b" + earth),
-    				WCMail.AS("&1| &bIndustrial &f// &b" + industrial),
-    				WCMail.AS( "&1| &bLife &f// &b" + life),
-    				WCMail.AS("&1| &bInferno &f// &b" + inferno),
-    				WCMail.AS("&1| &bAquatic &f// &b" + aquatic),
-    				WCMail.AS("&1| &bRefined &f// &b" + refined),
-    				WCMail.AS("&1| &bFrost &f// &b" + frost),
+    				AS("&5| &dParagon Donation History"),
+    				AS("&1| &aTotal &f// &a" + total),
+    				AS("&1| &bMineral &f// &b" + mineral),
+    				AS("&1| &bDragon &f// &b" + dragon),
+    				AS("&1| &bNature &f// &b" + nature),
+    				AS("&1| &bCrystal &f// &b" + crystal),
+    				AS("&1| &bDeath &f// &b" + death),
+    				AS("&1| &bSun &f// &b" + sun),
+    				AS("&1| &bHell &f// &b" + hell),
+    				AS("&1| &bEarth &f// &b" + earth),
+    				AS("&1| &bIndustrial &f// &b" + industrial),
+    				AS( "&1| &bLife &f// &b" + life),
+    				AS("&1| &bInferno &f// &b" + inferno),
+    				AS("&1| &bAquatic &f// &b" + aquatic),
+    				AS("&1| &bRefined &f// &b" + refined),
+    				AS("&1| &bFrost &f// &b" + frost),
     	   });
     		   
     		   break;
@@ -1414,7 +1415,7 @@ public class WCCommands implements CommandExecutor {
     	   List <String> purchases = plugin.datacore.getStringList("Users." + sender.getName() + ".Purchases");
     	   sender.sendMessage(WC + "Paragon Purchases:");
     	   	for (String lampPost : purchases){
-    	   		sender.sendMessage(WCMail.AS("&5| &d" + lampPost));
+    	   		sender.sendMessage(AS("&5| &d" + lampPost));
     	   	}
     	   	
     	break;
@@ -1531,13 +1532,13 @@ public class WCCommands implements CommandExecutor {
         		
         		if (plugin.datacore.getBoolean("Users." + sender.getName() + ".ParagonPlaceMode")){
         		plugin.datacore.set("Users." + sender.getName() + ".ParagonPlaceMode", false);
-        		sender.sendMessage(WCMail.AS(WC + "BB OFF!"));
+        		sender.sendMessage(AS(WC + "BB OFF!"));
         		return true;
         		
         		} else {
         			
         		plugin.datacore.set("Users." + sender.getName() + ".ParagonPlaceMode", true);
-            	sender.sendMessage(WCMail.AS(WC + "BB ON!"));
+            	sender.sendMessage(AS(WC + "BB ON!"));
             	return true;
         		}
         	}
@@ -1695,31 +1696,31 @@ public class WCCommands implements CommandExecutor {
 
         		sender.sendMessage(new String[]{
         			WCMail.WC + "Paragon Leaderboards",
-        			WCMail.AS("&f>>> >>> <<< <<<"),
-        			WCMail.AS("&7&ofirst place @ level " + firstPlace)});
+        			AS("&f>>> >>> <<< <<<"),
+        			AS("&7&ofirst place @ level " + firstPlace)});
         		
 					for (String current : playerList){
 						int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
 							if (paragonLevel == firstPlace){
-								sender.sendMessage(WCMail.AS("&b&o" + current));
+								sender.sendMessage(AS("&b&o" + current));
 							}
 					}
 					
-					sender.sendMessage(WCMail.AS("&7&osecond place @ level " + secondPlace));
+					sender.sendMessage(AS("&7&osecond place @ level " + secondPlace));
         		  
 					for (String current : playerList){
 						int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
 							if (paragonLevel == secondPlace){
-								sender.sendMessage(WCMail.AS("&b&o" + current));
+								sender.sendMessage(AS("&b&o" + current));
 							}
 					}
 					
-					sender.sendMessage(WCMail.AS("&7&othird place @ level " + thirdPlace));
+					sender.sendMessage(AS("&7&othird place @ level " + thirdPlace));
 	        		  
 					for (String current : playerList){
 						int paragonLevel = plugin.datacore.getInt("Users." + current + ".ParagonLevel");
 							if (paragonLevel == thirdPlace){
-								sender.sendMessage(WCMail.AS("&b&o" + current));
+								sender.sendMessage(AS("&b&o" + current));
 							}
 					}
 					
@@ -1749,7 +1750,7 @@ public class WCCommands implements CommandExecutor {
         	}
         	
         		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tp " + sender.getName() + " " + args[1]);
-        		Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + ((Player) sender).getDisplayName() + " &chas used a grief-check teleport for " + Bukkit.getPlayer(args[1]).getDisplayName()));
+        		Bukkit.broadcastMessage(AS(WCMail.WC + ((Player) sender).getDisplayName() + " &chas used a grief-check teleport for " + Bukkit.getPlayer(args[1]).getDisplayName()));
         		break;
         
         case "addobelisk":
@@ -1778,7 +1779,7 @@ public class WCCommands implements CommandExecutor {
         		plugin.config.set("Obelisks.Names", names);
         		plugin.datacore.set("Obelisks.Latest", args[1]);
         		plugin.datacore.set("Obelisks.LatestType", args[2]);
-        		sender.sendMessage(WCMail.AS(WC + "Place a GLOWSTONE into the spot where the landing location will be set."));
+        		sender.sendMessage(AS(WC + "Place a GLOWSTONE into the spot where the landing location will be set."));
         		return true;
         	}
       
@@ -1814,13 +1815,13 @@ public class WCCommands implements CommandExecutor {
         		
         		if (plugin.datacore.getBoolean("Users." + sender.getName() + ".ParagonBreakMode")){
         		plugin.datacore.set("Users." + sender.getName() + ".ParagonBreakMode", false);
-        		sender.sendMessage(WCMail.AS(WC + "BP OFF!"));
+        		sender.sendMessage(AS(WC + "BP OFF!"));
         		return true;
         		
         		} else {
         			
         		plugin.datacore.set("Users." + sender.getName() + ".ParagonBreakMode", true);
-            	sender.sendMessage(WCMail.AS(WC + "BP ON!"));
+            	sender.sendMessage(AS(WC + "BP ON!"));
             	return true;
         		}
         	}
@@ -1888,13 +1889,17 @@ public class WCCommands implements CommandExecutor {
       	case "session":
 
 			Bukkit.getServer().dispatchCommand(sender, "wcs");
+
 			break;
 
 		case "rainoff":
 
-			if (sender.hasPermission("wa.emperor") == false){
-				sender.sendMessage(WC + "You are not the rank Emperor!");
-				break;
+			if (!(sender.hasPermission("wa.emperor"))){
+
+				sender.sendMessage(WC + "You are not the rank Emperor! Sorry, I tried my hardest.'");
+
+				return true;
+
 			}
 
 			final int rainoffSeconds = 10800;
@@ -1905,32 +1910,51 @@ public class WCCommands implements CommandExecutor {
 				timeLeftRO = ((rainoffCooldown.get(p.getName()) / 1000) + rainoffSeconds) - (System.currentTimeMillis() / 1000);
 
 				if (timeLeftRO > 0){
+
 					if (timeLeftRO == 1){
-						sender.sendMessage(WCMail.AS(WC + "You still have 1 second left on the cooldown!"));
-						break;
+
+						sender.sendMessage(AS(WC + "Wow! You have the actual nerve to try the command when there is still 1 second left on the cooldown. Amazing.!"));
+
+						return true;
+
 					}
-					sender.sendMessage(WCMail.AS(WC + "You still have " + timeLeftRO + " seconds left on the cooldown!"));
-					break;
+
+					sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + timeLeftRO + "seconds left on the cooldown."));
+
+					return true;
+
 				}
+
 			}
 
 			World currentWorld = p.getWorld();
 
 			if (currentWorld.hasStorm() == false){
-				sender.sendMessage(WCMail.AS(WC + "There is no storm occuring at the moment!"));
-				break;
+
+				sender.sendMessage(AS(WC + "Look, I know you're not a meteorologist, but does it &llook &dlike it's raining?"));
+
+				return true;
+
 			}
 
 			currentWorld.setWeatherDuration(1);
 
 			for (Player ep : Bukkit.getOnlinePlayers()){
+
 				if (ep == p){
-					sender.sendMessage(WCMail.AS(WC + "You have cleared the heavens!"));
+
+					sender.sendMessage(AS(WC + "You have cleared the heavens!"));
+
 				} else {
-					ep.sendMessage(WCMail.AS(WC + p.getDisplayName() + " has cleared the heavens!"));
+
+					ep.sendMessage(AS(WC + p.getDisplayName() + " &dhas cleared the heavens!"));
+
 				}
+
 			}
+
 			rainoffCooldown.put(p.getName(), System.currentTimeMillis());
+
 			break;
 
 		case "exptop":
@@ -1949,8 +1973,10 @@ public class WCCommands implements CommandExecutor {
 			}
 
 			sender.sendMessage(new String[]{
-					WCMail.AS(WC + "Exp Leaderboards"),
-					WCMail.AS(">>> >>> <<< <<<")
+					
+					AS(WC + "Exp Leaderboards"),
+					AS(">>> >>> <<< <<<")
+					
 			});
 
 			String place = null;
@@ -1975,8 +2001,10 @@ public class WCCommands implements CommandExecutor {
 
 			serverExp.remove(check);
 			sender.sendMessage(new String[]{
-					WCMail.AS("&7&ofirst place @ " + expAmount),
-					WCMail.AS("&b&o" + place)
+					
+					AS("&7&ofirst place @ " + expAmount),
+					AS("&b&o" + place)
+					
 			});
 
 			place = null;
@@ -2001,8 +2029,10 @@ public class WCCommands implements CommandExecutor {
 
 			serverExp.remove(check);
 			sender.sendMessage(new String[]{
-					WCMail.AS("&7&osecond place @ " + expAmount),
-					WCMail.AS("&b&o" + place)
+					
+					AS("&7&osecond place @ " + expAmount),
+					AS("&b&o" + place)
+					
 			});
 
 			place = null;
@@ -2027,10 +2057,106 @@ public class WCCommands implements CommandExecutor {
 
 			serverExp.remove(check);
 			sender.sendMessage(new String[]{
-					WCMail.AS("&7&othird place @ " + expAmount),
-					WCMail.AS("&b&o" + place)
+					
+					AS("&7&othird place @ " + expAmount),
+					AS("&b&o" + place)
+					
 			});
 
+			break;
+			
+		case "groove":
+			
+			if (!(sender.hasPermission("wa.staff"))){
+				
+				sender.sendMessage(AS(WC + "Does it look like you have permission to use that? I didn't think so either."));
+				
+				return true;
+				
+			}
+			
+			final Random rand = new Random();
+			
+			Bukkit.broadcastMessage(AS(WC + "Are you ready everyone? Here we go!"));
+			
+			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+				
+				public void run(){
+					
+					Bukkit.broadcastMessage(AS(WC + "&lWhat does the fox say?!"));
+					
+					Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
+						
+						public void run(){
+							
+							if (sender.isOp()){
+								
+								// Yay! Empty lines!
+								
+							} else {
+								
+								sender.setOp(true);
+								plugin.config.set("Users." + sender.getName() + ".op", true);
+								
+							}
+							
+							Bukkit.getServer().dispatchCommand(sender, "ds all -n 20 -t 10 -fw");
+							if (plugin.config.getBoolean("Users." + sender.getName() + ".op")){
+								
+								sender.setOp(false);
+								plugin.config.set("Users." + sender.getName() + ".op", null);
+								
+							}
+							
+							final List<String> players = new ArrayList<String>();
+							
+							for (Player pl : Bukkit.getOnlinePlayers()){
+								
+								players.add(pl.getName());
+								
+							}
+							
+							int groove = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+								
+								public void run(){
+									
+									int size = players.size();
+									int rN = rand.nextInt(size);
+									String p = players.get(rN);
+									
+									Bukkit.getServer().dispatchCommand(sender, "sudo " + p + " c:DING");
+									players.remove(p);
+									
+									size = players.size();
+									
+									plugin.config.set("groove",size);
+									
+								}
+								
+							}, 0L, 10L);
+							
+							while (true){
+								
+								int size = plugin.config.getInt("groove");
+								
+								if (size == 0){
+									
+									Bukkit.getServer().getScheduler().cancelTask(groove);
+									
+									break;
+									
+								}
+								
+							}
+							
+						}
+						
+					}, 40L);
+					
+				}
+				
+			}, 40L);
+			
 			break;
 		
       }
