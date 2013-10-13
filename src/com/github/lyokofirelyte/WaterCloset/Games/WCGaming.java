@@ -1,5 +1,13 @@
 package com.github.lyokofirelyte.WaterCloset.Games;
 
-public class WCGaming {
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 
+public class WCGaming  {
+
+	  WCMain plugin;
+	  public WCGaming(WCMain instance){
+	  this.plugin = instance;
+	  }
+
+	
 }

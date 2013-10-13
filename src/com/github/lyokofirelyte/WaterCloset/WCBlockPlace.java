@@ -71,6 +71,11 @@ public class WCBlockPlace implements Listener{
 			return;
 	}
 	
+	if (e.getPlayer().getItemInHand().getType().equals(Material.COMMAND) && plugin.userGrabB(e.getPlayer().getName(), "HG.AddingPoints")){
+		e.setCancelled(true);
+		return;
+	}
+	
 	if (plugin.datacore.getBoolean("Users." + e.getPlayer().getName() + ".ObeliskPlaceMode")){
 		
 		plugin.datacore.set("Users." + e.getPlayer().getName() + ".ObeliskPlaceMode", false);

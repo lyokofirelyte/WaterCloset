@@ -1,6 +1,7 @@
 package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -30,6 +31,7 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
+import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 
 public class WCMobDrops implements Listener {
 
@@ -52,6 +54,14 @@ public class WCMobDrops implements Listener {
 	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK && event.getClickedBlock().getType() == Material.GLOWSTONE){
 	    	  		obeliskCheck(event, event.getPlayer());
+	    	  	}
+	    	  	if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getPlayer().getItemInHand().getType().equals(Material.COMMAND) && plugin.userGrabB(event.getPlayer().getName(), "HG.ChoosingArena")){
+	    	  		hgArena(event, event.getPlayer());
+	    	  		return;
+	    	  	}
+	    	  	if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getPlayer().getItemInHand().getType().equals(Material.COMMAND) && plugin.userGrabB(event.getPlayer().getName(), "HG.AddingPoints")){
+	    	  		hgArena2(event, event.getPlayer());
+	    	  		return;
 	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.LEFT_CLICK_BLOCK || event.getAction() == Action.RIGHT_CLICK_AIR){
 	    	  		cookie(event, event.getPlayer());
@@ -79,6 +89,48 @@ public class WCMobDrops implements Listener {
 	        }
 	      }
 	    }
+
+	private void hgArena(PlayerInteractEvent event, Player p) {
+		
+		List <String> hgArenaList = Arrays.asList("&bWC Classic (Tools on start, mining allowed, 5 minute grace period)", 
+			    "&bVanilla Collision (No grace period, chests hidden, no block breaking)",
+			    "&bExtreme Collision (Tools on start, mining allowed, person with most kills wins, re-spawn on death)");
+		
+		List <String> hgArenaListTech = Arrays.asList("classic", "vanilla", "extreme");
+
+	int x = plugin.userGrabI(p.getName(), "HG.TempNumber");
+	plugin.WAGamesconfig.set("HG." + plugin.WAGamesdatacore.getString("HG.CurrentArena") + ".Mode", hgArenaListTech.get(x));
+	CGMain.s2(p, hgArenaList.get(x));
+	x++;
+	
+	if (x > 2){
+		x = 0;
+		plugin.userWriteI(p.getName(), "HG.TempNumber", x);
+	} else {
+		plugin.userWriteI(p.getName(), "HG.TempNumber", x);
+	}
+	
+	}
+	
+	public void hgArena2(PlayerInteractEvent e, Player p){
+		double x = p.getLocation().getX();
+		double y = p.getLocation().getY();
+		double z = p.getLocation().getZ();
+		float yaw = p.getLocation().getYaw();
+		float pitch = p.getLocation().getPitch();
+		String xyz = x + "," + y + "," + z + "," + pitch + "," + yaw;
+		List <String> allowedLocations = plugin.WAGamesconfig.getStringList("HG." + plugin.WAGamesdatacore.getString("HG.CurrentArena") + ".Locations");
+		if (allowedLocations.contains(xyz)){
+			CGMain.s(e.getPlayer(), "&cYou've already set that point.");
+			return;
+		}
+		allowedLocations.add(xyz);
+		plugin.WAGamesconfig.set("HG." + plugin.WAGamesdatacore.getString("HG.CurrentArena") + ".Locations", allowedLocations);
+		e.getPlayer().sendMessage(WCMail.AS(WCMail.WC + "Point " + allowedLocations.size() + " &dadded @ " + xyz + "&d."));
+		plugin.WAGamesconfig.set("HG." + plugin.WAGamesdatacore.getString("HG.CurrentArena") + ".Points", allowedLocations.size());
+		return;
+	}
+
 
 	private void cookie(PlayerInteractEvent e, Player p) {
 		

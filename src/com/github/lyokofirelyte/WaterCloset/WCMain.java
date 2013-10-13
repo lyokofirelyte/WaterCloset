@@ -23,6 +23,7 @@ import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 import com.github.lyokofirelyte.WaterCloset.Extras.waOSReport;
+import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 
 public class WCMain extends JavaPlugin {
 	
@@ -232,6 +233,7 @@ public class WCMain extends JavaPlugin {
     
     getCommand("member").setExecutor(new WCCommands(this));
     
+    getCommand("cg").setExecutor(new CGMain(this));
   }
 
   public void copy(InputStream in, File file)

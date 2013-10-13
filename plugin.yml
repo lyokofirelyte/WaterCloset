@@ -76,6 +76,9 @@ commands:
    search:
       description: Search the global database of help!
       usage: /search <query>
+   cg:
+      description: Collision Games
+      usage: /cg
 permissions:
     spleef.admin:
         description: Use admin stuff.
@@ -97,4 +100,7 @@ permissions:
         default: false
     wa.citizen:
         description: Chat Colors.
+        default: op
+    wa.emperor:
+        description: Rainoff.
         default: op
