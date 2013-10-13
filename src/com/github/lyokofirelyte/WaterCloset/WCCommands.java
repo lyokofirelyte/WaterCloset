@@ -37,6 +37,7 @@ import static com.github.lyokofirelyte.WaterCloset.WCMail.*;
 
 public class WCCommands implements CommandExecutor {
 	
+	private int groove;
 	private HashMap<String, Long> rainoffCooldown = new HashMap<String, Long>();
 	
   WCMain plugin;
@@ -2067,17 +2068,14 @@ public class WCCommands implements CommandExecutor {
 			
 		case "groove":
 			
-			if (!(sender.hasPermission("wa.staff"))){
-				
-				sender.sendMessage(AS(WC + "Does it look like you have permission to use that? I didn't think so either."));
-				
-				return true;
-				
+			if (!(sender.hasPermission("wa.staff"))){			
+				sender.sendMessage(AS(WC + "Does it look like you have permission to use that? I didn't think so either."));	
+				break;		
 			}
 			
 			final Random rand = new Random();
 			
-			Bukkit.broadcastMessage(AS(WC + "Are you ready everyone? Here we go!"));
+			Bukkit.broadcastMessage(AS(WC + "Are you ready everyone? Here we go! (kill me please)"));
 			
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 				
@@ -2090,33 +2088,24 @@ public class WCCommands implements CommandExecutor {
 						public void run(){
 							
 							if (sender.isOp()){
-								
-								// Yay! Empty lines!
-								
-							} else {
-								
-								sender.setOp(true);
 								plugin.config.set("Users." + sender.getName() + ".op", true);
-								
+							} else {
+								sender.setOp(true);			
 							}
 							
 							Bukkit.getServer().dispatchCommand(sender, "ds all -n 20 -t 10 -fw");
-							if (plugin.config.getBoolean("Users." + sender.getName() + ".op")){
-								
-								sender.setOp(false);
-								plugin.config.set("Users." + sender.getName() + ".op", null);
-								
+							
+							if (!plugin.config.getBoolean("Users." + sender.getName() + ".op")){
+								sender.setOp(false);						
 							}
 							
 							final List<String> players = new ArrayList<String>();
 							
-							for (Player pl : Bukkit.getOnlinePlayers()){
-								
+							for (Player pl : Bukkit.getOnlinePlayers()){					
 								players.add(pl.getName());
-								
 							}
 							
-							int groove = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+							groove = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 								
 								public void run(){
 									
@@ -2124,44 +2113,28 @@ public class WCCommands implements CommandExecutor {
 									int rN = rand.nextInt(size);
 									String p = players.get(rN);
 									
-									Bukkit.getServer().dispatchCommand(sender, "sudo " + p + " c:DING");
-									players.remove(p);
-									
-									size = players.size();
-									
-									plugin.config.set("groove",size);
-									
+									Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "sudo " + p + " c:DING");
+									players.remove(p);	
+									size = players.size();					
+									plugin.config.set("groove", size);
+									if (size <= 0){							
+										cancelTask();
+									}							
 								}
-								
-							}, 0L, 10L);
-							
-							while (true){
-								
-								int size = plugin.config.getInt("groove");
-								
-								if (size == 0){
-									
-									Bukkit.getServer().getScheduler().cancelTask(groove);
-									
-									break;
-									
-								}
-								
-							}
-							
-						}
-						
-					}, 40L);
-					
-				}
-				
+							}, 0L, 10L);				
+						}					
+					}, 40L);				
+				}			
 			}, 40L);
 			
 			break;
-		
       }
     }
     return true;
   }
+  
+	private void cancelTask() {
+		Bukkit.getServer().getScheduler().cancelTask(groove);
+	}
 }
   
