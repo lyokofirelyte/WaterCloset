@@ -1887,18 +1887,14 @@ public class WCCommands implements CommandExecutor {
       	
       	case "session":
 
-			Bukkit.getServer().dispatchCommand(sender, "/wcs");
-
+			Bukkit.getServer().dispatchCommand(sender, "wcs");
 			break;
 
 		case "rainoff":
 
-			if (!(sender.hasPermission("wc.rainoff"))){
-
-				sender.sendMessage(WC + "You are not the rank Emperor, silly!'");
-
-				return true;
-
+			if (sender.hasPermission("wa.emperor") == false){
+				sender.sendMessage(WC + "You are not the rank Emperor!");
+				break;
 			}
 
 			final int rainoffSeconds = 10800;
@@ -1909,51 +1905,32 @@ public class WCCommands implements CommandExecutor {
 				timeLeftRO = ((rainoffCooldown.get(p.getName()) / 1000) + rainoffSeconds) - (System.currentTimeMillis() / 1000);
 
 				if (timeLeftRO > 0){
-
 					if (timeLeftRO == 1){
-
-						sender.sendMessage(WCMail.AS(WC + "You still have 1 second left on the cooldown, silly!"));
-
-						return true;
-
+						sender.sendMessage(WCMail.AS(WC + "You still have 1 second left on the cooldown!"));
+						break;
 					}
-
-					sender.sendMessage(WCMail.AS(WC + "You still have " + timeLeftRO + " seconds left on the cooldown, silly!"));
-
-					return true;
-
+					sender.sendMessage(WCMail.AS(WC + "You still have " + timeLeftRO + " seconds left on the cooldown!"));
+					break;
 				}
-
 			}
 
 			World currentWorld = p.getWorld();
 
 			if (currentWorld.hasStorm() == false){
-
-				sender.sendMessage(WCMail.AS(WC + "You silly little thing! There is no storm occuring at the moment!"));
-
-				return true;
-
+				sender.sendMessage(WCMail.AS(WC + "There is no storm occuring at the moment!"));
+				break;
 			}
 
 			currentWorld.setWeatherDuration(1);
 
 			for (Player ep : Bukkit.getOnlinePlayers()){
-
 				if (ep == p){
-
 					sender.sendMessage(WCMail.AS(WC + "You have cleared the heavens!"));
-
 				} else {
-
 					ep.sendMessage(WCMail.AS(WC + p.getDisplayName() + " has cleared the heavens!"));
-
 				}
-
 			}
-
 			rainoffCooldown.put(p.getName(), System.currentTimeMillis());
-
 			break;
 
 		case "exptop":
