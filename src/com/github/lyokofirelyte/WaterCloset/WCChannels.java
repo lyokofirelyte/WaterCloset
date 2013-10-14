@@ -33,7 +33,7 @@ public class WCChannels implements CommandExecutor, Listener {
 	public void stats(String s, Player p){
 		
 		if (s.length() == 6){
-			p.sendMessage(WCMail.WC + "Try !stats <username>.");
+			Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "sudo " + p.getName() + " c:!stats " + p.getName());
 			return;
 		}
 		
@@ -72,7 +72,7 @@ public class WCChannels implements CommandExecutor, Listener {
 			}
 			
 		String allianceUpdated = plugin.datacore.getString("Users." + player.getName() + ".AllianceTemp");
-		
+		int deaths = plugin.datacore.getInt("Users." + player.getName() + ".DeathCount");
 			
 		p.sendMessage(new String[]{
 			WCMail.AS(WCMail.WC + "Inspecting player " + player.getName() + "."),
@@ -84,6 +84,7 @@ public class WCChannels implements CommandExecutor, Listener {
 			WCMail.AS("&1| &f> > > < < <"),
 			WCMail.AS("&1| &6&oparagon level&f: " + paragonLevel),
 			WCMail.AS("&1| &6&oshiny balance&f: " + money),
+			WCMail.AS("&1| &6&odeath count&f: " + deaths),
 			WCMail.AS("&1| &f> > > < < <"),
 		});
 		

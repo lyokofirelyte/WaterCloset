@@ -16,6 +16,8 @@ Core:
   - '&1| &3/wc placeholders &f// &3Chat PlaceHolder Menu'
   - '&1| &3/wc chat &f// &3Avalible Chat Channels / Messaging'
   - '&1| &3/wc paragons &f// &3Paragon Commands'
+  - '&1| &3/wc session &f// &3Minecraft Server Status'
+  - '&1| &3/wc rainoff &f// &3Turn off rain (EMPEROR+)'
   
   JoinMessages:
   - So it seems that %p has logged in!
@@ -86,6 +88,161 @@ Core:
   - Speaking of %p... oh, they left. Darn.
   - Goodbye %p. We are still watching you. Always.
   - Another one bites the dust. (%p)
+  DeathMessages:
+    DEFAULT:
+    - '%p died. Why? I don''t know or care. They''re dead. DEAD.'
+    BLOCK_EXPLOSION:
+    - '%p exploded. Like that block of TNT they were standing on.'
+    FALL:
+    - 'Turns out that %p can''t actually fly. Looks like that hurt.'
+    DROWNING:
+    - '%p thought they were a fish. Now they''re dead.'
+    ENTITY_ATTACK:
+      # These are really bad... so please change them if you want. ;_; #
+      DEFAULT:
+      - '%p took on one too many mobs, who used THUNDER SMASH!'
+      PLAYER:
+      - '%p took on one too many %a''s, who used %i.'
+      ARROW:
+      - '%p was stupid enough to get killed from an %a already on the GROUND.'
+      BAT:
+      - '%p apparently was too mean to a %a, which sucked the living life out of them.'
+      BLAZE:
+      - '%p took on one too many %a. I guess they think they are immune to fire or something.'
+      BOAT:
+      - 'A %a just killed %p. Yup. That just happened.'
+      CAVE_SPIDER:
+      - '%p apparently loves poison. Because %as are just attracted to them.'
+      COMPLEX_PART:
+      - 'Wait. What''s a(n) %a? I''m confused. But apparently %p just died from it. Oh well.'
+      COW:
+      - '%p gutted too many %as. Now they died from a %a stampede.'
+      CREEPER:
+      # You can feel free to change this... #
+      - '%p c***-punted too many %as.'
+      DROPPED_ITEM:
+      - 'Too bad this death message wont ever pop up. Unless %p found a way to die by %as.'
+      EGG:
+      - 'Too many chicken babies killed %p. All that protein was too much for them.'
+      ENDER_CRYSTAL:
+      - '%p attempted to destroy an %a. Well, apparently they didn''t know that those things blow up...'
+      ENDER_DRAGON:
+      - '%p tried to piggy-back an %a. %as fly you know.'
+      ENDER_PEARL:
+      - 'Someone shot an %a at %p as a weapon! And they succedded!'
+      ENDER_SIGNAL:
+      - 'Silly, %p. You can''t die from %as. Oh wait...'
+      ENDERMAN:
+      - '%p took on one too many %a. Those dark eyes stared into %p''s soul too hard...'
+      EXPERIENCE_ORB:
+      - 'I don''t even. %p died from an %a. Wat.'
+      FALLING_BLOCK:
+      - 'The sky is falling! The sk- wait, nope, was just a falling block. Poor %p.'
+      FIREBALL:
+      - 'A %a was shot at %p. Can this death message get any more boring?'
+      FIREWORK:
+      - '%p loves %as so much that they gave their life just to view them. ''Merica.'
+      FISHING_HOOK:
+      - '%p got hooked in the eye by a %a. Yeah... I didn''t want to imagine that either.'
+      GHAST:
+      - '%as deal melee damage? Since when?! ( %p )'
+      GIANT:
+      - '%p disturbed a %a from its sleep. As you can see, things did not turn out that well.'
+      HORSE:
+      - '%p got trampled by a %a. Ouch.'
+      IRON_GOLEM:
+      - '%p disturbed an %a''s village. They now know the consequences.'
+      ITEM_FRAME:
+      - '%p is so ticklish that they died from leather on an %a.'
+      LIGHTNING:
+      - 'So, %p''s %a rod works. REALLY well.'
+      MAGMA_CUBE:
+      # I did my best. ;_; #
+      - 'The cubes from the nether are attacking! ( %p )'
+      MINECART:
+      - '%p was impailed by a %a going over 9000 mph.'
+      MINECART_CHEST:
+      - '%p was impailed by a %a going over 9000 mph.'
+      MINECART_FURNACE:
+      - '%p was impailed by a %a going over 9000 mph.'
+      MINECART_HOPPER:
+      - '%p was impailed by a %a going over 9000 mph.'
+      MINECART_MOB_SPAWNER:
+      - '%p was impailed by a %a going over 9000 mph.'
+      MINECART_TNT:
+      - '%p was impailed by a %a going over 9000 mph.'
+      MUSHROOM_COW:
+      - '%p found a mushroom island. Its inhabitants were not very welcome.'
+      OCELOT:
+      - 'MeeeeeeeeeeeOOOWWWWWWWWW! ( %p )'
+      PAINTING:
+      - '%p is so ticklish that they died from leather on an %a.'
+      PIG:
+      - '%p died from rolling in the mud with too many %as.'
+      PIG_ZOMBIE:
+      - '%as hurt you know. ( %p )'
+      PRIMED_TNT:
+      - '%p was kersploded from some %a. I guess that''s what happen when you mess with explosives.'
+      SHEEP:
+      - 'BaaaAAAAAaaaaaAAAAAaa. ( %p )'
+      SILVERFISH:
+      - 'Some %a ate %p''s feet until there was nothing left.'
+      SKELETON:
+      - '%p found a %a that didn''t have a bow. Well, you can see the rest.'
+      SMALL_FIREBALL:
+      - 'A %a was shot at %p. Can this death message get any more boring?'
+      SNOWBALL:
+      - '%as aren''t supposed to dead damage! Oh wait... ( %p )'
+      SNOWMAN:
+      - 'A %a turned against %p. How sad.'
+      SPIDER:
+      - '%p watched too much Lord of The Rings. Arachnids are not to be messed with.'
+      SPLASH_POTION:
+      - 'This death message shouldn''t appear. Like ever. ( %p )'
+      SQUID:
+      - '%a are friendly creatures... right? ... ( %p )'
+      THROWN_EXP_BOTTLE:
+      - '%a tried to take too much crack. ( %p )'
+      UNKNOWN:
+      - 'This shouldn''t exist. So why did %p die from it.'
+      VILLAGER:
+      - '%p gave a %a a very bad trade. Very bad indeed.'
+      WEATHER:
+      - 'The gods were not pleased of %p''s performance.'
+      WITCH:
+      - 'You are not supposed to bargain with %aes! ( %p )'
+      WITHER_SKULL:
+      - '%p tried summoning a wither. But it was too much...'
+      WOLF:
+      - 'Balto got very angry at %p.'
+      ZOMBIE:
+      - 'A %a horde came out of the screen from Walking Dead. What a shame. ( %p )'
+    FALLING_BLOCK:
+    - 'The sky is falling! The sk- wait, nope, was just a falling block. Poor %p.'
+    FIRE:
+    - '%p is on fire! Kidding, they''re dead.'
+    FIRE_TICK:
+    - '%p is on fire! Kidding, they''re dead.'
+    LAVA:
+    - 'Jump in the java, they said. It''ll be fine, they said. ( %p )'
+    LIGHTNING:
+    - 'So, %p''s lightning rod works. REALLY well.'
+    MAGIC:
+    - 'Majyyk and sorcery. ( %p )'
+    MELTING:
+    - 'Melting is a death event? ( %p )'
+    PROJECTILE:
+    - '%p was impailed by an arrow and didn''t survive. Luckily, their knee is intact. Like that matters.'
+    SUFFOCATION:
+    - '%p suffocated in a long, drawn-out process that was very painful.'
+    SUICIDE:
+    - '%p wasted tons of cash on those suicide-prevention meetings.'
+    WITHER:
+    - '%p withered away. Get it? Withered? HAHAHA.. ha.. haa... a... just /suicide.'
+    VOID:
+    - '%p fell out of the world. That''s a thing.'
+    CONTACT:
+    - '%p just wanted to give that cactus a big ol'' hug!'
 Mobs:
   NoShinyDrops:
   - PIG
