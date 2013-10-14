@@ -1920,7 +1920,7 @@ public class WCCommands implements CommandExecutor {
 
 					}
 
-					sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + timeLeftRO + "seconds left on the cooldown."));
+					sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + timeLeftRO + " seconds left on the cooldown."));
 
 					return true;
 
@@ -2075,7 +2075,7 @@ public class WCCommands implements CommandExecutor {
 			
 			final Random rand = new Random();
 			
-			Bukkit.broadcastMessage(AS(WC + "Are you ready everyone? Here we go! (kill me please)"));
+			Bukkit.broadcastMessage(AS(WC + "Are you ready everyone? Here we go! (kill " + p.getDisplayName() + " &dplease)"));
 			
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
 				
@@ -2128,6 +2128,19 @@ public class WCCommands implements CommandExecutor {
 			}, 40L);
 			
 			break;
+			
+		case "ride":
+			
+			if (!(sender.hasPermission("wa.staff"))){			
+				sender.sendMessage(AS(WC + "Does it look like you have permission to use that? I didn't think so either."));	
+				break;		
+			}
+			
+			plugin.datacore.set("Users." + p.getName() + ".commandUsed", true);
+			sender.sendMessage(AS(WC + "Ride-tivation activated. Right click on a mob to begin the madness."));
+			
+			break;
+			
       }
     }
     return true;
