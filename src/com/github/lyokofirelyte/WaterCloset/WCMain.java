@@ -97,6 +97,7 @@ public class WCMain extends JavaPlugin {
     pm.registerEvents(new WCBlockPlace(this), this);
     pm.registerEvents(new WCExpSystem(this), this);
     pm.registerEvents(new WCDeath(this), this);
+    pm.registerEvents(new WCInteract(this), this);
 
     this.WAGamesconfigFile = new File(getDataFolder() + File.separator + "WAGames", "config.yml");
     this.WAGamesdatacoreFile = new File(getDataFolder() + File.separator + "WAGames", "datacore.yml");
