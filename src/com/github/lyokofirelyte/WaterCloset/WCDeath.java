@@ -121,25 +121,22 @@ public class WCDeath implements Listener{
 
 		if (ede.getDamager() instanceof Player){
 
-			Player player = (Player) ede;
-			String pDN = player.getDisplayName();
-			ItemStack weapon = player.getItemInHand();
-			String wN = weapon.getItemMeta().getDisplayName();
+			String pDN = (((Player) ede.getDamager()).getDisplayName());
+		    ItemStack weapon = p.getItemInHand();
 
-			if (wN == null){
+			if (!weapon.hasItemMeta()){
 
-				wN = weapon.getType().name();
+				String wN = weapon.getType().name();
 				message = WCMail.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + pDN + "&r&o").replace("%i", "&6" + wN + "&r&o"));
 
 			} else {
-
+				String wN = weapon.getItemMeta().getDisplayName();
 				message = WCMail.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + pDN + "&r&o").replace("%i", "&6" + wN + "&r&o"));
-
 			}
 
 		} else {
 
-			String aTT = ede.getDamager().getType().name();
+			String aTT = ede.getDamager().getType().name().toLowerCase();
 			message = WCMail.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + aTT + "&r&o"));
 
 		}

@@ -33,6 +33,8 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
+import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
+
 import static com.github.lyokofirelyte.WaterCloset.WCMail.*;
 
 public class WCCommands implements CommandExecutor {
@@ -750,7 +752,6 @@ public class WCCommands implements CommandExecutor {
   @SuppressWarnings("deprecation")
   public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
 	  
-	  Player p = (Player) sender;
 	  
 	  if (cmd.getName().equalsIgnoreCase("blame")){
 		  
@@ -824,7 +825,7 @@ public class WCCommands implements CommandExecutor {
     	  }
       
       break;
-      
+	  
       case "globalcolor":
     	  
     	  if (args.length != 2){
@@ -1130,7 +1131,19 @@ public class WCCommands implements CommandExecutor {
     	  	Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "warp xtbooth" + booth + " " + sender.getName());
     	  	break;
     	  	
+      case "timecode":
     	  
+    	  Boolean timeCode = plugin.userGrabB(sender.getName(), "Chat.TimeCode");
+    	  
+    	  	if (timeCode){
+    	  		plugin.userWriteB(sender.getName(), "Chat.TimeCode", false);
+    	  		CGMain.s(((Player)sender), "You will no longer see time codes in chat.");
+    	  		break;
+    	  	} else {
+    	  		plugin.userWriteB(sender.getName(), "Chat.TimeCode", true);
+    	  		CGMain.s(((Player)sender), "You will see time codes in chat.");
+    	  		break;
+    	  	}
       
       case "ALLSPAM":
     	  
@@ -1334,6 +1347,7 @@ public class WCCommands implements CommandExecutor {
     			  break;
     		  }
     		  
+    		  Player p = (Player) sender;
     		  plugin.datacore.set("Users." + sender.getName() + ".expDeposit", true);
     		  plugin.datacore.set("Users." + sender.getName() + ".MasterExp", (xp-Integer.parseInt(args[2])));
     		  p.giveExp(Integer.parseInt(args[2]));
@@ -1486,6 +1500,7 @@ public class WCCommands implements CommandExecutor {
     	   	
     	   	plugin.datacore.set("Users." + sender.getName() + ".SpecialHomeSet", true);
     	   	
+    		Player p = (Player) sender;
     	   	double x = p.getLocation().getBlockX();
     	   	double y = p.getLocation().getBlockY();
     	   	double z = p.getLocation().getBlockZ();
@@ -1906,6 +1921,7 @@ public class WCCommands implements CommandExecutor {
 			final int rainoffSeconds = 10800;
 			final long timeLeftRO;
 
+			p = (Player) sender;
 			if (rainoffCooldown.containsKey(p.getName())){
 
 				timeLeftRO = ((rainoffCooldown.get(p.getName()) / 1000) + rainoffSeconds) - (System.currentTimeMillis() / 1000);
@@ -2074,7 +2090,7 @@ public class WCCommands implements CommandExecutor {
 			}
 			
 			final Random rand = new Random();
-			
+			p = (Player) sender;
 			Bukkit.broadcastMessage(AS(WC + "Are you ready everyone? Here we go! (kill " + p.getDisplayName() + " &dplease)"));
 			
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
@@ -2136,11 +2152,10 @@ public class WCCommands implements CommandExecutor {
 				break;		
 			}
 			
+			p = (Player) sender;
 			plugin.datacore.set("Users." + p.getName() + ".commandUsed", true);
-			sender.sendMessage(AS(WC + "Ride-tivation activated. Right click on a mob to begin the madness."));
-			
+			sender.sendMessage(AS(WC + "Right click on a mob to begin the madness! (づ｡◕‿‿◕｡)づ"));
 			break;
-			
       }
     }
     return true;

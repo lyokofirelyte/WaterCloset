@@ -1,5 +1,7 @@
 package com.github.lyokofirelyte.WaterCloset;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 import org.bukkit.Bukkit;
@@ -26,6 +28,13 @@ public class WCChannels implements CommandExecutor, Listener {
   public WCChannels(WCMain instance)
   {
     this.plugin = instance;
+  }
+  
+  public static String getTime() {
+  	Calendar cal = Calendar.getInstance();
+  	cal.getTime();
+  	SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+  	return ( sdf.format(cal.getTime()) );
   }
   
 	
@@ -202,19 +211,38 @@ public void globalChat(Player p, String message){
 				  if (finalMessage.contains("&r")){
 					 finalMessage = finalMessage.replace("&r", globalColor);
 				  }
+				  
+				  String prefix = WCVault.chat.getPlayerPrefix(p);
+				  String suffix = WCVault.chat.getPlayerSuffix(p);
+				  String dispName = p.getDisplayName();
+				  Boolean timeCode = plugin.userGrabB(bleh.getName(), "Chat.TimeCode");
 				
 				if (p.hasPermission("wa.staff") || p.hasPermission("wa.citizen")){
-				
-					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor + finalMessage));  
-				
+					
+					if (timeCode){
+						String time = "&f[" + getTime() + "&f] ";
+						bleh.sendMessage(WCMail.AS(time + prefix + suffix + " §f// " + dispName + "§f: " + globalColor + finalMessage));  
+						
+					} else {
+						
+					bleh.sendMessage(WCMail.AS(prefix + suffix + " §f// " + dispName + "§f: " + globalColor + finalMessage));  
+					}
+					
 				} else {
 					
-					bleh.sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + globalColor) + finalMessage);  
+					if (timeCode){
+						String time = "&f[" + getTime() + "&f] ";
+						bleh.sendMessage(WCMail.AS(time + prefix + suffix + " §f// " + dispName + "§f: " + globalColor) + finalMessage); 
+						
+					} else {
+						
+					bleh.sendMessage(WCMail.AS(prefix + suffix + " §f// " + dispName + "§f: " + globalColor) + finalMessage);  
+					}
 				}
 		}
 		
 	
-		Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCVault.chat.getPlayerPrefix(p) + WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + message));
+		Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + message));
 
 }
 
