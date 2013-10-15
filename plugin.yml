@@ -79,6 +79,18 @@ commands:
    cg:
       description: Collision Games
       usage: /cg
+   home:
+      description: WC Home Command
+      usage: /home <name>
+   sethome:
+      description: WC Home Command
+      usage: /sethome <name>
+   delhome:
+      description: WC Home Command
+      usage: /delhome <name>
+   remhome:
+      description: WC Home Command
+      usage: /remhome <name>
 permissions:
     spleef.admin:
         description: Use admin stuff.
@@ -102,5 +114,14 @@ permissions:
         description: Chat Colors.
         default: op
     wa.emperor:
-        description: Rainoff.
+        description: emperor.
+        default: op
+    wa.shirian:
+        description: shirian.
+        default: op
+    wa.serf:
+        description: serf.
+        default: op
+    wa.national:
+        description: national.
         default: op

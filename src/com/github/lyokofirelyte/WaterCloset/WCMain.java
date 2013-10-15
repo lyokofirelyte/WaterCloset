@@ -14,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -235,6 +236,12 @@ public class WCMain extends JavaPlugin {
     getCommand("member").setExecutor(new WCCommands(this));
     
     getCommand("cg").setExecutor(new CGMain(this));
+    
+    getCommand("home").setExecutor(new WCHome(this));
+    getCommand("sethome").setExecutor(new WCHome(this));
+    getCommand("remhome").setExecutor(new WCHome(this));
+    getCommand("delhome").setExecutor(new WCHome(this));
+    
   }
 
   public void copy(InputStream in, File file)
@@ -472,6 +479,28 @@ FileConfiguration loadedFile;
 		  
 	  }
 	  
+	  public void userWriteSL(String user, String path, List<String> data){
+		  
+		  File userFile = new File(getDataFolder() + File.separator + "Users", user + ".yml");
+		  loadedFile = new YamlConfiguration();
+			
+			try {
+				  loadedFile.load(userFile);
+			} catch (Exception e) {
+				  e.printStackTrace();
+				}
+			
+		  loadedFile.set(path, data);
+		  
+		  try {
+			loadedFile.save(userFile);
+		  } catch (IOException e) {
+			e.printStackTrace();
+			Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCMail.WC + "&cISSUE WRITING FILE FOR " + user + "!"));
+		      }
+		  
+	  }
+	  
 
 	  public void userWriteI(String user, String path, int data){
 		  
@@ -577,6 +606,14 @@ FileConfiguration loadedFile;
 		  List <String> users = datacore.getStringList("FileSystem.Users");
 		  users.add(user);
 		  datacore.set("FileSystem.Users", users);
+	  }
+	  
+	  public static void s(Player p, String s){
+		  p.sendMessage(WCMail.AS(WCMail.WC + s));
+	  }
+	  
+	  public static void s2(Player p, String s){
+		  p.sendMessage(WCMail.AS(s));
 	  }
 
 }
