@@ -802,7 +802,7 @@ public class WCCommands implements CommandExecutor {
       }
       
       switch (args[0]){
-      
+    	  
       case "con":
     	  
     	  if (sender instanceof Player == false){
@@ -824,6 +824,22 @@ public class WCCommands implements CommandExecutor {
     	  }
       
       break;
+      
+      case "partytool":
+    	
+    	  	ArrayList<String> lore2;
+  	        ItemStack token2 = new ItemStack(Material.STICK, 1);
+	        ItemMeta name2 = token2.getItemMeta();
+	        lore2 = new ArrayList<String>();
+	        name2.addEnchant(Enchantment.DURABILITY, 10, true);
+	        name2.setDisplayName("§d§o§lPAR-TAY TOOL");
+	        lore2.add("§7§oLeft click on a landing pad!");
+	        name2.setLore(lore2);
+	        token2.setItemMeta((ItemMeta)name2);
+	        ((Player)sender).getInventory().addItem(token2);
+	        ((Player)sender).updateInventory();
+	        WCMain.s(((Player)sender), "Here's your party navigation tool!");
+	        break;
 	  
       case "globalcolor":
     	  
@@ -2160,6 +2176,18 @@ public class WCCommands implements CommandExecutor {
     return true;
   }
   
+
+
+	//	  			case 6:
+	//	  				construct(CCLIST, Color.LIME, Color.GREEN, Material.WOOL, w, 5, false, happyLIST, outlineLIST, birthdayLIST,
+	//	  						TTLIST, RRLIST, AALIST, CCLIST, EELIST);
+	//	  			case 7:
+	//	  				construct(EELIST, Color.PURPLE, Color.BLUE, Material.WOOL, w, 6, true,happyLIST, outlineLIST, birthdayLIST,
+	//	  						TTLIST, RRLIST, AALIST, CCLIST, EELIST);
+	//	  			default:
+	//	  				break;
+
+
 	private void cancelTask() {
 		Bukkit.getServer().getScheduler().cancelTask(groove);
 	}

@@ -177,7 +177,7 @@ public class WCChannels implements CommandExecutor, Listener {
 	    	  int midpoint = town.length() / 2; 
 	    	  String firstHalf = town.substring(0, midpoint); 
 	    	  String secondHalf = town.substring(midpoint); 
-	    	  event.setMessage(event.getMessage().replaceAll("%t", c1 + firstHalf + c2 + secondHalf + "&r&" + globalColor));
+	    	  event.setMessage(event.getMessage().replaceAll("%t", c1 + firstHalf + c2 + secondHalf + "&r" + globalColor));
 	      }  
 	      
 	      } 

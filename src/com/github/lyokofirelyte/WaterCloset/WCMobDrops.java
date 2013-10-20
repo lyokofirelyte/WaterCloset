@@ -59,6 +59,14 @@ public class WCMobDrops implements Listener {
 	    	  		hgArena(event, event.getPlayer());
 	    	  		return;
 	    	  	}
+	    	  	if (event.getAction() == Action.LEFT_CLICK_AIR && event.getPlayer().getItemInHand().getType().equals(Material.STICK)){
+	    	  		partyWarp(event, event.getPlayer());
+	    	  		return;
+	    	  	}
+	    	  	if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getPlayer().getItemInHand().getType().equals(Material.STICK)){
+	    	  		partyEvac(event, event.getPlayer());
+	    	  		return;
+	    	  	}
 	    	  	if (event.getAction() == Action.RIGHT_CLICK_AIR && event.getPlayer().getItemInHand().getType().equals(Material.COMMAND) && plugin.userGrabB(event.getPlayer().getName(), "HG.AddingPoints")){
 	    	  		hgArena2(event, event.getPlayer());
 	    	  		return;
@@ -90,6 +98,74 @@ public class WCMobDrops implements Listener {
 	      }
 	    }
 
+	private void partyEvac(PlayerInteractEvent e, final Player p) {
+		
+		if (p.getWorld().getName().equals("world2") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()){
+			
+			Boolean partyEvac = plugin.userGrabB(p.getName(), "PartyEvac");
+			
+				if (partyEvac){
+					WCMain.s(p, "ALREADY CHARGING!!!!!");
+					return;
+				}
+				
+			p.setAllowFlight(true);
+			plugin.userWriteB(p.getName(), "PartyEvac", true);
+
+			            	FireworkShenans fplayer = new FireworkShenans();
+			            	try {
+			        			
+								fplayer.playFirework(p.getWorld(), p.getLocation(),
+								FireworkEffect.builder().with(Type.BURST).withColor(Color.FUCHSIA).build());
+							} catch (IllegalArgumentException a) {
+							} catch (Exception a) {
+							} 
+			            	
+					p.setVelocity(new Vector (0, 3, 0));
+			    	p.getWorld().playSound(p.getLocation(), Sound.GHAST_FIREBALL, 3.0F, 0.5F);
+			 
+			 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+			    {
+			      public void run()
+			      {
+					p.setAllowFlight(false);
+					plugin.userWriteB(p.getName(), "PartyEvac", false);
+			      }
+			    }
+			    , 15L);
+		}
+		
+	}
+
+
+	private void partyWarp(PlayerInteractEvent e, Player p) {
+		
+		if (p.getWorld().getName().equals("world2") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()){
+			Location loc = p.getTargetBlock(null, 300).getLocation();
+				if (loc.getBlock().getType().equals(Material.COMMAND)){
+					p.removePotionEffect(PotionEffectType.JUMP);
+					p.getWorld().playSound(p.getLocation(), Sound.GHAST_FIREBALL, 3.0F, 0.5F);
+					double x = loc.getX();
+					double y = loc.getY();
+					double z = loc.getZ();
+					Location tpLoc = new Location(p.getWorld(), x, y+1, z);
+					p.teleport(tpLoc);
+					FireworkShenans fplayer = new FireworkShenans();
+      	        	try {
+    			
+							fplayer.playFirework(p.getWorld(), tpLoc,
+							FireworkEffect.builder().with(Type.BURST).withColor(Color.FUCHSIA).build());
+						} catch (IllegalArgumentException a) {
+						} catch (Exception a) {
+						}        	      
+					WCMain.s(p, "PARTAY!@#$^!");
+				} else {
+					WCMain.s(p, "You must aim at a landing pad!");
+				}
+		}
+		
+	}
+	
 	private void hgArena(PlayerInteractEvent event, Player p) {
 		
 		List <String> hgArenaList = Arrays.asList("&bWC Classic (Tools on start, mining allowed, 5 minute grace period)", 
@@ -145,7 +221,7 @@ public class WCMobDrops implements Listener {
 			
 			ItemStack i = p.getItemInHand();
 			if (i.hasItemMeta() || i.getType().isEdible() || i.getType().toString().equals("EGG")
-				|| i.getType().toString().equals("POTION") || i.getType().toString().contains("SWORD") || i.getType().toString().contains("HELMET") ||
+				|| i.getType().toString().equals("POTION")  || i.getType().toString().equals("BOW") || i.getType().toString().contains("SWORD") || i.getType().toString().contains("HELMET") ||
 				i.getType().toString().contains("CHESTPLATE") || i.getType().toString().contains("LEGGING") || i.getType().toString().contains("BOOTS")){
 				
 				p.sendMessage(WCMail.WC + "You can't throw that!");

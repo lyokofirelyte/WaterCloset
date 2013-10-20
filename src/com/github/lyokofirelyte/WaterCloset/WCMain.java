@@ -23,6 +23,7 @@ import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
+import com.github.lyokofirelyte.WaterCloset.Extras.TraceFW;
 import com.github.lyokofirelyte.WaterCloset.Extras.waOSReport;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 
@@ -241,6 +242,8 @@ public class WCMain extends JavaPlugin {
     getCommand("sethome").setExecutor(new WCHome(this));
     getCommand("remhome").setExecutor(new WCHome(this));
     getCommand("delhome").setExecutor(new WCHome(this));
+    
+    getCommand("bday").setExecutor(new TraceFW(this));
     
   }
 

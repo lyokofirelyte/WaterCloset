@@ -99,6 +99,10 @@ public class WCHome implements CommandExecutor {
 
 	private int limitCheck(Player p) {
 		
+		if (p.hasPermission("wa.admin")){
+			return 1337;
+		}
+		
 		if (p.hasPermission("wa.staff")){
 			return 4;
 		}
