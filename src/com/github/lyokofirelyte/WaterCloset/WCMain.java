@@ -245,6 +245,12 @@ public class WCMain extends JavaPlugin {
     
     getCommand("bday").setExecutor(new TraceFW(this));
     
+    getCommand("warp").setExecutor(new WCWarps(this));
+    getCommand("w").setExecutor(new WCWarps(this));
+    getCommand("setwarp").setExecutor(new WCWarps(this));
+    getCommand("remwarp").setExecutor(new WCWarps(this));
+    getCommand("delwarp").setExecutor(new WCWarps(this));
+    
   }
 
   public void copy(InputStream in, File file)

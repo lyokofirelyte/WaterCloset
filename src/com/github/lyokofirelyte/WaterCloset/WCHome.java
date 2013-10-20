@@ -65,6 +65,8 @@ public class WCHome implements CommandExecutor {
 		double xF = p.getLocation().getX();
 		double yF = p.getLocation().getY();
 		double zF = p.getLocation().getZ();
+		double yawF = p.getLocation().getYaw();
+		double pitchF = p.getLocation().getPitch();
 		
 		String xSimple = (xF + "").substring(0, 7);
 		String ySimple = (yF + "").substring(0, 4);
@@ -77,8 +79,16 @@ public class WCHome implements CommandExecutor {
 		float pitch = Float.parseFloat(locSplit[4]);
 		World world = Bukkit.getWorld(locSplit[5]);
 		Location homeLanding = new Location(world, x, y, z, yaw, pitch);
+		String warp = p.getWorld().getName() + "," + xF + "," + yF + "," + zF + "," + yawF + "," + pitchF;
 		
 		p.teleport(homeLanding);
+		
+		List <String> history = plugin.userGrabSL(p.getName(), "LastLoc.History");
+	    	if (history.size() >= 5){
+	    		history.remove(history.get(0));
+	    	}
+    	history.add(warp);
+    	plugin.userWriteSL(p.getName(), "LastLoc.History", history);
 		
 		WCMain.s(p, "Teleported to &6" + args[0] + " &dfrom &6" + xSimple + "&f, &6" + ySimple + "&f, &6" + zSimple + "&d.");
 		

@@ -95,6 +95,26 @@ commands:
       description: aaa
       usage: aaa
       permission: wa.admin
+   warp:
+      description: WC Warp Command
+      usage: /warp <dest> or /warp <page>
+      permission: wa.mod2
+   w:
+      description: WC Warp Command
+      usage: /w <dest> or /w <page>
+      permission: wa.mod2
+   remwarp:
+      description: WC Warp Command
+      usage: /remwarp <warp>
+      permission: wa.mod2
+   delwarp:
+      description: WC Warp Command
+      usage: /delwarp <warp>
+      permission: wa.mod2
+   setwarp:
+      description: WC Warp Command
+      usage: /setwarp <warp>
+      permission: wa.mod2
 permissions:
     spleef.admin:
         description: Use admin stuff.
