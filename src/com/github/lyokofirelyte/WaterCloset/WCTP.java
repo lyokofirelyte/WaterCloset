@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset.Commands;
+package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.List;
 
@@ -8,7 +8,6 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.github.lyokofirelyte.WaterCloset.WCMain;
 
 public class WCTP implements Listener {
 	

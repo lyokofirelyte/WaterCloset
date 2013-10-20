@@ -24,7 +24,6 @@ import com.github.lyokofirelyte.WaterCloset.Commands.WCBack;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCHelp;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCHome;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
-import com.github.lyokofirelyte.WaterCloset.Commands.WCTP;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCWarps;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
