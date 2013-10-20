@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Commands;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -16,6 +16,8 @@ import org.bukkit.entity.Player;
 
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
+import com.github.lyokofirelyte.WaterCloset.WCCommands;
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 
 public class WCMail implements CommandExecutor {

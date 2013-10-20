@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.lyokofirelyte.WaterCloset.WCMail;
 import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 
 public class CGMain implements CommandExecutor {
 

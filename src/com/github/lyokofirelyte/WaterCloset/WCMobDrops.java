@@ -30,6 +30,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 

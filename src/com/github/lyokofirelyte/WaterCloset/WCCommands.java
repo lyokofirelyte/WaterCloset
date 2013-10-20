@@ -32,10 +32,11 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 
-import static com.github.lyokofirelyte.WaterCloset.WCMail.*;
+import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
 public class WCCommands implements CommandExecutor {
 	
@@ -802,6 +803,20 @@ public class WCCommands implements CommandExecutor {
       }
       
       switch (args[0]){
+      
+      case "homesounds":
+    	 
+    	  Boolean sounds = plugin.userGrabB(sender.getName(), "HomeSounds");
+    	  
+    	  	if (sounds){
+    	  		plugin.userWriteB(sender.getName(), "HomeSounds", false);
+    	  		WCMain.s(((Player)sender), "Home sounds turned on!");
+    	  	} else {
+    	  		plugin.userWriteB(sender.getName(), "HomeSounds", true);
+    	  		WCMain.s(((Player)sender), "Home sounds turned off!");
+    	  	}
+    	  	
+    	  break;
     	  
       case "con":
     	  

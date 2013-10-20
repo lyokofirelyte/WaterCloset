@@ -8,7 +8,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.github.lyokofirelyte.WaterCloset.WCCommands;
-import static com.github.lyokofirelyte.WaterCloset.WCMail.*;
+
+import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
 public class WCInteract implements Listener {
 	

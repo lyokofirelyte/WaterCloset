@@ -115,6 +115,14 @@ commands:
       description: WC Warp Command
       usage: /setwarp <warp>
       permission: wa.mod2
+   back:
+      description: WC Back Command
+      usage: /back or /back <1-6>
+      permission: wa.mod2
+   bk:
+      description: WC Back Command
+      usage: /back or /back <1-6>
+      permission: wa.mod2 
 permissions:
     spleef.admin:
         description: Use admin stuff.

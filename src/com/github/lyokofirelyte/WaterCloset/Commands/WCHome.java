@@ -1,14 +1,19 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Commands;
 
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import com.github.lyokofirelyte.WaterCloset.WCBlockBreak;
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 
 public class WCHome implements CommandExecutor {
 	
@@ -39,7 +44,7 @@ public class WCHome implements CommandExecutor {
 
 	public void home(CommandSender sender, String[] args) {
 		
-		Player p = ((Player)sender);
+		final Player p = ((Player)sender);
 		String pName = p.getName();
 		int homeLimit = limitCheck(p);
 		
@@ -65,9 +70,7 @@ public class WCHome implements CommandExecutor {
 		double xF = p.getLocation().getX();
 		double yF = p.getLocation().getY();
 		double zF = p.getLocation().getZ();
-		double yawF = p.getLocation().getYaw();
-		double pitchF = p.getLocation().getPitch();
-		
+	
 		String xSimple = (xF + "").substring(0, 7);
 		String ySimple = (yF + "").substring(0, 4);
 		String zSimple = (zF + "").substring(0, 7);
@@ -78,17 +81,26 @@ public class WCHome implements CommandExecutor {
 		float yaw = Float.parseFloat(locSplit[3]);
 		float pitch = Float.parseFloat(locSplit[4]);
 		World world = Bukkit.getWorld(locSplit[5]);
-		Location homeLanding = new Location(world, x, y, z, yaw, pitch);
-		String warp = p.getWorld().getName() + "," + xF + "," + yF + "," + zF + "," + yawF + "," + pitchF;
-		
+		Location homeLanding = new Location(world, x, y+1, z, yaw, pitch);
 		p.teleport(homeLanding);
+		List<Location> circleblocks = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 0);
+		List<Location> circleblocks2 = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 1);
 		
-		List <String> history = plugin.userGrabSL(p.getName(), "LastLoc.History");
-	    	if (history.size() >= 5){
-	    		history.remove(history.get(0));
-	    	}
-    	history.add(warp);
-    	plugin.userWriteSL(p.getName(), "LastLoc.History", history);
+			if (!plugin.userGrabB(p.getName(), "HomeSounds")){
+				p.getWorld().playSound(p.getLocation(), Sound.PORTAL_TRAVEL, 3.0F, 0.5F);
+			}
+			
+			for (Location l : circleblocks){
+				p.getWorld().playEffect(l, Effect.SMOKE, 0);
+				p.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+				p.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+			}
+			
+			for (Location l : circleblocks2){
+				p.getWorld().playEffect(l, Effect.SMOKE, 0);
+				p.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+				p.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+			}
 		
 		WCMain.s(p, "Teleported to &6" + args[0] + " &dfrom &6" + xSimple + "&f, &6" + ySimple + "&f, &6" + zSimple + "&d.");
 		

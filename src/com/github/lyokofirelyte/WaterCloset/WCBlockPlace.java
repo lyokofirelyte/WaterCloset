@@ -17,6 +17,8 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+
 public class WCBlockPlace implements Listener{
 	
 	WCMain plugin;

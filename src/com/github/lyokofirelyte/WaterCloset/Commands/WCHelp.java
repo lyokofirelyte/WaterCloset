@@ -1,10 +1,12 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Commands;
 
 import java.util.List;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 
 public class WCHelp implements CommandExecutor {
 	
@@ -19,7 +21,7 @@ public class WCHelp implements CommandExecutor {
 static List <String> AdministratumHelpGlobal = WCMain.help.getStringList("Help.Administratum");
 
 // WC HELP
-static List <String> WCHelpMail = WCMain.help.getStringList("WC.Mail");
+public static List <String> WCHelpMail = WCMain.help.getStringList("WC.Mail");
 
 
 

@@ -17,6 +17,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+
 
 public class WCChannels implements CommandExecutor, Listener {
 	

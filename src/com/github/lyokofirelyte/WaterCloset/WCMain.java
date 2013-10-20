@@ -20,6 +20,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 
 import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCBack;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCHelp;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCHome;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCTP;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCWarps;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
@@ -100,6 +106,7 @@ public class WCMain extends JavaPlugin {
     pm.registerEvents(new WCExpSystem(this), this);
     pm.registerEvents(new WCDeath(this), this);
     pm.registerEvents(new WCInteract(this), this);
+    pm.registerEvents(new WCTP(this), this);
 
     this.WAGamesconfigFile = new File(getDataFolder() + File.separator + "WAGames", "config.yml");
     this.WAGamesdatacoreFile = new File(getDataFolder() + File.separator + "WAGames", "datacore.yml");
@@ -250,6 +257,9 @@ public class WCMain extends JavaPlugin {
     getCommand("setwarp").setExecutor(new WCWarps(this));
     getCommand("remwarp").setExecutor(new WCWarps(this));
     getCommand("delwarp").setExecutor(new WCWarps(this));
+    
+    getCommand("back").setExecutor(new WCBack(this));
+    getCommand("bk").setExecutor(new WCBack(this));
     
   }
 

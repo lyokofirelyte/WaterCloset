@@ -17,6 +17,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+
 public class WCDeath implements Listener{
 
 	WCMain plugin;

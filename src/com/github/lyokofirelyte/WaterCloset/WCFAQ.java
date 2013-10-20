@@ -5,6 +5,8 @@ import java.util.Random;
 
 import org.bukkit.entity.Player;
 
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+
 public class WCFAQ {
 
 	WCMain plugin;

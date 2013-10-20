@@ -23,6 +23,7 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 
 public class WCBlockBreak implements Listener{

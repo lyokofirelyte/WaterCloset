@@ -1,15 +1,17 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Commands;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map.Entry;
+import java.util.List;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,6 +19,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.github.lyokofirelyte.WaterCloset.WCBlockBreak;
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
 
 public class WCWarps implements CommandExecutor {
@@ -100,7 +104,7 @@ public class WCWarps implements CommandExecutor {
 		  
 		  if (cmd.getName().equalsIgnoreCase("warp") || cmd.getName().equalsIgnoreCase("w")){
 			  
-			  Player p = ((Player)sender);
+			  final Player p = ((Player)sender);
 			  
 			  if (args.length == 0){
 				    String path  = plugin.getDataFolder() + "/Warps/";
@@ -138,7 +142,7 @@ public class WCWarps implements CommandExecutor {
 			  }
 			  
 				YamlConfiguration warpLoad = new YamlConfiguration();
-				File fileToCheck = new File(plugin.getDataFolder() + File.separator + "Warps", args[0] + ".yml");
+				File fileToCheck = new File(plugin.getDataFolder() + File.separator + "Warps", args[0].toLowerCase() + ".yml");
 
 				    if (!fileToCheck.exists()) {
 				    	WCMain.s(p, "That warp does not exist!");
@@ -157,23 +161,33 @@ public class WCWarps implements CommandExecutor {
 			    double z = warpLoad.getInt("z");
 			    float yaw = warpLoad.getInt("yaw");
 			    float pitch = warpLoad.getInt("pitch");
-			    Location warpTo = new Location(w, x, y, z, yaw, pitch);
+			    Location warpTo = new Location(w, x, y+1, z, yaw, pitch);
 			    
 			    double xP = p.getLocation().getX();
 			    double yP = p.getLocation().getY();
 			    double zP = p.getLocation().getZ();
-			    double yawP = p.getLocation().getYaw();
-			    double pitchP = p.getLocation().getPitch();
-			    String warp = xP + "," + yP + "," + zP + "," + yawP + "," + pitchP;
+
 			    String warpSimple = Math.round(xP) + "&f, &6" + Math.round(yP) + "&f, &6" + Math.round(zP) + "&d."; 
-			    
-			    List <String> history = plugin.userGrabSL(p.getName(), "LastLoc.History");
-			    	if (history.size() >= 5){
-			    		history.remove(history.get(0));
-			    	}
-			    history.add(warp);
-			    plugin.userWriteSL(p.getName(), "LastLoc.History", history);
 			    p.teleport(warpTo);
+				List<Location> circleblocks = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 0);
+				List<Location> circleblocks2 = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 1);
+				
+					if (!plugin.userGrabB(p.getName(), "HomeSounds")){
+						p.getWorld().playSound(p.getLocation(), Sound.PORTAL_TRAVEL, 3.0F, 0.5F);
+					}
+				
+					for (Location l : circleblocks){
+						p.getWorld().playEffect(l, Effect.SMOKE, 0);
+						p.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+						p.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+					}
+					
+					for (Location l : circleblocks2){
+						p.getWorld().playEffect(l, Effect.SMOKE, 0);
+						p.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+						p.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+					}
+					
 			    WCMain.s(p, "Warped to &6" + args[0] + " &dfrom &6" + warpSimple);
 		  }
 		  
