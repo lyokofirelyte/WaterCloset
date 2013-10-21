@@ -1,5 +1,7 @@
 package com.github.lyokofirelyte.WaterCloset;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -11,6 +13,7 @@ import org.bukkit.FireworkEffect.Type;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,7 +27,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
-import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
+import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
 public class WCBlockBreak implements Listener{
 	
@@ -166,6 +169,52 @@ public class WCBlockBreak implements Listener{
 	
 	@EventHandler(priority = EventPriority.NORMAL)
 	public void onBlockBreak(BlockBreakEvent e) throws IllegalArgumentException, Exception {
+		
+		switch (e.getBlock().getType()){
+		
+			case SIGN: case SIGN_POST: case WALL_SIGN:
+			
+			YamlConfiguration warps = new YamlConfiguration();
+	        File warpSignsFile = new File(plugin.getDataFolder(), "warps.yml");
+				
+			if (!warpSignsFile.exists()) {
+				break;
+		    }
+			      
+			  try {
+			   warps.load(warpSignsFile);
+			      	} catch (Exception i) {
+			   i.printStackTrace();
+				  }
+			  
+			    double x = e.getBlock().getLocation().getX();
+				double y = e.getBlock().getLocation().getY();
+				double z = e.getBlock().getLocation().getZ();
+				String w = e.getBlock().getLocation().getWorld().getName();
+				String loc = x + "," + y + "," + z + "," + w;
+			  
+			List <String> validWarps = warps.getStringList("Warps");
+			
+				for (String s : validWarps){
+					if (s.contains(loc)){
+						validWarps.remove(s);
+						warps.set("Warps", validWarps);
+						
+						  try {
+							  warps.save(warpSignsFile);
+						  } catch (IOException a) {
+								a.printStackTrace();
+							  }
+						  
+						break;
+					}
+				}
+				
+			break;
+			
+		default:
+
+		}
 		
 		blocks = plugin.config.getStringList("Paragons.Blocks");
 		

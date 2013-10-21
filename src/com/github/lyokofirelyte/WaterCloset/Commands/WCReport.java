@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset.Extras;
+package com.github.lyokofirelyte.WaterCloset.Commands;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -10,10 +10,10 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 
-	public class waOSReport implements CommandExecutor {
+	public class WCReport implements CommandExecutor {
 		
 		  WCMain plugin;
-		  public waOSReport(WCMain instance)
+		  public WCReport(WCMain instance)
 		  {
 		    this.plugin = instance;
 		  }

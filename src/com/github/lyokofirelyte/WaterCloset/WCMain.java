@@ -24,13 +24,14 @@ import com.github.lyokofirelyte.WaterCloset.Commands.WCBack;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCHelp;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCHome;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Commands.WCReport;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCWarps;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
 import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 import com.github.lyokofirelyte.WaterCloset.Extras.TraceFW;
-import com.github.lyokofirelyte.WaterCloset.Extras.waOSReport;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
+import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WCMain extends JavaPlugin {
 	
@@ -106,6 +107,7 @@ public class WCMain extends JavaPlugin {
     pm.registerEvents(new WCDeath(this), this);
     pm.registerEvents(new WCInteract(this), this);
     pm.registerEvents(new WCTP(this), this);
+    pm.registerEvents(new WCSigns(this), this);
 
     this.WAGamesconfigFile = new File(getDataFolder() + File.separator + "WAGames", "config.yml");
     this.WAGamesdatacoreFile = new File(getDataFolder() + File.separator + "WAGames", "datacore.yml");
@@ -179,17 +181,9 @@ public class WCMain extends JavaPlugin {
     
     registerCommands();
     
-    
     getLogger().log(Level.INFO, "CORE HAS BEEN INITIALIZED.");
-
-    List<String> pluginList = this.config.getStringList("Core.Plugins");
-
-    for (String pluginMessage : pluginList)
-    {
-      getLogger().log(Level.INFO, pluginMessage.toUpperCase() + " IS READY.");
-    }
     
-  	}
+  }
 
   public void onDisable() {
 	  
@@ -232,7 +226,7 @@ public class WCMain extends JavaPlugin {
     getCommand("forcefield").setExecutor(new StaticField(this));
     getCommand("ff").setExecutor(new StaticField(this));
     
-    getCommand("report").setExecutor(new waOSReport(this));
+    getCommand("report").setExecutor(new WCReport(this));
     
     getCommand("mail").setExecutor(new WCMail(this));
     
@@ -276,7 +270,6 @@ public class WCMain extends JavaPlugin {
       out.close();
       in.close();
     } catch (Exception e) {
-  //  e.printStackTrace();
     }
   }
   

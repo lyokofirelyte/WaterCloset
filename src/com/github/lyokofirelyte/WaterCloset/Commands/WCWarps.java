@@ -11,6 +11,7 @@ import java.util.TreeMap;
 import org.bukkit.Bukkit;
 import org.bukkit.Effect;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -155,6 +156,7 @@ public class WCWarps implements CommandExecutor {
 						  e.printStackTrace();
 						  }
 				    
+				
 			    World w = Bukkit.getWorld(warpLoad.getString("world"));
 			    double x = warpLoad.getInt("x");
 			    double y = warpLoad.getInt("y");
@@ -162,6 +164,25 @@ public class WCWarps implements CommandExecutor {
 			    float yaw = warpLoad.getInt("yaw");
 			    float pitch = warpLoad.getInt("pitch");
 			    Location warpTo = new Location(w, x, y+1, z, yaw, pitch);
+			    
+			    if (args.length == 2){
+			    	OfflinePlayer tpOther = Bukkit.getOfflinePlayer(args[1]);
+			    	
+			    		if (!tpOther.isOnline()){
+			    			WCMain.s(p, "That player is not online!");
+			    			return true;
+			    		}
+			    		
+			    	Player other = Bukkit.getPlayer(args[1]);	
+					double xP = other.getLocation().getX();
+					double yP = other.getLocation().getY();
+					double zP = other.getLocation().getZ();
+
+					String warpSimple = Math.round(xP) + "&f, &6" + Math.round(yP) + "&f, &6" + Math.round(zP) + "&d."; 
+					other.teleport(warpTo);
+				    WCMain.s(other, "Warped to &6" + args[0] + " &dfrom &6" + warpSimple + " &dby " + p.getDisplayName() + "&d.");
+				    return true;
+			    }
 			    
 			    double xP = p.getLocation().getX();
 			    double yP = p.getLocation().getY();

@@ -31,8 +31,8 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
-import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
+import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
 public class WCMobDrops implements Listener {
 
@@ -101,7 +101,7 @@ public class WCMobDrops implements Listener {
 
 	private void partyEvac(PlayerInteractEvent e, final Player p) {
 		
-		if (p.getWorld().getName().equals("world2") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()){
+		if (p.getWorld().getName().equals("world2") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && p.hasPermission("wa.staff")){
 			
 			Boolean partyEvac = plugin.userGrabB(p.getName(), "PartyEvac");
 			
@@ -129,7 +129,9 @@ public class WCMobDrops implements Listener {
 			    {
 			      public void run()
 			      {
-					p.setAllowFlight(false);
+			    	if (!p.hasPermission("wa.staff")){
+			    		p.setAllowFlight(false);
+			    	}
 					plugin.userWriteB(p.getName(), "PartyEvac", false);
 			      }
 			    }
@@ -141,7 +143,7 @@ public class WCMobDrops implements Listener {
 
 	private void partyWarp(PlayerInteractEvent e, Player p) {
 		
-		if (p.getWorld().getName().equals("world2") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()){
+		if (p.getWorld().getName().equals("world2") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && p.hasPermission("wa.staff")){
 			Location loc = p.getTargetBlock(null, 300).getLocation();
 				if (loc.getBlock().getType().equals(Material.COMMAND)){
 					p.removePotionEffect(PotionEffectType.JUMP);

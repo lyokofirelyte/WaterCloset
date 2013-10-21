@@ -33,8 +33,8 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
-import com.github.lyokofirelyte.WaterCloset.Extras.FireworkShenans;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
+import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
 import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
@@ -804,6 +804,135 @@ public class WCCommands implements CommandExecutor {
       
       switch (args[0]){
       
+      case "fling":
+
+    	  
+    	  final Player pq = ((Player)sender);
+    	  
+    	  if (pq.hasPermission("wa.staff")){
+  
+                for (Entity e1 : ((Player)sender).getNearbyEntities(15.0D, 15.0D, 15.0D))
+              {
+                e1.setVelocity(e1.getLocation().getDirection().multiply(-5));
+              }
+
+        		List<Location> circleblocks = WCBlockBreak.circle(pq, pq.getLocation(), 1, 1, true, false, 0);
+        		List<Location> circleblocks2 = WCBlockBreak.circle(pq, pq.getLocation(), 2, 1, true, false, 1);
+        		List<Location> circleblocks3 = WCBlockBreak.circle(pq, pq.getLocation(), 3, 1, true, false, 1);
+        		List<Location> circleblocks4 = WCBlockBreak.circle(pq, pq.getLocation(), 4, 1, true, false, 1);
+        		List<Location> circleblocks5 = WCBlockBreak.circle(pq, pq.getLocation(), 5, 1, true, false, 1);
+        		List<Location> circleblocks6 = WCBlockBreak.circle(pq, pq.getLocation(), 6, 1, true, false, 1);
+        		pq.getWorld().playSound(pq.getLocation(), Sound.BLAZE_HIT, 3.0F, 0.5F);
+        		long delay = 0L;
+        		
+        			for (final Location l : circleblocks){
+        				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+         			    {
+         			      public void run()
+         			      {
+            				pq.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+            				pq.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+         			      }
+         			    }
+         			    , delay);
+        			}
+        			
+    				delay = delay + 10L;
+        			
+        			for (final Location l : circleblocks2){
+        				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+         			    {
+         			      public void run()
+         			      {
+            				pq.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+            				pq.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+         			      }
+         			    }
+         			    , delay);
+        			}
+        			
+    				delay = delay + 10L;
+        			
+        			for (final Location l : circleblocks3){
+        				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+         			    {
+         			      public void run()
+         			      {
+            				pq.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+            				pq.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+         			      }
+         			    }
+         			    , delay);
+        			}
+        			
+    				delay = delay + 10L;
+        			
+        			for (final Location l : circleblocks4){
+        				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+         			    {
+         			      public void run()
+         			      {
+            				pq.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+            				pq.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+         			      }
+         			    }
+         			    , delay);
+        			}
+        			
+    				delay = delay + 10L;
+        			
+        			for (final Location l : circleblocks5){
+        				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+         			    {
+         			      public void run()
+         			      {
+            				pq.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+            				pq.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+         			      }
+         			    }
+         			    , delay);
+        			}
+        			
+    				delay = delay + 10L;
+        			
+        			for (final Location l : circleblocks6){
+        				Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
+         			    {
+         			      public void run()
+         			      {
+            				pq.getWorld().playEffect(l, Effect.MOBSPAWNER_FLAMES, 0);
+            				pq.getWorld().playEffect(l, Effect.ENDER_SIGNAL, 0);
+         			      }
+         			    }
+         			    , delay);
+        			}
+    	  }
+    	  
+    	  break;
+   
+      case "bday":
+    	  
+    	  if (sender.getName().equals("Hugh_Jasses")){
+    		  
+    		  List <String> locs = plugin.WAGamesconfig.getStringList("HG.partay.Locations");
+    		  int i = 0;
+    		  
+    		  	for (Player pl : Bukkit.getOnlinePlayers()){
+		    		  String[] locString = locs.get(i).split(",");
+		    		  double x = Double.parseDouble(locString[0]);
+		    		  double y = Double.parseDouble(locString[1]);
+		    		  double z = Double.parseDouble(locString[2]);
+		    		  float yaw = Float.parseFloat(locString[3]);
+		    		  float pitch = Float.parseFloat(locString[4]);
+		    		  World w = Bukkit.getWorld("world2");
+		    		  Location finalLoc = new Location(w, x, y+1, z, yaw, pitch);
+		    		  pl.teleport(finalLoc);
+		    		  i++;
+    		  	}
+    		  
+    		  break;
+    	  }
+      
       case "homesounds":
     	 
     	  Boolean sounds = plugin.userGrabB(sender.getName(), "HomeSounds");
@@ -841,6 +970,8 @@ public class WCCommands implements CommandExecutor {
       break;
       
       case "partytool":
+    	  
+    	  if (sender.hasPermission("wa.staff")){
     	
     	  	ArrayList<String> lore2;
   	        ItemStack token2 = new ItemStack(Material.STICK, 1);
@@ -856,6 +987,7 @@ public class WCCommands implements CommandExecutor {
 	        WCMain.s(((Player)sender), "Here's your party navigation tool!");
 	        break;
 	  
+    	  }
       case "globalcolor":
     	  
     	  if (args.length != 2){

@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
-import com.github.lyokofirelyte.WaterCloset.WCVault;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WACommandEx
   implements CommandExecutor, Listener

@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset.Extras;
+package com.github.lyokofirelyte.WaterCloset.Util;
 
 import java.lang.reflect.Method;
 

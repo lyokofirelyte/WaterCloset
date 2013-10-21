@@ -21,6 +21,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
 public class TraceFW implements CommandExecutor{
 	
