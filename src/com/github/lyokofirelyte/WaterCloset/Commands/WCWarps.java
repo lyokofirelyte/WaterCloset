@@ -178,7 +178,7 @@ public class WCWarps implements CommandExecutor {
 					double yP = other.getLocation().getY();
 					double zP = other.getLocation().getZ();
 
-					String warpSimple = Math.round(xP) + "&f, &6" + Math.round(yP) + "&f, &6" + Math.round(zP) + "&d."; 
+					String warpSimple = Math.round(xP) + "&f, &6" + Math.round(yP) + "&f, &6" + Math.round(zP); 
 					other.teleport(warpTo);
 				    WCMain.s(other, "Warped to &6" + args[0] + " &dfrom &6" + warpSimple + " &dby " + p.getDisplayName() + "&d.");
 				    return true;

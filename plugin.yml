@@ -160,3 +160,6 @@ permissions:
     wa.admin:
         description: Admin.
         default: op
+    wa.enderpearl:
+        description: Use ender pearls.
+        default: op

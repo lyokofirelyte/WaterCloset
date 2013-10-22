@@ -71,9 +71,9 @@ public class WCHome implements CommandExecutor {
 		double yF = p.getLocation().getY();
 		double zF = p.getLocation().getZ();
 	
-		String xSimple = (xF + "").substring(0, 7);
-		String ySimple = (yF + "").substring(0, 4);
-		String zSimple = (zF + "").substring(0, 7);
+		long xSimple = Math.round(xF);
+		long ySimple = Math.round(yF);
+		long zSimple = Math.round(zF);
 		
 		double x = Double.parseDouble(locSplit[0]);
 		double y = Double.parseDouble(locSplit[1]);

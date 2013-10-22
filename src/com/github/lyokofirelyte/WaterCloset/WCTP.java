@@ -7,6 +7,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 
 public class WCTP implements Listener {
@@ -16,8 +17,13 @@ public class WCTP implements Listener {
 	plugin = instance;
     }
 	
-	@EventHandler (priority = EventPriority.NORMAL)
+	@EventHandler (priority = EventPriority.HIGHEST)
 	public void onTP(PlayerTeleportEvent e){
+		
+		if (!e.getPlayer().hasPermission("wa.enderpearl") && e.getCause().equals(TeleportCause.ENDER_PEARL)){
+			e.setCancelled(true);
+			return;
+		}
 		
 		Player p = e.getPlayer();
 		double xP = p.getLocation().getX();
