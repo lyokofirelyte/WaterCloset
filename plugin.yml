@@ -122,7 +122,9 @@ commands:
    bk:
       description: WC Back Command
       usage: /back or /back <1-6>
-      permission: wa.mod2 
+   rankup:
+      description: WC Rankup Command
+      usage: /rankup
 permissions:
     spleef.admin:
         description: Use admin stuff.

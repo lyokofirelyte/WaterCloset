@@ -36,6 +36,7 @@ import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
+
 import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
 public class WCCommands implements CommandExecutor {
