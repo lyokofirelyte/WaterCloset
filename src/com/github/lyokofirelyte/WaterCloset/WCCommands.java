@@ -48,11 +48,11 @@ public class WCCommands implements CommandExecutor {
   String WC = "§dWC §5// §d";
   Boolean home;
   Boolean homeSet;
+  List <Integer> laserFwTasks = new ArrayList<Integer>();
+  int ltask = -1;
 
   public WCCommands(WCMain instance){
-  
-  
-    this.plugin = instance;
+  this.plugin = instance;
   }
   
   public static boolean isInteger(String str) {
@@ -1041,7 +1041,7 @@ public class WCCommands implements CommandExecutor {
     	  		}
     	  		
 	        break;
-	        
+
       case "hamrepair":
     	  
     	  q = ((Player)sender);

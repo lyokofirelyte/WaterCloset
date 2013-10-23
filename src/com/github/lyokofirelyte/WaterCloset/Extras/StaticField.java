@@ -1,25 +1,33 @@
 package com.github.lyokofirelyte.WaterCloset.Extras;
 
 import java.util.List;
+
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Effect;
+import org.bukkit.FireworkEffect;
 import org.bukkit.Location;
 import org.bukkit.World;
+import org.bukkit.FireworkEffect.Type;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
 public class StaticField extends JavaPlugin
   implements CommandExecutor, Listener
@@ -97,19 +105,30 @@ public class StaticField extends JavaPlugin
   @EventHandler(priority=EventPriority.NORMAL)
   public void onPlayerMove(PlayerMoveEvent event)
   {
+
     List<String> forceUsers = this.plugin.datacore.getStringList("ForceField.Users");
+    
+    double xto = event.getTo().getBlockX();
+    double yto = event.getTo().getBlockY();
+    double zto = event.getTo().getBlockZ();
+    
+    if (xto == -267.0 && yto == 64.0 && zto == -40.0){
+    	Vector vec = event.getPlayer().getEyeLocation().getDirection();
+    	event.getPlayer().setVelocity(vec.multiply(5));
+    }
 
     if ((forceUsers.size() >= 1) && (!forceUsers.contains(event.getPlayer().getName())))
     {
       for (String forcePlayer : forceUsers)
       {
-        double xto = event.getTo().getBlockX();
-        double yto = event.getTo().getBlockY();
-        double zto = event.getTo().getBlockZ();
+        xto = event.getTo().getBlockX();
+        yto = event.getTo().getBlockY();
+        zto = event.getTo().getBlockZ();
 
         double xfrom2 = Bukkit.getPlayer(forcePlayer).getLocation().getBlockX();
         double yfrom2 = Bukkit.getPlayer(forcePlayer).getLocation().getBlockY();
         double zfrom2 = Bukkit.getPlayer(forcePlayer).getLocation().getBlockZ();
+        
 
         if ((xto == xfrom2) && (yto == yfrom2) && (zto == zfrom2)) {
           event.getPlayer().setVelocity(event.getPlayer().getLocation().getDirection().multiply(-5));
@@ -118,6 +137,35 @@ public class StaticField extends JavaPlugin
         }
       }
     }
+  }
+  
+  @EventHandler(priority=EventPriority.NORMAL)
+  public void onEntityDamageByEntity(EntityDamageByEntityEvent e){
+	  
+		if (e.getDamager() instanceof Snowball && e.getEntity() instanceof Player){
+			for (Entity e1 : e.getEntity().getNearbyEntities(20.0D, 20.0D, 20.0D)){
+				if (e1 instanceof Player){
+					Player e2 = (Player) e1;
+					if (e2.hasPermission("wa.staff")){
+						e.getEntity().setVelocity(new Vector(0, 3, 0));
+						FireworkShenans fplayer = new FireworkShenans();
+		            	try {
+		        			
+							fplayer.playFirework(e2.getWorld(), e.getEntity().getLocation(),
+							FireworkEffect.builder().with(Type.BALL_LARGE).withColor(Color.FUCHSIA).build());
+							for (int x = 0; x < 30; x++){
+								e2.getWorld().playEffect(e.getEntity().getLocation(), Effect.MOBSPAWNER_FLAMES, 0);
+							}
+						} catch (IllegalArgumentException a) {
+						} catch (Exception a) {
+						} 
+		            	return;
+					}
+				}
+			}
+			
+		}
+  
   }
 
   @EventHandler(priority=EventPriority.NORMAL)
@@ -128,6 +176,7 @@ public class StaticField extends JavaPlugin
     if (event.getEntity() instanceof Player){
     	
     	Player p = (Player)event.getEntity();
+
     	if (plugin.datacore.getBoolean("Users." + p.getName() + ".NoDamage")){
     		event.setCancelled(true);
     		plugin.datacore.set("Users." + p.getName() + ".NoDamage", null);

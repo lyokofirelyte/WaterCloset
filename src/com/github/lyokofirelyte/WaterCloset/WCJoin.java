@@ -20,7 +20,6 @@ import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
-import com.github.lyokofirelyte.WaterCloset.Util.WCTPS;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WCJoin implements Listener {
@@ -167,7 +166,6 @@ public class WCJoin implements Listener {
 	  
 	  	if (localObjective == null){
 	  
-			  double tpss = WCTPS.getTPS();
 		
 		 	  ScoreboardManager manager = Bukkit.getScoreboardManager();
 		 	  Scoreboard board = manager.getNewScoreboard();
@@ -180,7 +178,6 @@ public class WCJoin implements Listener {
 		 	  Score paragons = o1.getScore(Bukkit.getOfflinePlayer("§3Paragon Lvl:"));
 		 	  Score online = o1.getScore(Bukkit.getOfflinePlayer("§9Online:"));
 		 	  Score rank = o1.getScore(Bukkit.getOfflinePlayer("§3Rank: " + WCMail.AS(WCVault.chat.getPlayerPrefix(p))));
-		 	  Score tps = o1.getScore(Bukkit.getOfflinePlayer("§3Lag-O-Meter:"));
 		 	  
 				  Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
 				
@@ -196,13 +193,17 @@ public class WCJoin implements Listener {
 			        String secondHalf = alliance.substring(midpoint);
 					String completed = "§" + color1 + firstHalf + "§" + color2 + secondHalf;
 					Integer members = Integer.valueOf(plugin.WAAlliancesconfig.getInt("Alliances." + alliance + ".MemberCount"));
-					Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed.substring(0, 16)));
+						if (completed.length() >= 16){
+							Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed.substring(0, 16)));
+							alliance2.setScore(members);
+						} else {
+					Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed));
 					alliance2.setScore(members);
+						}
 				  }
 		 	  
 		 	  paragons.setScore(plugin.datacore.getInt("Users." + p.getName() + ".ParagonLevel"));
 		 	  balance.setScore((int) WCVault.econ.getBalance(p.getName()));
-		 	  tps.setScore((int) tpss);
 		 	  rank.setScore(0);
 		 	  online.setScore(Bukkit.getOnlinePlayers().length);
 			      p.setScoreboard(board);

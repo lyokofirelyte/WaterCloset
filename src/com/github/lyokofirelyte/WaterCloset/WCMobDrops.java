@@ -15,9 +15,11 @@ import org.bukkit.Sound;
 import org.bukkit.World;
 import org.bukkit.FireworkEffect.Type;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
+import org.bukkit.entity.Snowball;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -42,6 +44,8 @@ public class WCMobDrops implements Listener {
 	   plugin = instance;
     } 
 	
+	List <Integer> laserFwTasks = new ArrayList<Integer>();
+	
 	
 	 @EventHandler(priority = EventPriority.NORMAL)
 	  public void onPlayerBadTouch(PlayerInteractEvent event){
@@ -60,7 +64,7 @@ public class WCMobDrops implements Listener {
 	    	  		hgArena(event, event.getPlayer());
 	    	  		return;
 	    	  	}
-	    	  	if (event.getAction() == Action.LEFT_CLICK_AIR && event.getPlayer().getItemInHand().getType().equals(Material.STICK)){
+	    	  	if ((event.getAction() == Action.LEFT_CLICK_AIR || event.getAction() == Action.LEFT_CLICK_BLOCK) && event.getPlayer().getItemInHand().getType().equals(Material.STICK)){
 	    	  		partyWarp(event, event.getPlayer());
 	    	  		return;
 	    	  	}
@@ -165,6 +169,57 @@ public class WCMobDrops implements Listener {
 				} else {
 					WCMain.s(p, "You must aim at a landing pad!");
 				}
+		} else if (p.hasPermission("wa.staff")){
+			
+	    	  final Player pl = e.getPlayer();
+	    	  
+	    	  final Entity proj1 = (Snowball) pl.launchProjectile(Snowball.class);
+		      Vector vec = pl.getEyeLocation().getDirection();
+		      proj1.setVelocity(vec.multiply(2));
+		      pl.getWorld().playSound(pl.getLocation(), Sound.GHAST_FIREBALL, 3.0F, 0.5F);
+		      
+				final List<Color> colors = new ArrayList<Color>();
+				colors.add(Color.RED);
+				colors.add(Color.WHITE);
+				colors.add(Color.BLUE);
+				colors.add(Color.ORANGE);
+				colors.add(Color.FUCHSIA);
+				colors.add(Color.AQUA);
+				colors.add(Color.PURPLE);
+				colors.add(Color.GREEN);
+				colors.add(Color.TEAL);
+				colors.add(Color.YELLOW);
+
+		      
+		      int laserTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
+					
+					public void run(){
+						
+						Random rand = new Random();
+						int nextInt = rand.nextInt(10);
+					
+						
+						FireworkShenans fplayer = new FireworkShenans();
+						try {
+							   fplayer.playFirework(proj1.getWorld(), proj1.getLocation(),
+									   FireworkEffect.builder().with(Type.BURST).withColor(colors.get(nextInt)).build());
+						   } catch (IllegalArgumentException e2) {
+						   } catch (Exception e2) {
+				    	 } 
+					}
+				}, 2L, 0L);
+	   
+		      laserFwTasks.add(laserTask);
+		      
+				 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
+					 
+			  		   public void run() 
+			  		   {
+			  			Bukkit.getServer().getScheduler().cancelTask(laserFwTasks.get(laserFwTasks.size()-1));
+			  			laserFwTasks.remove(laserFwTasks.get(laserFwTasks.size()-1));
+			  		   }
+				 }
+			     , 20L);
 		}
 		
 	}
