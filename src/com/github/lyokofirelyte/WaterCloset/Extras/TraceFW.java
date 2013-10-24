@@ -400,7 +400,8 @@ public class TraceFW implements CommandExecutor{
 			 b++;
 			 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				 
-	  		   public void run() {
+	  		   @SuppressWarnings("deprecation")
+			public void run() {
 	  			   
 		  			int happyTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 							
@@ -450,7 +451,8 @@ public class TraceFW implements CommandExecutor{
 			 c++;
 			 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				 
-	  		   public void run() {
+	  		   @SuppressWarnings("deprecation")
+			public void run() {
 	  			   
 		  			int happyTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 							
@@ -500,7 +502,8 @@ public class TraceFW implements CommandExecutor{
 			 d++;
 			 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				 
-	  		   public void run() {
+	  		   @SuppressWarnings("deprecation")
+			public void run() {
 	  			   
 		  			int happyTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 							
@@ -549,7 +552,8 @@ public class TraceFW implements CommandExecutor{
 			 e++;
 			 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				 
-	  		   public void run() {
+	  		   @SuppressWarnings("deprecation")
+			public void run() {
 	  			   
 		  			int happyTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 							
@@ -598,7 +602,8 @@ public class TraceFW implements CommandExecutor{
 			 DELAY = DELAY + 2L;
 			 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable() {
 				 
-	  		   public void run() {
+	  		   @SuppressWarnings("deprecation")
+			public void run() {
 	  			   
 		  			int happyTask = Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable(){
 							

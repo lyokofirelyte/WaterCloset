@@ -198,6 +198,7 @@ public class WCBlockPlace implements Listener{
 		
 	}
 	
+	@SuppressWarnings("deprecation")
 	private void paragonUpdate(String type, Player p, int clay){
 		
 		int global = plugin.datacore.getInt("Paragons." + type);

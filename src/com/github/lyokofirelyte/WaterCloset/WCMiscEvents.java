@@ -1,20 +1,15 @@
 package com.github.lyokofirelyte.WaterCloset;
 
-import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
-import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.github.lyokofirelyte.WaterCloset.WCCommands;
-
-import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
 public class WCMiscEvents implements Listener {
 	

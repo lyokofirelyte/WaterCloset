@@ -26,6 +26,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 
+import com.github.lyokofirelyte.WaterCloset.WCCommands;
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
@@ -105,7 +106,11 @@ public class StaticField extends JavaPlugin
   @EventHandler(priority=EventPriority.NORMAL)
   public void onPlayerMove(PlayerMoveEvent event)
   {
-
+	  if (plugin.userGrabB(event.getPlayer().getName(), "loljump")){
+		 Vector vec = WCCommands.vec;
+		 event.getPlayer().setVelocity(vec);
+	  }
+	
     List<String> forceUsers = this.plugin.datacore.getStringList("ForceField.Users");
     
     double xto = event.getTo().getBlockX();

@@ -3,6 +3,7 @@ package com.github.lyokofirelyte.WaterCloset;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -30,11 +31,14 @@ public class WCJoin implements Listener {
   {
     this.plugin = instance;
   }
-
-  @SuppressWarnings("deprecation")
+  
+  
+@SuppressWarnings("deprecation")
 @EventHandler(priority=EventPriority.HIGH)
   public boolean onPlayerJoin(final PlayerJoinEvent event) throws Exception
   {
+	  
+	  
 	  try
 	    {
 		  plugin.userCreate(event.getPlayer().getName());
