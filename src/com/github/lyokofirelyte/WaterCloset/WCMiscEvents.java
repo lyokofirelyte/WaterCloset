@@ -1,22 +1,27 @@
 package com.github.lyokofirelyte.WaterCloset;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.block.SignChangeEvent;
+import org.bukkit.event.entity.EntityCreatePortalEvent;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 
 import com.github.lyokofirelyte.WaterCloset.WCCommands;
 
 import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
-public class WCInteract implements Listener {
+public class WCMiscEvents implements Listener {
 	
 	WCMain plugin;
 	WCCommands wc;
 	
-	public WCInteract(WCMain plugin){
+	public WCMiscEvents(WCMain plugin){
 		
 		this.plugin = plugin;
 		
@@ -33,7 +38,25 @@ public class WCInteract implements Listener {
 			
 			ent.setPassenger(p);
 			plugin.datacore.set("Users." + p.getName() + ".commandUsed", false);
-			p.sendMessage(AS(wc.WC + "You have successfully rode a &6" + ent.getType().name() + "&d!"));
+			
+		}
+		
+	}
+	
+	@EventHandler(priority = EventPriority.NORMAL)
+	public void onEnderDragonSpawnPORTALZ(EntityCreatePortalEvent e){
+		
+		if (e.isCancelled()){
+			
+			return;
+			
+		}
+		
+		EntityType ent = e.getEntity().getType();
+		
+		if (ent == EntityType.ENDER_DRAGON){
+			
+			e.setCancelled(true);
 			
 		}
 		

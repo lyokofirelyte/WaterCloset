@@ -13,6 +13,7 @@ import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Sign;
+import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,12 +31,12 @@ public class WCSigns implements Listener {
 	  }
 	  
 		@EventHandler (priority = EventPriority.NORMAL)
-		public void onSignChage(SignChangeEvent e){
+		public void onSignChange(SignChangeEvent e){
 
 			String signLine1 = e.getLine(0);
 			String signLine2 = e.getLine(1);
 			
-			if (signLine1.equals("warp") && e.getPlayer().hasPermission("wa.mod")){
+			if (signLine1.equalsIgnoreCase("warp") && e.getPlayer().hasPermission("wa.mod")){
 				
 				File warpFile = new File(plugin.getDataFolder() + File.separator + "Warps", signLine2.toLowerCase() + ".yml");
 				  
@@ -92,6 +93,24 @@ public class WCSigns implements Listener {
 					}
 				e.setLine(2, "");
 				e.setLine(3, "");
+			}
+			
+			if (signLine1.equalsIgnoreCase("[Enderdragon]")){
+				
+				e.setLine(0, "&d&l// WC //");
+				e.setLine(1, "&aSPAWN DRAGON");
+				e.setLine(2, "&5[ press ]");
+				
+				String world = e.getBlock().getLocation().getWorld().getName();
+				double x = e.getBlock().getLocation().getX();
+				double y = e.getBlock().getLocation().getY();
+				double z = e.getBlock().getLocation().getZ();
+				
+				List<String> list = plugin.datacore.getStringList("EnderDragonSigns." + world);
+				list.add(x + ", " + y + ", " + z);
+								
+				plugin.datacore.set("EnderDragonSigns." + world, list);
+				
 			}
 			
 		}
@@ -160,6 +179,27 @@ public class WCSigns implements Listener {
 					}
 					
 				}
+					
+				double x = e.getClickedBlock().getLocation().getX();
+				double y = e.getClickedBlock().getLocation().getY();
+				double z = e.getClickedBlock().getLocation().getZ();
+				String w = e.getClickedBlock().getLocation().getWorld().getName();
+				String loc = x + ", " + y + ", " + z;
+				
+				List<String> list = plugin.datacore.getStringList("EnderDragonSigns." + w);
+				
+				for (String s : list){
+					
+					if (s.equals(loc)){
+						
+						CommandSender sender = (CommandSender) e.getPlayer();
+						
+						Bukkit.dispatchCommand(sender, "wc dragonspawn");
+						
+					}
+					
+				}
+				
 			}
 	
 		}
