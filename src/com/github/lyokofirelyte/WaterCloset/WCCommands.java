@@ -48,6 +48,8 @@ public class WCCommands implements CommandExecutor {
 	private HashMap<String, Long> rainoffCooldown = new HashMap<String, Long>();
 	private HashMap<String, Long> dragonCooldown = new HashMap<String, Long>();
 	
+	WCJoin wcJoin;
+	
   WCMain plugin;
   String WC = "§dWC §5// §d";
   Boolean home;
@@ -2443,6 +2445,14 @@ public class WCCommands implements CommandExecutor {
 			plugin.datacore.set("Users." + p.getName() + ".commandUsed", true);
 			sender.sendMessage(AS(WC + "Right click on a mob to begin the madness! (づ｡◕‿‿◕｡)づ"));
 			break;
+			
+		case "sidebar":
+			
+			// The setBoard method checks to see if there is a scoreboard, and it not makes one, and if there is one, then it clears it. Simple.
+			wcJoin.setBoard(p);
+			
+			break;
+			
       }
     }
     return true;
