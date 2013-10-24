@@ -24,6 +24,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -37,12 +38,14 @@ import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
 
+
 import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
 public class WCCommands implements CommandExecutor {
 	
 	private int groove;
 	private HashMap<String, Long> rainoffCooldown = new HashMap<String, Long>();
+	private HashMap<String, Long> dragonCooldown = new HashMap<String, Long>();
 	
   WCMain plugin;
   String WC = "§dWC §5// §d";
@@ -754,6 +757,8 @@ public class WCCommands implements CommandExecutor {
   @SuppressWarnings("deprecation")
   public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
 	  
+	  Player p = (Player) sender;
+	  
 	  if (cmd.getName().equalsIgnoreCase("blame")){
 		  
 			Random rand = new Random();
@@ -764,11 +769,49 @@ public class WCCommands implements CommandExecutor {
 					x++;
 					
 					if (x == randomNumber){
-						Bukkit.broadcastMessage(AS(((Player) sender).getDisplayName() + " &dblames " + bleh.getDisplayName() + "!"));
+						Bukkit.broadcastMessage(AS((p).getDisplayName() + " &dblames " + bleh.getDisplayName() + "!"));
 						break;
 					}
 				}
 		
+	  }
+	  
+	  if (cmd.getName().equalsIgnoreCase("google")){
+		  
+		  if (args.length == 0){
+			  
+			  sender.sendMessage(AS(WC + "Usage: /google <query>"));
+			  
+		  } else {
+			  
+			  StringBuilder sb = new StringBuilder();
+			  int length = args.length;
+			  
+			  for (int i = 0; i < length; i++){
+				  
+				  String s = args[i];
+				  
+				  sb.append("+" + s);
+				  
+			  }
+			  
+			  String[] query = {
+					  
+					  AS(WC + "Google: http://lmgtfy.com/?q=") + sb.toString().replaceFirst("+", ""),
+					  AS("&5- &dBrought to you by " + p.getName() + "&d!")
+					  
+			  };
+			  
+			  for (Player online : Bukkit.getOnlinePlayers()){
+				  
+				  online.sendMessage(query);
+				  
+			  }
+			  
+		  }
+		  
+		  return true;
+		  
 	  }
 	  
 	  if (cmd.getName().equalsIgnoreCase("member") && sender.hasPermission("wa.staff")){
@@ -808,7 +851,7 @@ public class WCCommands implements CommandExecutor {
       case "fling":
 
     	  
-    	  final Player pq = ((Player)sender);
+    	  final Player pq = p;
     	  
     	  if (pq.hasPermission("wa.staff")){
   
@@ -1010,7 +1053,7 @@ public class WCCommands implements CommandExecutor {
       case "hw":
     	  
     	  if (sender.hasPermission("wa.staff")){
-    	  	halloweenWorks(((Player) sender).getWorld(), ((Player)sender));
+    	  	halloweenWorks((p).getWorld(), ((Player)sender));
     	  }
     	  
     	  break;
@@ -1360,7 +1403,7 @@ public class WCCommands implements CommandExecutor {
     	  double LocY = Bukkit.getPlayer(args[1]).getLocation().getBlockY();
     	  double LocZ = Bukkit.getPlayer(args[1]).getLocation().getBlockZ();
     	  
-    	  final Player p2 = (Player) sender;
+    	  final Player p2 = p;
     	  double LocXME = p2.getLocation().getBlockX();
     	  double LocYME = p2.getLocation().getBlockY();
     	  double LocZME = p2.getLocation().getBlockZ();
@@ -1461,7 +1504,7 @@ public class WCCommands implements CommandExecutor {
       
       case "spawnworks":
 
-    	  	Player p7 = (Player) sender;
+    	  	Player p7 = p;
     	  	spawnWorks(p7.getLocation(), p7);
     	  	break;
     	  
@@ -1510,7 +1553,6 @@ public class WCCommands implements CommandExecutor {
     			  break;
     		  }
     		  
-    		  Player p = (Player) sender;
     		  plugin.datacore.set("Users." + sender.getName() + ".expDeposit", true);
     		  plugin.datacore.set("Users." + sender.getName() + ".MasterExp", (xp-Integer.parseInt(args[2])));
     		  p.giveExp(Integer.parseInt(args[2]));
@@ -1663,7 +1705,6 @@ public class WCCommands implements CommandExecutor {
     	   	
     	   	plugin.datacore.set("Users." + sender.getName() + ".SpecialHomeSet", true);
     	   	
-    		Player p = (Player) sender;
     	   	double x = p.getLocation().getBlockX();
     	   	double y = p.getLocation().getBlockY();
     	   	double z = p.getLocation().getBlockZ();
@@ -1699,7 +1740,7 @@ public class WCCommands implements CommandExecutor {
     		World W = Bukkit.getWorld(plugin.datacore.getString("Users." + sender.getName() + ".SpecialHomeLocW"));
     		
     		Location sS = new Location(W, X, Y, Z, YAW, PITCH);
-    		Player P = (Player) sender;
+    		Player P = p;
     		P.teleport(sS);
     		sender.sendMessage(WC + "Teleported to your special home!");
     		break;
@@ -1728,7 +1769,7 @@ public class WCCommands implements CommandExecutor {
         	
         	if (sender.hasPermission("wa.admin")){
         	
-        	final Player P2 = (Player) sender;
+        	final Player P2 = p;
         	Entity target = getTarget(P2);
         		if (target == null){
         			sender.sendMessage(WCMail.WC + "HOLY TWAT-MUFFIN SHIT COCK THERE'S NO ONE THERE TO FIRE AT!");
@@ -1929,7 +1970,7 @@ public class WCCommands implements CommandExecutor {
         	}
         	
         		Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "tp " + sender.getName() + " " + args[1]);
-        		Bukkit.broadcastMessage(AS(WCMail.WC + ((Player) sender).getDisplayName() + " &chas used a grief-check teleport for " + Bukkit.getPlayer(args[1]).getDisplayName()));
+        		Bukkit.broadcastMessage(AS(WCMail.WC + (p).getDisplayName() + " &chas used a grief-check teleport for " + Bukkit.getPlayer(args[1]).getDisplayName()));
         		break;
         
         case "addobelisk":
@@ -2084,10 +2125,9 @@ public class WCCommands implements CommandExecutor {
 			final int rainoffSeconds = 10800;
 			final long timeLeftRO;
 
-			p = (Player) sender;
 			if (rainoffCooldown.containsKey(p.getName())){
 
-				timeLeftRO = ((rainoffCooldown.get(p.getName()) / 1000) + rainoffSeconds) - (System.currentTimeMillis() / 1000);
+				timeLeftRO = this.getCooldown(rainoffCooldown, p.getName(), rainoffSeconds);
 
 				if (timeLeftRO > 0){
 
@@ -2098,8 +2138,33 @@ public class WCCommands implements CommandExecutor {
 						return true;
 
 					}
+					
+					int timeLeft = (int) timeLeftRO;
+					StringBuilder sb = new StringBuilder();
+					
+					for (int i = 0; i < 3; i++){
+						
+						int time = timeLeft % 60;
+						
+						if (i == 0){
+							
+							sb.append(", and " + time + " seconds");
+							
+						} else if (i == 1){
+							
+							sb.insert(0, ", " +  time + " minutes");
+							
+						} else if (i == 2){
+							
+							sb.insert(0, time + " hours");
+							
+						}
+						
+						timeLeft /= 60;
+						
+					}
 
-					sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + timeLeftRO + " seconds left on the cooldown."));
+					sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + sb.toString() + " seconds left on the cooldown."));
 
 					return true;
 
@@ -2133,10 +2198,73 @@ public class WCCommands implements CommandExecutor {
 
 			}
 
-			rainoffCooldown.put(p.getName(), System.currentTimeMillis());
+			this.resetCooldown(rainoffCooldown, p.getName());
 
 			break;
+			
+		case "dragonspawn":
+			
+			int dragonSpawnSecs = 14400;
+			long timeLeftDR;
+			
+			if (dragonCooldown.containsKey("global")){
+				
+				timeLeftDR = this.getCooldown(dragonCooldown, "global", dragonSpawnSecs);
+				
+				if (timeLeftDR > 0){
 
+					if (timeLeftDR == 1){
+
+						sender.sendMessage(AS(WC + "Wow! You have the actual nerve to try the command when there is still 1 second left on the cooldown. Amazing.!"));
+
+					} else {
+						
+						int timeLeft = (int) timeLeftDR;
+						StringBuilder sb = new StringBuilder();
+						
+						for (int i = 0; i < 3; i++){
+							
+							int time = timeLeft % 60;
+							
+							if (i == 0){
+								
+								sb.append(", and " + time + " seconds");
+								
+							} else if (i == 1){
+								
+								sb.insert(0, ", " +  time + " minutes");
+								
+							} else if (i == 2){
+								
+								sb.insert(0, time + " hours");
+								
+							}
+							
+							timeLeft /= 60;
+							
+						}
+						
+						sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + sb.toString() + " left on the cooldown."));
+						
+					}
+
+				}
+				
+			} else {
+				
+				World theEnd = Bukkit.getWorld("world_the_end");
+				
+				theEnd.spawnEntity(new Location(theEnd, -8, 66, -8), EntityType.ENDER_DRAGON);
+				
+				Bukkit.broadcastMessage(AS(WC + p.getDisplayName() + " &dhas spawned an enderdragon in the end! Oh noes!"));
+				Bukkit.broadcastMessage(AS(WC + "Resetting the cooldown."));
+				
+				this.resetCooldown(dragonCooldown, "global");
+				
+			}
+			
+			break;
+			
 		case "exptop":
 
 			List<String> expUsers = WCMain.mail.getStringList("Users.Total");
@@ -2253,7 +2381,6 @@ public class WCCommands implements CommandExecutor {
 			}
 			
 			final Random rand = new Random();
-			p = (Player) sender;
 			Bukkit.broadcastMessage(AS(WC + "Are you ready everyone? Here we go! (kill " + p.getDisplayName() + " &dplease)"));
 			
 			Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, new Runnable(){
@@ -2315,7 +2442,6 @@ public class WCCommands implements CommandExecutor {
 				break;		
 			}
 			
-			p = (Player) sender;
 			plugin.datacore.set("Users." + p.getName() + ".commandUsed", true);
 			sender.sendMessage(AS(WC + "Right click on a mob to begin the madness! (づ｡◕‿‿◕｡)づ"));
 			break;
@@ -2339,5 +2465,20 @@ public class WCCommands implements CommandExecutor {
 	private void cancelTask() {
 		Bukkit.getServer().getScheduler().cancelTask(groove);
 	}
+	
+	public long getCooldown(HashMap<String, Long> map, String player, int seconds){
+		
+		long timeLeft = ((map.get(player) / 1000) + seconds) - (System.currentTimeMillis() / 1000);
+		
+		return timeLeft;
+		
+	}
+	
+	public void resetCooldown(HashMap<String, Long> map, String player){
+		
+		map.put(player, System.currentTimeMillis());
+		
+	}
+	
 }
   

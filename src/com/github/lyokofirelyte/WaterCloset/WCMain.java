@@ -108,7 +108,7 @@ public class WCMain extends JavaPlugin {
     pm.registerEvents(new WCBlockPlace(this), this);
     pm.registerEvents(new WCExpSystem(this), this);
     pm.registerEvents(new WCDeath(this), this);
-    pm.registerEvents(new WCInteract(this), this);
+    pm.registerEvents(new WCMiscEvents(this), this);
     pm.registerEvents(new WCTP(this), this);
     pm.registerEvents(new WCSigns(this), this);
 
@@ -221,10 +221,11 @@ public class WCMain extends JavaPlugin {
   {
     getCommand("watercloset").setExecutor(new WCCommands(this));
     getCommand("wc").setExecutor(new WCCommands(this));
+    getCommand("blame").setExecutor(new WCCommands(this));
+    getCommand("member").setExecutor(new WCCommands(this));
+    getCommand("google").setExecutor(new WCCommands(this));
 
     getCommand("waa").setExecutor(new WACommandEx(this));
-    getCommand("l").setExecutor(new WCChannels(this));
-    getCommand("o").setExecutor(new WCChannels(this));
     getCommand("nick").setExecutor(new WACommandEx(this));
 
     getCommand("timestamp").setExecutor(new TimeStampEX(this));
@@ -236,21 +237,11 @@ public class WCMain extends JavaPlugin {
     getCommand("tell").setExecutor(new WCChannels(this));
     getCommand("t").setExecutor(new WCChannels(this));
     getCommand("r").setExecutor(new WCChannels(this));
+    getCommand("l").setExecutor(new WCChannels(this));
+    getCommand("o").setExecutor(new WCChannels(this));
 
     getCommand("forcefield").setExecutor(new StaticField(this));
     getCommand("ff").setExecutor(new StaticField(this));
-    
-    getCommand("report").setExecutor(new WCReport(this));
-    
-    getCommand("mail").setExecutor(new WCMail(this));
-    
-    getCommand("search").setExecutor(new WCHelp(this));
-    
-    getCommand("blame").setExecutor(new WCCommands(this));
-    
-    getCommand("member").setExecutor(new WCCommands(this));
-    
-    getCommand("cg").setExecutor(new CGMain(this));
     
     getCommand("home").setExecutor(new WCHome(this));
     getCommand("sethome").setExecutor(new WCHome(this));
@@ -269,6 +260,15 @@ public class WCMain extends JavaPlugin {
     getCommand("bk").setExecutor(new WCBack(this));
     
     getCommand("rankup").setExecutor(new WCRanks(this));
+    
+    getCommand("report").setExecutor(new WCReport(this));
+    
+    getCommand("mail").setExecutor(new WCMail(this));
+    
+    getCommand("search").setExecutor(new WCHelp(this));
+    
+    getCommand("cg").setExecutor(new CGMain(this));
+    
     
   }
 
