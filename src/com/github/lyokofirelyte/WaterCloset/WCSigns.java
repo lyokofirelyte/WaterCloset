@@ -31,7 +31,7 @@ public class WCSigns implements Listener {
 	  }
 	  
 		@EventHandler (priority = EventPriority.NORMAL)
-		public void onSignChange(SignChangeEvent e){
+		public void onSignCheaingeEhbvent(SignChangeEvent e){
 
 			String signLine1 = e.getLine(0);
 			String signLine2 = e.getLine(1);
@@ -95,11 +95,11 @@ public class WCSigns implements Listener {
 				e.setLine(3, "");
 			}
 			
-			if (signLine1.equalsIgnoreCase("[Enderdragon]")){
+			if (signLine1.equalsIgnoreCase("enderdragon")){
 				
-				e.setLine(0, "&d&l// WC //");
-				e.setLine(1, "&aSPAWN DRAGON");
-				e.setLine(2, "&5[ press ]");
+				e.setLine(0, "§5// WC //");
+				e.setLine(1, "§aSPAWN DRAGON");
+				e.setLine(2, "§d[ press ]");
 				
 				String world = e.getBlock().getLocation().getWorld().getName();
 				double x = e.getBlock().getLocation().getX();

@@ -34,6 +34,7 @@ import org.bukkit.util.BlockIterator;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
 
@@ -779,35 +780,10 @@ public class WCCommands implements CommandExecutor {
 	  if (cmd.getName().equalsIgnoreCase("google")){
 		  
 		  if (args.length == 0){
-			  
 			  sender.sendMessage(AS(WC + "Usage: /google <query>"));
-			  
 		  } else {
-			  
-			  StringBuilder sb = new StringBuilder();
-			  int length = args.length;
-			  
-			  for (int i = 0; i < length; i++){
-				  
-				  String s = args[i];
-				  
-				  sb.append("+" + s);
-				  
-			  }
-			  
-			  String[] query = {
-					  
-					  AS(WC + "Google: http://lmgtfy.com/?q=") + sb.toString().replaceFirst("+", ""),
-					  AS("&5- &dBrought to you by " + p.getName() + "&d!")
-					  
-			  };
-			  
-			  for (Player online : Bukkit.getOnlinePlayers()){
-				  
-				  online.sendMessage(query);
-				  
-			  }
-			  
+			  Bukkit.broadcastMessage(AS(WC + "Google: http://lmgtfy.com/?q=") + TimeStampEX.createString(args, 0));
+			  Bukkit.broadcastMessage(AS("&5~" + p.getDisplayName()));  
 		  }
 		  
 		  return true;
@@ -2256,8 +2232,8 @@ public class WCCommands implements CommandExecutor {
 				
 				theEnd.spawnEntity(new Location(theEnd, -8, 66, -8), EntityType.ENDER_DRAGON);
 				
-				Bukkit.broadcastMessage(AS(WC + p.getDisplayName() + " &dhas spawned an enderdragon in the end! Oh noes!"));
-				Bukkit.broadcastMessage(AS(WC + "Resetting the cooldown."));
+				Bukkit.broadcastMessage(AS(WC + p.getDisplayName() + " &dhas spawned an enderdragon in the end!"));
+				Bukkit.broadcastMessage(AS(WC + "&6&oAnother one will be ready to spawn in 4 hours."));
 				
 				this.resetCooldown(dragonCooldown, "global");
 				

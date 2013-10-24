@@ -125,6 +125,9 @@ commands:
    rankup:
       description: WC Rankup Command
       usage: /rankup
+   google:
+      description: WC Google Command
+      usage: /google <query>
 permissions:
     spleef.admin:
         description: Use admin stuff.
