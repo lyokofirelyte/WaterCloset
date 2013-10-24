@@ -23,6 +23,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
+
 public class WCSigns implements Listener {
 
       WCMain plugin;
@@ -40,11 +42,10 @@ public class WCSigns implements Listener {
 				
 				File warpFile = new File(plugin.getDataFolder() + File.separator + "Warps", signLine2.toLowerCase() + ".yml");
 				  
-				  if (!warpFile.exists()) {
-					  e.setLine(0, "§f//§4Warp§f//");
-					  e.setLine(1, "§cINVALID");
-					  e.setLine(2, "§cWARP!");
-					  e.setLine(3, "§7§oSee /warp");
+					  e.setLine(0, AS("&f//&4Warp&f//");)
+					  e.setLine(1, AS("&cINVALID"));
+					  e.setLine(2, AS("&cWARP!"));
+					  e.setLine(3, AS("&7&oSee /warp");
 					  return;
 				  }
 				  
@@ -85,11 +86,11 @@ public class WCSigns implements Listener {
 						a.printStackTrace();
 					  }
 				
-				e.setLine(0, "§f//§1Warp§f//");
+				e.setLine(0, "ï¿½f//ï¿½1Warpï¿½f//");
 					if (e.getLine(2) != null && e.getLine(2).contains(".")){
-						e.setLine(1, "§e" + e.getLine(1));
+						e.setLine(1, "ï¿½e" + e.getLine(1));
 					} else {
-						e.setLine(1, "§b" + e.getLine(1));
+						e.setLine(1, "ï¿½b" + e.getLine(1));
 					}
 				e.setLine(2, "");
 				e.setLine(3, "");
@@ -97,9 +98,9 @@ public class WCSigns implements Listener {
 			
 			if (signLine1.equalsIgnoreCase("enderdragon")){
 				
-				e.setLine(0, "§5// WC //");
-				e.setLine(1, "§aSPAWN DRAGON");
-				e.setLine(2, "§d[ press ]");
+				e.setLine(0, "ï¿½5// WC //");
+				e.setLine(1, "ï¿½aSPAWN DRAGON");
+				e.setLine(2, "ï¿½d[ press ]");
 				
 				String world = e.getBlock().getLocation().getWorld().getName();
 				double x = e.getBlock().getLocation().getX();
@@ -130,16 +131,16 @@ public class WCSigns implements Listener {
 					String signLine1 = sign.getLine(0);
 					String signLine2 = sign.getLine(1);
 					
-					if (signLine1.equals("§f//§1Warp§f//")){
+					if (signLine1.equals("ï¿½f//ï¿½1Warpï¿½f//")){
 					 
 						YamlConfiguration warpLoad = new YamlConfiguration();
-						File warpFile = new File(plugin.getDataFolder() + File.separator + "Warps", signLine2.replace("§b", "").replace("§e", "").toLowerCase() + ".yml");
+						File warpFile = new File(plugin.getDataFolder() + File.separator + "Warps", signLine2.replace("ï¿½b", "").replace("ï¿½e", "").toLowerCase() + ".yml");
 						  
 						  if (!warpFile.exists()) {
-							  sign.setLine(0, "§f//§4Warp§f//");
-							  sign.setLine(1, "§cINVALID");
-							  sign.setLine(2, "§cWARP!");
-							  sign.setLine(3, "§7§oSee /warp");
+							  sign.setLine(0, AS("&f//&4Warp&f//");)
+							  sign.setLine(1, AS("&cINVALID"));
+					  		  sign.setLine(2, AS("&cWARP!"));
+							  sign.setLine(3, AS("&7&oSee /warp");
 							  sign.update(true);
 							  return;
 						  }
