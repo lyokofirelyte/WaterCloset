@@ -54,6 +54,7 @@ public class WCCommands implements CommandExecutor {
   Boolean homeSet;
   List <Integer> laserFwTasks = new ArrayList<Integer>();
   int ltask = -1;
+  public static Vector vec = new Vector();
 
   public WCCommands(WCMain instance){
   this.plugin = instance;
@@ -782,7 +783,7 @@ public class WCCommands implements CommandExecutor {
 		  if (args.length == 0){
 			  sender.sendMessage(AS(WC + "Usage: /google <query>"));
 		  } else {
-			  Bukkit.broadcastMessage(AS(WC + "Google: http://lmgtfy.com/?q=") + TimeStampEX.createString(args, 0));
+			  Bukkit.broadcastMessage(AS(WC + "Google: http://lmgtfy.com/?q=") + TimeStampEX.createString(args, 0).replace(" ", "+"));
 			  Bukkit.broadcastMessage(AS("&5~" + p.getDisplayName()));  
 		  }
 		  
@@ -1030,6 +1031,27 @@ public class WCCommands implements CommandExecutor {
     	  
     	  if (sender.hasPermission("wa.staff")){
     	  	halloweenWorks((p).getWorld(), ((Player)sender));
+    	  }
+    	  
+    	  break;
+    	  
+      case "loljump":
+    	  
+    	  if (sender.hasPermission("wa.staff")){
+    		  if (plugin.userGrabB(p.getName(), "loljump")){
+    			  plugin.userWriteB(p.getName(), "loljump", false);
+    			  p.setAllowFlight(false);
+    			  p.setFlying(false);
+    			  WCMain.s(p, "OFF");
+    		  } else {
+    			  WCMain.s(p, "ON!");
+    			  vec = p.getEyeLocation().getDirection();
+    			  p.setAllowFlight(true);
+    			  p.setFlying(true);
+    			  p.setVelocity(vec);
+    			  plugin.userWriteB(p.getName(), "loljump", true);
+    		  }
+    		  
     	  }
     	  
     	  break;

@@ -3,6 +3,7 @@ package com.github.lyokofirelyte.WaterCloset.Util;
 import java.lang.reflect.Method;
 
 import org.bukkit.FireworkEffect;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Firework;
 import org.bukkit.inventory.meta.FireworkMeta;
 import org.bukkit.Location;
@@ -49,6 +50,8 @@ public class FireworkShenans {
          * @param fe
          * @throws Exception
          */
+        
+        
         public void playFirework(World world, Location loc, FireworkEffect fe) throws Exception {
                 // Bukkity load (CraftFirework)
                 Firework fw = (Firework) world.spawn(loc, Firework.class);
@@ -82,6 +85,7 @@ public class FireworkShenans {
                 data.setPower(1);
                 // add the effect
                 data.addEffect(fe);
+                data.addEnchant(Enchantment.DURABILITY, 10, false);
                 // set the meta
                 fw.setFireworkMeta(data);
                 /*

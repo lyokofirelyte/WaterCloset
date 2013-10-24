@@ -26,7 +26,8 @@ public class WACommandEx
     this.plugin = instance;
   }
 
-  public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+  @SuppressWarnings("deprecation")
+public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
   {
     if ((cmd.getName().equalsIgnoreCase("waa")) && ((sender instanceof Player))) {
       Player p = (Player)sender;

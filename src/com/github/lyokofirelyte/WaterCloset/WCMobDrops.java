@@ -47,7 +47,8 @@ public class WCMobDrops implements Listener {
 	List <Integer> laserFwTasks = new ArrayList<Integer>();
 	
 	
-	 @EventHandler(priority = EventPriority.NORMAL)
+	 @SuppressWarnings("deprecation")
+	@EventHandler(priority = EventPriority.NORMAL)
 	  public void onPlayerBadTouch(PlayerInteractEvent event){
 		 		 
 	  
@@ -145,7 +146,8 @@ public class WCMobDrops implements Listener {
 	}
 
 
-	private void partyWarp(PlayerInteractEvent e, Player p) {
+	@SuppressWarnings("deprecation")
+	private void partyWarp(PlayerInteractEvent e, final Player p) {
 		
 		if (p.getWorld().getName().equals("world2") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore() && p.hasPermission("wa.staff")){
 			Location loc = p.getTargetBlock(null, 300).getLocation();
@@ -225,6 +227,7 @@ public class WCMobDrops implements Listener {
 	}
 	
 	private void hgArena(PlayerInteractEvent event, Player p) {
+	
 		
 		List <String> hgArenaList = Arrays.asList("&bWC Classic (Tools on start, mining allowed, 5 minute grace period)", 
 			    "&bVanilla Collision (No grace period, chests hidden, no block breaking)",
