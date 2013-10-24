@@ -23,6 +23,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
+
 public class WCSigns implements Listener {
 
 	WCMain plugin;
@@ -134,7 +136,6 @@ public class WCSigns implements Listener {
 					
 					YamlConfiguration warpLoad = new YamlConfiguration();
 					File warpFile = new File(plugin.getDataFolder() + File.separator + "Warps", signLine2.replace("§b", "").replace("§e", "").toLowerCase() + ".yml");
-					
 					if (!warpFile.exists()) {
 						sign.setLine(0, "§f//§4Warp§f//");
 						sign.setLine(1, "§cINVALID");
