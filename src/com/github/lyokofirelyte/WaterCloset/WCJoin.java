@@ -164,56 +164,57 @@ public class WCJoin implements Listener {
   }
 
 
-  public void setBoard(Player p){
-	  
-	  Objective localObjective = p.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
-	  
-	  	if (localObjective == null){
-	  
+	public void setBoard(Player p){
 		
-		 	  ScoreboardManager manager = Bukkit.getScoreboardManager();
-		 	  Scoreboard board = manager.getNewScoreboard();
-		 	   
-		 	  Objective o1 = board.registerNewObjective("wa", "dummy");
-		 	  o1.setDisplaySlot(DisplaySlot.SIDEBAR);
-		 	  o1.setDisplayName("§2Worlds Apart");
+		Objective localObjective = p.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
+		ScoreboardManager manager = Bukkit.getScoreboardManager();
 		
-		 	  Score balance = o1.getScore(Bukkit.getOfflinePlayer("§3Balance:"));
-		 	  Score paragons = o1.getScore(Bukkit.getOfflinePlayer("§3Paragon Lvl:"));
-		 	  Score online = o1.getScore(Bukkit.getOfflinePlayer("§9Online:"));
-		 	  Score rank = o1.getScore(Bukkit.getOfflinePlayer("§3Rank: " + WCMail.AS(WCVault.chat.getPlayerPrefix(p))));
-		 	  
-				  Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
-				
-				  if (inAlliance == false){
-					  Score alliance = o1.getScore(Bukkit.getOfflinePlayer("§7Forever§8Alone"));
-					  alliance.setScore(0);
-				  } else {
-					String alliance = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".Alliance");
-					String color1 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color1");
-					String color2 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color2");
-					int midpoint = alliance.length() / 2;
-			        String firstHalf = alliance.substring(0, midpoint);
-			        String secondHalf = alliance.substring(midpoint);
-					String completed = "§" + color1 + firstHalf + "§" + color2 + secondHalf;
-					Integer members = Integer.valueOf(plugin.WAAlliancesconfig.getInt("Alliances." + alliance + ".MemberCount"));
-						if (completed.length() >= 16){
-							Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed.substring(0, 16)));
-							alliance2.setScore(members);
-						} else {
+		if (localObjective == null){
+			
+			Scoreboard board = manager.getNewScoreboard();
+			
+			Objective o1 = board.registerNewObjective("wa", "dummy");
+			o1.setDisplaySlot(DisplaySlot.SIDEBAR);
+			o1.setDisplayName("§2Worlds Apart");
+			
+			Score balance = o1.getScore(Bukkit.getOfflinePlayer("§3Balance:"));
+			Score paragons = o1.getScore(Bukkit.getOfflinePlayer("§3Paragon Lvl:"));
+			Score online = o1.getScore(Bukkit.getOfflinePlayer("§9Online:"));
+			Score rank = o1.getScore(Bukkit.getOfflinePlayer("§3Rank: " + WCMail.AS(WCVault.chat.getPlayerPrefix(p))));
+			
+			Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
+			
+			if (inAlliance == false){
+				Score alliance = o1.getScore(Bukkit.getOfflinePlayer("§7Forever§8Alone"));
+				alliance.setScore(0);
+			} else {
+				String alliance = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".Alliance");
+				String color1 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color1");
+				String color2 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color2");
+				int midpoint = alliance.length() / 2;
+				String firstHalf = alliance.substring(0, midpoint);
+				String secondHalf = alliance.substring(midpoint);
+				String completed = "§" + color1 + firstHalf + "§" + color2 + secondHalf;
+				Integer members = Integer.valueOf(plugin.WAAlliancesconfig.getInt("Alliances." + alliance + ".MemberCount"));
+				if (completed.length() >= 16){
+					Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed.substring(0, 16)));
+					alliance2.setScore(members);
+				} else {
 					Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed));
 					alliance2.setScore(members);
-						}
-				  }
-		 	  
-		 	  paragons.setScore(plugin.datacore.getInt("Users." + p.getName() + ".ParagonLevel"));
-		 	  balance.setScore((int) WCVault.econ.getBalance(p.getName()));
-		 	  rank.setScore(0);
-		 	  online.setScore(Bukkit.getOnlinePlayers().length);
-			      p.setScoreboard(board);
-			  }
-  		}
-		
+				}
+			}
+			
+			paragons.setScore(plugin.datacore.getInt("Users." + p.getName() + ".ParagonLevel"));
+			balance.setScore((int) WCVault.econ.getBalance(p.getName()));
+			rank.setScore(0);
+			online.setScore(Bukkit.getOnlinePlayers().length);
+			p.setScoreboard(board);
+		} else {
+			
+			p.setScoreboard(manager.getNewScoreboard());
+			
+		}
+	}
 	
-
 }

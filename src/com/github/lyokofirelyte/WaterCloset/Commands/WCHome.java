@@ -81,7 +81,7 @@ public class WCHome implements CommandExecutor {
 		float yaw = Float.parseFloat(locSplit[3]);
 		float pitch = Float.parseFloat(locSplit[4]);
 		World world = Bukkit.getWorld(locSplit[5]);
-		Location homeLanding = new Location(world, x, y+1, z, yaw, pitch);
+		Location homeLanding = new Location(world, x, y+1.2, z, yaw, pitch);
 		p.teleport(homeLanding);
 		List<Location> circleblocks = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 0);
 		List<Location> circleblocks2 = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 1);
