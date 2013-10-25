@@ -8,7 +8,6 @@ import java.util.ListIterator;
 import java.util.Random;
 
 import org.bukkit.FireworkEffect.Type;
-import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.Bukkit;
@@ -28,15 +27,18 @@ import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-import org.bukkit.util.BlockIterator;
+import org.bukkit.scoreboard.DisplaySlot;
+import org.bukkit.scoreboard.Objective;
+import org.bukkit.scoreboard.Score;
+import org.bukkit.scoreboard.Scoreboard;
+import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.util.Vector;
 
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
-import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
+import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 
 
@@ -47,8 +49,6 @@ public class WCCommands implements CommandExecutor {
 	private int groove;
 	private HashMap<String, Long> rainoffCooldown = new HashMap<String, Long>();
 	private HashMap<String, Long> dragonCooldown = new HashMap<String, Long>();
-	
-	WCJoin wcJoin;
 	
   WCMain plugin;
   String WC = "§dWC §5// §d";
@@ -62,14 +62,6 @@ public class WCCommands implements CommandExecutor {
   this.plugin = instance;
   }
   
-  public static boolean isInteger(String str) {
-	    try {
-	        Integer.parseInt(str);
-	        return true;
-	    } catch (NumberFormatException nfe) {
-	        return false;
-	    }
-	}
   
   	public void spawnWorks(Location loc, Player p){
   		
@@ -167,25 +159,7 @@ public class WCCommands implements CommandExecutor {
   			}
   		
   	}
-  	
-    public static List<Location> circle (Player player, Location loc, Integer r, Integer h, Boolean hollow, Boolean sphere, int plus_y) {
-        List<Location> circleblocks = new ArrayList<Location>();
-        int cx = loc.getBlockX();
-        int cy = loc.getBlockY();
-        int cz = loc.getBlockZ();
-        for (int x = cx - r; x <= cx +r; x++)
-            for (int z = cz - r; z <= cz +r; z++)
-                for (int y = (sphere ? cy - r : cy); y < (sphere ? cy + r : cy + h); y++) {
-                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
-                    if (dist < r*r && !(hollow && dist < (r-1)*(r-1))) {
-                        Location l = new Location(loc.getWorld(), x, y + plus_y, z);
-                        circleblocks.add(l);
-                        }
-                    }
-     
-        return circleblocks;
-    }
-  	
+	
   	public void spawnGO(final Location l, final Player p, long delay){
 
       		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
@@ -258,8 +232,8 @@ public class WCCommands implements CommandExecutor {
   		// Ok so now we have 4 lists of the ----> directions (50 each) for 200 firework spots.
   		// First, however, we're going to make a circle list to display before we activate the <-> lists.
   		
-  		final List<Location> circleblocks = circle(p, startLoc, 5, 1, true, false, 1);
-  		final List<Location> circleblocksBig = circle(p, startLoc, 10, 1, true, false, 2);
+  		final List<Location> circleblocks = Utils.circle(p, startLoc, 5, 1, true, false, 1);
+  		final List<Location> circleblocksBig = Utils.circle(p, startLoc, 10, 1, true, false, 2);
   		
         long delay =  0L;
         	for (final Location l : circleblocks){
@@ -699,64 +673,7 @@ public class WCCommands implements CommandExecutor {
         	
     	    , 80L); // Start the thing in the first pLace
   	}
-      
-  
-	public void fireWorkCrazyAssShit2(Location loc, final Player p) {
-		
-	int w = 0;
-		
-	while (w <= 50){
-      List<Location> circleblocks = WCBlockBreak.circle(p, loc, 5, 1, true, false, w);
-      long delay =  0L;
-	
-      
-      	for (final Location l : circleblocks){
-      		delay = delay + 2L;
-      		Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-      	    {
-      	      public void run()
-      	      {
-      	    	  	
-      	        	FireworkShenans fplayer = new FireworkShenans();
-      	        	try {
-    			
-							fplayer.playFirework(p.getWorld(), l,
-							FireworkEffect.builder().with(Type.BURST).withColor(Color.WHITE).build());
-						} catch (IllegalArgumentException e) {
-							e.printStackTrace();
-						} catch (Exception e) {
-							e.printStackTrace();
-						}        	      }
-      	    }
-      	    , delay);
-      	}
-      	
-      w++;
-	}
-
-	}
-
-	 public static Entity getTarget(final Player player) {
-		 
-	        BlockIterator iterator = new BlockIterator(player.getWorld(), player
-	                .getLocation().toVector(), player.getEyeLocation()
-	                .getDirection(), 0, 100);
-	        Entity target = null;
-	        while (iterator.hasNext()) {
-	            Block item = iterator.next();
-	            for (Entity entity : player.getNearbyEntities(100, 100, 100)) {
-	                int acc = 2;
-	                for (int x = -acc; x < acc; x++)
-	                    for (int z = -acc; z < acc; z++)
-	                        for (int y = -acc; y < acc; y++)
-	                            if (entity.getLocation().getBlock()
-	                                    .getRelative(x, y, z).equals(item)) {
-	                                return target = entity;
-	                            }
-	            }
-	        }
-	        return target;
-	    }
+     
 	 
   @SuppressWarnings("deprecation")
   public boolean onCommand(final CommandSender sender, Command cmd, String label, String[] args) {
@@ -785,7 +702,7 @@ public class WCCommands implements CommandExecutor {
 		  if (args.length == 0){
 			  sender.sendMessage(AS(WC + "Usage: /google <query>"));
 		  } else {
-			  Bukkit.broadcastMessage(AS(WC + "Google: http://lmgtfy.com/?q=") + TimeStampEX.createString(args, 0).replace(" ", "+"));
+			  Bukkit.broadcastMessage(AS(WC + "Google: http://lmgtfy.com/?q=") + Utils.createString(args, 0).replace(" ", "+"));
 			  Bukkit.broadcastMessage(AS("&5~" + p.getDisplayName()));  
 		  }
 		  
@@ -839,12 +756,12 @@ public class WCCommands implements CommandExecutor {
                 e1.setVelocity(e1.getLocation().getDirection().multiply(-5));
               }
 
-        		List<Location> circleblocks = WCBlockBreak.circle(pq, pq.getLocation(), 1, 1, true, false, 0);
-        		List<Location> circleblocks2 = WCBlockBreak.circle(pq, pq.getLocation(), 2, 1, true, false, 1);
-        		List<Location> circleblocks3 = WCBlockBreak.circle(pq, pq.getLocation(), 3, 1, true, false, 1);
-        		List<Location> circleblocks4 = WCBlockBreak.circle(pq, pq.getLocation(), 4, 1, true, false, 1);
-        		List<Location> circleblocks5 = WCBlockBreak.circle(pq, pq.getLocation(), 5, 1, true, false, 1);
-        		List<Location> circleblocks6 = WCBlockBreak.circle(pq, pq.getLocation(), 6, 1, true, false, 1);
+        		List<Location> circleblocks = Utils.circle(pq, pq.getLocation(), 1, 1, true, false, 0);
+        		List<Location> circleblocks2 = Utils.circle(pq, pq.getLocation(), 2, 1, true, false, 1);
+        		List<Location> circleblocks3 = Utils.circle(pq, pq.getLocation(), 3, 1, true, false, 1);
+        		List<Location> circleblocks4 = Utils.circle(pq, pq.getLocation(), 4, 1, true, false, 1);
+        		List<Location> circleblocks5 = Utils.circle(pq, pq.getLocation(), 5, 1, true, false, 1);
+        		List<Location> circleblocks6 = Utils.circle(pq, pq.getLocation(), 6, 1, true, false, 1);
         		pq.getWorld().playSound(pq.getLocation(), Sound.BLAZE_HIT, 3.0F, 0.5F);
         		long delay = 0L;
         		
@@ -1380,127 +1297,7 @@ public class WCCommands implements CommandExecutor {
     	 	}
     	 	
     	 break;
-      
-      case "supertp":
-    	  
-    	  if (sender.hasPermission("wa.admin") == false){
-    		  sender.sendMessage(WCMail.WC + "You don't have permission to use the super awesome teleport of crazy.");
-    		  break;
-    	  }
-    	  
-    	  if (args.length != 2){
-    		  sender.sendMessage(WCMail.WC + "/wc supertp <player>");
-    		  break;
-    	  }
-    	  
-    	  if (Bukkit.getPlayer(args[1]) == null){
-    		  sender.sendMessage(WCMail.WC + "That player is not online.");
-    		  break;
-    	  }
-    	  
-    	  final World world = Bukkit.getPlayer(args[1]).getWorld();
-    	  double LocX = Bukkit.getPlayer(args[1]).getLocation().getBlockX();
-    	  double LocY = Bukkit.getPlayer(args[1]).getLocation().getBlockY();
-    	  double LocZ = Bukkit.getPlayer(args[1]).getLocation().getBlockZ();
-    	  
-    	  final Player p2 = p;
-    	  double LocXME = p2.getLocation().getBlockX();
-    	  double LocYME = p2.getLocation().getBlockY();
-    	  double LocZME = p2.getLocation().getBlockZ();
-    	  
-    	  final Location tpLocation = new Location(world, LocX, LocY, LocZ, 0, 180);
-    	  final Location tpLocationSKY = new Location(world, LocX, LocY+50, LocZ, 0, 180);
-    	  final Location ME = new Location(world, LocXME, LocYME+1, LocZME, 0, 180);
-    	  
-        p2.teleport(ME);
-  		world.playEffect(ME, Effect.ENDER_SIGNAL, 0);
-  		world.playEffect(ME, Effect.BLAZE_SHOOT, 0);
-  		world.playEffect(ME, Effect.SMOKE, 0);
-  		
-  		fireWorkCrazyAssShit2(ME, p2);
-  		
-  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-  		    {
-  		      public void run()
-  		      {
-  		        p2.addPotionEffect(new PotionEffect(PotionEffectType.CONFUSION, 999999999, 0));
-  		        p2.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, 60, 0));
-  		        p2.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 9999999, 5));
-  		        plugin.datacore.set("Users." + p2.getName() + ".NoDamage", true);
-  		      }
-  		    }
-  		    , 10L);
-  		 
-  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-  		    {
-  		      public void run()
-  		      {
-  		    	p2.setVelocity(new Vector(0, 3, 0));
-  		      }
-  		    }
-  		    , 15L);
-  		 
-  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-  		    {
-  		      public void run()
-  		      {
-  		    	  p2.setVelocity(new Vector(0, 5, 0));
-  		    	  world.playEffect(p2.getLocation(), Effect.GHAST_SHOOT, 0);
-  		      }
-  		    }
-  		    , 55L);
-  		 
-  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-  		    {
-  		      public void run()
-  		      {
-  		    	p2.teleport(tpLocationSKY);
-  		    	fireWorkCrazyAssShit2(tpLocation, p2);
-  		      }
-  		    }
-  		    , 70L);	 
-  			 
-  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-  		    {
-  		      public void run()
-  		      {
-  		    	  p2.setVelocity(new Vector(0, -5, 0));
-  		    	  world.playEffect(p2.getLocation(), Effect.GHAST_SHOOT, 0);
-  		      }
-  		    }
-  		    , 83L);
-  		 
-  		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-  		    {
-  		      public void run()
-  		      {
-  		    	  for (Entity e1 : p2.getNearbyEntities(5.0D, 5.0D, 5.0D)){
-  		    		e1.setVelocity(e1.getLocation().getDirection().multiply(-2));
-  		    			if (e1 instanceof Player){
-  		    				((Player) e1).sendMessage(WCMail.WC + "You were shoved out of the way because of an incoming teleport!");
-  		    			}
-  	          	  }
-  		    	world.playEffect(tpLocation, Effect.ENDER_SIGNAL, 0);
-  		  		world.playEffect(tpLocation, Effect.BLAZE_SHOOT, 0);
-  		  		world.playEffect(tpLocation, Effect.MOBSPAWNER_FLAMES, 0);
-  		  		world.playEffect(tpLocation, Effect.SMOKE, 0);
-  		  		p2.removePotionEffect(PotionEffectType.CONFUSION);
-  		  		p2.removePotionEffect(PotionEffectType.NIGHT_VISION);
-  		  		plugin.datacore.set("Users." + p2.getName() + ".NoDamage", null);
-  		      }
-  		    }
-  		    , 105L);
-  		 
-		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-		    {
-		      public void run()
-		      {
-		    	  p2.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-		      }
-		    }
-		    , 115L);
-  	
-      break;
+   
       
       case "spawnworks":
 
@@ -1536,7 +1333,7 @@ public class WCCommands implements CommandExecutor {
     	  
     	  if (args[1].equalsIgnoreCase("take")){
     		  
-    		  if (isInteger(args[2]) == false){
+    		  if (Utils.isInteger(args[2]) == false){
     			  sender.sendMessage(WC + "Do you even KNOW what a number is? You can't withdraw fish amount of xp, you silly human.");
     			  break;
     		  }
@@ -1764,110 +1561,6 @@ public class WCCommands implements CommandExecutor {
         	}
       
         break;
-        
-        case "dr":
-        	
-        	if (sender.hasPermission("wa.admin")){
-        	
-        	final Player P2 = p;
-        	Entity target = getTarget(P2);
-        		if (target == null){
-        			sender.sendMessage(WCMail.WC + "HOLY TWAT-MUFFIN SHIT COCK THERE'S NO ONE THERE TO FIRE AT!");
-        			break;
-        		}
-        		
-        	Location loc2 = target.getLocation();
-        	Location loc1 = P2.getLocation();
-        	
-        	List <Location> zapLocs = new ArrayList<Location>();
-        	
-            int topBlockX = (loc1.getBlockX() < loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
-            int bottomBlockX = (loc1.getBlockX() > loc2.getBlockX() ? loc2.getBlockX() : loc1.getBlockX());
-     
-            int topBlockY = (loc1.getBlockY() < loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
-            int bottomBlockY = (loc1.getBlockY() > loc2.getBlockY() ? loc2.getBlockY() : loc1.getBlockY());
-     
-            int topBlockZ = (loc1.getBlockZ() < loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
-            int bottomBlockZ = (loc1.getBlockZ() > loc2.getBlockZ() ? loc2.getBlockZ() : loc1.getBlockZ());
-     
-            for(int xX = bottomBlockX; xX <= topBlockX; xX++)
-            {
-                for(int zZ = bottomBlockZ; zZ <= topBlockZ; zZ++)
-                {
-                    for(int yY = bottomBlockY; yY <= topBlockY; yY++)
-                    {
-            			Location heh = new Location(P2.getWorld(), xX, yY, zZ);
-            			zapLocs.add(heh);
-                    }
-                }
-            }
-        	
-        		
-        	long zapDelay = 0L;
-        	
-        	for (final Location bleh : zapLocs){
-        		 
-        		zapDelay = zapDelay + 2L;
-        		
-        		 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-       		    {
-       		      public void run()
-       		      {
-              		
-              		FireworkShenans fplayer = new FireworkShenans();
-              	
-      	        	try {
-      		
-      					fplayer.playFirework(P2.getWorld(), bleh,
-      					FireworkEffect.builder().with(Type.BURST).withColor(Color.GREEN).build());
-      				} catch (IllegalArgumentException e) {
-      					e.printStackTrace();
-      				} catch (Exception e) {
-      					e.printStackTrace();
-      				}        
-              	}
-       		      }
-       
-       		    
-       		    , zapDelay);
-        	}
-        	
-        	final List<Location> circleblocks = circle(P2, loc2, 5, 1, true, false, 1);
-        	long zapDelay2 = zapLocs.size() * 5L;
-        	
-		       for (final Location bleh : circleblocks){
-		    	   
-		    	   zapDelay2 = zapDelay2 + 3L;
-		    	   
-		    	   Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()
-		    	   {
-		    		   public void run()
-		    		   {
-		    			
-		    	   
-		    			   FireworkShenans fplayer = new FireworkShenans();
-		    			   
-                  	
-		    			   try {
-      	        		
-		    				   fplayer.playFirework(P2.getWorld(), bleh,
-		    						   FireworkEffect.builder().with(Type.BURST).withColor(Color.RED).build());
-		    			   } catch (IllegalArgumentException e) {
-		    				   e.printStackTrace();
-		    			   } catch (Exception e) {
-		    				   e.printStackTrace();
-			    			   }   
-	       		       }
-       	
-		      }
-		       
-		    
-		       , zapDelay2);
-		    	   
-      }
-        	}
-        	
-	      break;
         
         case "top":
         	
@@ -2109,7 +1802,6 @@ public class WCCommands implements CommandExecutor {
       	case "session":
 
 			Bukkit.getServer().dispatchCommand(sender, "wcs");
-
 			break;
 
 		case "rainoff":
@@ -2145,29 +1837,19 @@ public class WCCommands implements CommandExecutor {
 					for (int i = 0; i < 3; i++){
 						
 						int time = timeLeft % 60;
-						
+
 						if (i == 0){
-							
 							sb.append(", and " + time + " seconds");
-							
 						} else if (i == 1){
-							
 							sb.insert(0, ", " +  time + " minutes");
-							
-						} else if (i == 2){
-							
-							sb.insert(0, time + " hours");
-							
-						}
+						} else if (i == 2){	
+							sb.insert(0, time + " hours");	
+						}	
 						
-						timeLeft /= 60;
-						
+						timeLeft /= 60;				
 					}
-
 					sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + sb.toString() + " seconds left on the cooldown."));
-
 					return true;
-
 				}
 
 			}
@@ -2175,11 +1857,8 @@ public class WCCommands implements CommandExecutor {
 			World currentWorld = p.getWorld();
 
 			if (currentWorld.hasStorm() == false){
-
 				sender.sendMessage(AS(WC + "Look, I know you're not a meteorologist, but does it &llook &dlike it's raining?"));
-
 				return true;
-
 			}
 
 			currentWorld.setWeatherDuration(1);
@@ -2187,19 +1866,13 @@ public class WCCommands implements CommandExecutor {
 			for (Player ep : Bukkit.getOnlinePlayers()){
 
 				if (ep == p){
-
 					sender.sendMessage(AS(WC + "You have cleared the heavens!"));
-
 				} else {
-
 					ep.sendMessage(AS(WC + p.getDisplayName() + " &dhas cleared the heavens!"));
-
 				}
-
 			}
 
 			this.resetCooldown(rainoffCooldown, p.getName());
-
 			break;
 			
 		case "dragonspawn":
@@ -2208,17 +1881,11 @@ public class WCCommands implements CommandExecutor {
 			long timeLeftDR;
 			
 			if (dragonCooldown.containsKey("global")){
-				
 				timeLeftDR = this.getCooldown(dragonCooldown, "global", dragonSpawnSecs);
-				
 				if (timeLeftDR > 0){
-
 					if (timeLeftDR == 1){
-
 						sender.sendMessage(AS(WC + "Wow! You have the actual nerve to try the command when there is still 1 second left on the cooldown. Amazing.!"));
-
 					} else {
-						
 						int timeLeft = (int) timeLeftDR;
 						StringBuilder sb = new StringBuilder();
 						
@@ -2227,29 +1894,18 @@ public class WCCommands implements CommandExecutor {
 							int time = timeLeft % 60;
 							
 							if (i == 0){
-								
 								sb.append(", and " + time + " seconds");
-								
 							} else if (i == 1){
-								
 								sb.insert(0, ", " +  time + " minutes");
-								
 							} else if (i == 2){
-								
 								sb.insert(0, time + " hours");
-								
 							}
 							
 							timeLeft /= 60;
-							
 						}
-						
 						sender.sendMessage(AS(WC + "Wow. You really can tell time. Except for the fact that there is still " + sb.toString() + " left on the cooldown."));
-						
 					}
-
 				}
-				
 			} else {
 				
 				World theEnd = Bukkit.getWorld("world_the_end");
@@ -2260,7 +1916,6 @@ public class WCCommands implements CommandExecutor {
 				Bukkit.broadcastMessage(AS(WC + "&6&oAnother one will be ready to spawn in 4 hours."));
 				
 				this.resetCooldown(dragonCooldown, "global");
-				
 			}
 			
 			break;
@@ -2271,13 +1926,10 @@ public class WCCommands implements CommandExecutor {
 			List<String> serverExp = new ArrayList<String>();
 
 			for (int i = 0; i < expUsers.size(); i++){
-
 				String expI = expUsers.get(i);
 				int exp = plugin.datacore.getInt("Users." + expI + ".MasterExp");
 				String expU = expI + "," + exp;
-
 				serverExp.add(expU);
-
 			}
 
 			sender.sendMessage(new String[]{
@@ -2330,9 +1982,7 @@ public class WCCommands implements CommandExecutor {
 					place = split[0];
 					expAmount = fPN;
 					check = userE;
-
 				}
-
 			}
 
 			serverExp.remove(check);
@@ -2358,9 +2008,7 @@ public class WCCommands implements CommandExecutor {
 					place = split[0];
 					expAmount = fPN;
 					check = userE;
-
 				}
-
 			}
 
 			serverExp.remove(check);
@@ -2447,10 +2095,7 @@ public class WCCommands implements CommandExecutor {
 			break;
 			
 		case "sidebar":
-			
-			// The setBoard method checks to see if there is a scoreboard, and it not makes one, and if there is one, then it clears it. Simple.
-			wcJoin.setBoard(p);
-			
+			setBoard(p);
 			break;
 			
       }
@@ -2459,34 +2104,68 @@ public class WCCommands implements CommandExecutor {
   }
   
 
-
-	//	  			case 6:
-	//	  				construct(CCLIST, Color.LIME, Color.GREEN, Material.WOOL, w, 5, false, happyLIST, outlineLIST, birthdayLIST,
-	//	  						TTLIST, RRLIST, AALIST, CCLIST, EELIST);
-	//	  			case 7:
-	//	  				construct(EELIST, Color.PURPLE, Color.BLUE, Material.WOOL, w, 6, true,happyLIST, outlineLIST, birthdayLIST,
-	//	  						TTLIST, RRLIST, AALIST, CCLIST, EELIST);
-	//	  			default:
-	//	  				break;
-
-
 	private void cancelTask() {
 		Bukkit.getServer().getScheduler().cancelTask(groove);
 	}
 	
-	public long getCooldown(HashMap<String, Long> map, String player, int seconds){
-		
+	public long getCooldown(HashMap<String, Long> map, String player, int seconds){	
 		long timeLeft = ((map.get(player) / 1000) + seconds) - (System.currentTimeMillis() / 1000);
-		
-		return timeLeft;
-		
+		return timeLeft;	
 	}
 	
 	public void resetCooldown(HashMap<String, Long> map, String player){
-		
 		map.put(player, System.currentTimeMillis());
-		
 	}
 	
+public void setBoard(Player p){
+		
+		Objective localObjective = p.getScoreboard().getObjective(DisplaySlot.SIDEBAR);
+		ScoreboardManager manager = Bukkit.getScoreboardManager();
+		
+		if (localObjective == null){
+			
+			Scoreboard board = manager.getNewScoreboard();
+			
+			Objective o1 = board.registerNewObjective("wa", "dummy");
+			o1.setDisplaySlot(DisplaySlot.SIDEBAR);
+			o1.setDisplayName("§2Worlds Apart");
+			
+			Score balance = o1.getScore(Bukkit.getOfflinePlayer("§3Balance:"));
+			Score paragons = o1.getScore(Bukkit.getOfflinePlayer("§3Paragon Lvl:"));
+			Score online = o1.getScore(Bukkit.getOfflinePlayer("§9Online:"));
+			Score rank = o1.getScore(Bukkit.getOfflinePlayer("§3Rank: " + WCMail.AS(WCVault.chat.getPlayerPrefix(p))));
+			
+			Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
+			
+			if (inAlliance == null || inAlliance == false){
+				Score alliance = o1.getScore(Bukkit.getOfflinePlayer("§7Forever§8Alone"));
+				alliance.setScore(0);
+			} else {
+				String alliance = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".Alliance");
+				String color1 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color1");
+				String color2 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color2");
+				int midpoint = alliance.length() / 2;
+				String firstHalf = alliance.substring(0, midpoint);
+				String secondHalf = alliance.substring(midpoint);
+				String completed = "§" + color1 + firstHalf + "§" + color2 + secondHalf;
+				Integer members = Integer.valueOf(plugin.WAAlliancesconfig.getInt("Alliances." + alliance + ".MemberCount"));
+				if (completed.length() >= 16){
+					Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed.substring(0, 16)));
+					alliance2.setScore(members);
+				} else {
+					Score alliance2 = o1.getScore(Bukkit.getOfflinePlayer(completed));
+					alliance2.setScore(members);
+				}
+			}
+			
+			paragons.setScore(plugin.datacore.getInt("Users." + p.getName() + ".ParagonLevel"));
+			balance.setScore((int) WCVault.econ.getBalance(p.getName()));
+			rank.setScore(0);
+			online.setScore(Bukkit.getOnlinePlayers().length);
+			p.setScoreboard(board);
+		} else {
+			p.setScoreboard(manager.getNewScoreboard());
+		}
+	}
 }
   

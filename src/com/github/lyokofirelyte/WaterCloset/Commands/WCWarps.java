@@ -20,9 +20,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import com.github.lyokofirelyte.WaterCloset.WCBlockBreak;
+import com.github.lyokofirelyte.WaterCloset.WACommandEx;
 import com.github.lyokofirelyte.WaterCloset.WCMain;
-import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCWarps implements CommandExecutor {
 	
@@ -190,8 +190,8 @@ public class WCWarps implements CommandExecutor {
 
 			    String warpSimple = Math.round(xP) + "&f, &6" + Math.round(yP) + "&f, &6" + Math.round(zP) + "&d."; 
 			    p.teleport(warpTo);
-				List<Location> circleblocks = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 0);
-				List<Location> circleblocks2 = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 1);
+				List<Location> circleblocks = Utils.circle(p, p.getLocation(), 3, 1, true, false, 0);
+				List<Location> circleblocks2 = Utils.circle(p, p.getLocation(), 3, 1, true, false, 1);
 				
 					if (!plugin.userGrabB(p.getName(), "HomeSounds")){
 						p.getWorld().playSound(p.getLocation(), Sound.PORTAL_TRAVEL, 3.0F, 0.5F);

@@ -35,6 +35,7 @@ import org.bukkit.util.Vector;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
 import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCMobDrops implements Listener {
 
@@ -406,6 +407,7 @@ public class WCMobDrops implements Listener {
 
 
 	@SuppressWarnings("deprecation")
+	public
 	static void swapDrax(Material type, Player p, short dur, String form) {
 
 	    ArrayList<String> lore;
@@ -578,7 +580,7 @@ public class WCMobDrops implements Listener {
 	int w = 0;
 		
 	while (w <= 50){
-        List<Location> circleblocks = WCBlockBreak.circle(p, loc, 5, 1, true, false, w);
+        List<Location> circleblocks = Utils.circle(p, loc, 5, 1, true, false, w);
         long delay =  0L;
         
         	for (final Location l : circleblocks){

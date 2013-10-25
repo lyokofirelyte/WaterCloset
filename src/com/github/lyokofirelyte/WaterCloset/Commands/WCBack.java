@@ -11,7 +11,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
-import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
 
 public class WCBack implements CommandExecutor {
 	
@@ -24,24 +23,26 @@ public class WCBack implements CommandExecutor {
 		  
 		  if (cmd.getName().equalsIgnoreCase("back") || cmd.getName().equalsIgnoreCase("bk")){
 			  
-			  Player p = ((Player)sender);
+			//  Player p = ((Player)sender);
 			  
-			  if (args.length == 0 || args[0].equals("0")){
-				  backTp(p, 0);
-				  return true;
-			  }
+			//  if (args.length == 0 || args[0].equals("0")){
+		//		  backTp(p, 0);
+			//	  return true;
+		//	  }
 			  
-			  if (!WACommandEx.isInteger(args[0]) || Integer.parseInt(args[0]) > 6 || Integer.parseInt(args[0]) < 0) {
-				  WCMain.s(p, "Invaild history. Type /back [1-6]");
-				  return true;
-			  }
+		//	  if (!WACommandEx.isInteger(args[0]) || Integer.parseInt(args[0]) > 6 || Integer.parseInt(args[0]) < 0) {
+			//	  WCMain.s(p, "Invaild history. Type /back [1-6]");
+			//	  return true;
+			//  }
 			  
-			  backTp(p, Integer.parseInt(args[0]));  
-		  }
+		//	  backTp(p, Integer.parseInt(args[0]));  
+			  WCMain.s(((Player)sender), "/back is under construction due to massive lag assoicated with it. Don't ask.");
+		 }
 		  
 		return true;
 	}
 
+	@SuppressWarnings("unused")
 	private void backTp(Player p, int a) {
 		
 		  List <String> history = plugin.userGrabSL(p.getName(), "LastLoc.History");

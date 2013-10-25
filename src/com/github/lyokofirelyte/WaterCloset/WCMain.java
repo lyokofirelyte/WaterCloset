@@ -21,7 +21,6 @@ import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Score;
 
-import com.github.lyokofirelyte.WaterCloset.Alliances.WACommandEx;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCBack;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCHelp;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCHome;
@@ -30,10 +29,16 @@ import com.github.lyokofirelyte.WaterCloset.Commands.WCRanks;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCReport;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCWarps;
 import com.github.lyokofirelyte.WaterCloset.Extras.StaticField;
-import com.github.lyokofirelyte.WaterCloset.Extras.TNTNerf;
 import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
 import com.github.lyokofirelyte.WaterCloset.Extras.TraceFW;
 import com.github.lyokofirelyte.WaterCloset.Games.HungerGames.CGMain;
+import com.github.lyokofirelyte.WaterCloset.Listener.WCBlockBreak;
+import com.github.lyokofirelyte.WaterCloset.Listener.WCBlockPlace;
+import com.github.lyokofirelyte.WaterCloset.Listener.WCDeath;
+import com.github.lyokofirelyte.WaterCloset.Listener.WCJoin;
+import com.github.lyokofirelyte.WaterCloset.Listener.WCMiscEvents;
+import com.github.lyokofirelyte.WaterCloset.Listener.WCQuit;
+import com.github.lyokofirelyte.WaterCloset.Listener.WCTP;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WCMain extends JavaPlugin {
@@ -63,6 +68,8 @@ public class WCMain extends JavaPlugin {
   
   File mailFileBACKUP;
   File helpFileBACKUP;
+  
+  public static WCMain instance;
   
   public FileConfiguration WAGamesconfig;
   public FileConfiguration WAGamesdatacore;
@@ -103,7 +110,6 @@ public class WCMain extends JavaPlugin {
     pm.registerEvents(new StaticField(this), this);
     pm.registerEvents(new WCChannels(this), this);
     pm.registerEvents(new WCMobDrops(this), this);
-    pm.registerEvents(new TNTNerf(this), this);
     pm.registerEvents(new WCBlockBreak(this), this);
     pm.registerEvents(new WCBlockPlace(this), this);
     pm.registerEvents(new WCExpSystem(this), this);
@@ -111,7 +117,7 @@ public class WCMain extends JavaPlugin {
     pm.registerEvents(new WCMiscEvents(this), this);
     pm.registerEvents(new WCTP(this), this);
     pm.registerEvents(new WCSigns(this), this);
-
+   
 
     this.WAGamesconfigFile = new File(getDataFolder() + File.separator + "WAGames", "config.yml");
     this.WAGamesdatacoreFile = new File(getDataFolder() + File.separator + "WAGames", "datacore.yml");
@@ -145,6 +151,8 @@ public class WCMain extends JavaPlugin {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    
+    WCMain.instance = this;
 
     this.WAAlliancesconfig = new YamlConfiguration();
     this.WAAlliancesdatacore = new YamlConfiguration();

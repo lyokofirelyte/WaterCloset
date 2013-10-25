@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset.Alliances;
+package com.github.lyokofirelyte.WaterCloset;
 
 import java.util.List;
 import org.bukkit.Bukkit;
@@ -10,7 +10,6 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 

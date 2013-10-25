@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Listener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,25 +20,22 @@ import org.bukkit.scoreboard.Score;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WCJoin implements Listener {
-	
-  WCMain plugin;
+  
+WCMain plugin;
+public WCJoin(WCMain instance){
+plugin = instance;
+}
 
-  public WCJoin(WCMain instance)
-  {
-    this.plugin = instance;
-  }
-  
-  
+
 @SuppressWarnings("deprecation")
 @EventHandler(priority=EventPriority.HIGH)
   public boolean onPlayerJoin(final PlayerJoinEvent event) throws Exception
   {
-	  
-	  
 	  try
 	    {
 		  plugin.userCreate(event.getPlayer().getName());
@@ -184,7 +181,7 @@ public class WCJoin implements Listener {
 			
 			Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
 			
-			if (inAlliance == false){
+			if (inAlliance == null || inAlliance == false){
 				Score alliance = o1.getScore(Bukkit.getOfflinePlayer("§7Forever§8Alone"));
 				alliance.setScore(0);
 			} else {

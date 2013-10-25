@@ -23,6 +23,8 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
+
 import static com.github.lyokofirelyte.WaterCloset.Commands.WCMail.*;
 
 public class WCSigns implements Listener {
@@ -159,8 +161,8 @@ public class WCSigns implements Listener {
 					float pitch = warpLoad.getInt("pitch");
 					Location warpTo = new Location(w, x, y+1, z, yaw, pitch);
 					p.teleport(warpTo);
-					List<Location> circleblocks = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 0);
-					List<Location> circleblocks2 = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 1);
+					List<Location> circleblocks = Utils.circle(p, p.getLocation(), 3, 1, true, false, 0);
+					List<Location> circleblocks2 = Utils.circle(p, p.getLocation(), 3, 1, true, false, 1);
 					
 					if (!plugin.userGrabB(p.getName(), "HomeSounds")){
 						p.getWorld().playSound(p.getLocation(), Sound.PORTAL_TRAVEL, 3.0F, 0.5F);

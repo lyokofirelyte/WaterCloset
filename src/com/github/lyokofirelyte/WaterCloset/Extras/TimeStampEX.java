@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class TimeStampEX
   implements CommandExecutor
@@ -60,9 +61,9 @@ public class TimeStampEX
         sender.sendMessage(ChatColor.RED + "This is a console command.");
       } else if (args.length > 0) {
         String lengthcheck = args[0];
-        if (isInteger(lengthcheck)) {
+        if (Utils.isInteger(lengthcheck)) {
           int lc2 = Integer.parseInt(lengthcheck) + 1;
-          String message = createString(args, lc2);
+          String message = Utils.createString(args, lc2);
           Bukkit.dispatchCommand(sender, "vtrigger setstr string current " + message);
         } else {
           sender.sendMessage(ChatColor.RED + "You were supposed to put a number there, not whatever it is that you put.");
@@ -91,29 +92,5 @@ public class TimeStampEX
     }
 
     return true;
-  }
-
-  public static boolean isInteger(String s) {
-    try {
-      Integer.parseInt(s);
-    } catch (NumberFormatException e) {
-      return false;
-    }
-
-    return true;
-  }
-
-  public static String createString(String[] args, int x)
-  {
-    StringBuilder sb = new StringBuilder();
-    for (int i = x; i < args.length; i++)
-    {
-      if ((i != x) && (i != args.length))
-      {
-        sb.append(" ");
-      }
-      sb.append(args[i]);
-    }
-    return sb.toString();
   }
 }

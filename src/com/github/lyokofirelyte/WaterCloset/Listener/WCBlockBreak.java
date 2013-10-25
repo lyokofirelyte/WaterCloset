@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Listener;
 
 import java.io.File;
 import java.io.IOException;
@@ -26,8 +26,10 @@ import org.bukkit.event.player.PlayerFishEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 import com.github.lyokofirelyte.WaterCloset.Util.FireworkShenans;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCBlockBreak implements Listener{
 	
@@ -47,8 +49,6 @@ public class WCBlockBreak implements Listener{
 	public void onFurance(FurnaceExtractEvent e) throws IllegalArgumentException, Exception{
 		FEE(e.getPlayer(), e.getBlock(), e.getItemType(), e.getItemAmount(), e.getExpToDrop());
 	}
-	
-	
 	
 	@SuppressWarnings("deprecation")
 	public void FEE(Player p, Block block, Material itemType, int itemAmount, int exp) throws IllegalArgumentException, Exception{
@@ -312,7 +312,7 @@ public class WCBlockBreak implements Listener{
         	}
         e.getBlock().getWorld().dropItemNaturally(e.getBlock().getLocation(), new ItemStack(mat, 2));
         
-        List<Location> circleblocks = circle(e.getPlayer(), e.getPlayer().getLocation(), 5, 1, true, false, 1);
+        List<Location> circleblocks = Utils.circle(e.getPlayer(), e.getPlayer().getLocation(), 5, 1, true, false, 1);
         long delay =  0L;
         	for (final Location l : circleblocks){
         		delay = delay + 2L;
@@ -335,24 +335,4 @@ public class WCBlockBreak implements Listener{
         Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found a(n) " + type + " &dparagon from harvesting " + mat.toString().toLowerCase() + "&d."));
 		
 	}
-	
-    public static List<Location> circle (Player player, Location loc, Integer r, Integer h, Boolean hollow, Boolean sphere, int plus_y) {
-        List<Location> circleblocks = new ArrayList<Location>();
-        int cx = loc.getBlockX();
-        int cy = loc.getBlockY();
-        int cz = loc.getBlockZ();
-        for (int x = cx - r; x <= cx +r; x++)
-            for (int z = cz - r; z <= cz +r; z++)
-                for (int y = (sphere ? cy - r : cy); y < (sphere ? cy + r : cy + h); y++) {
-                    double dist = (cx - x) * (cx - x) + (cz - z) * (cz - z) + (sphere ? (cy - y) * (cy - y) : 0);
-                    if (dist < r*r && !(hollow && dist < (r-1)*(r-1))) {
-                        Location l = new Location(loc.getWorld(), x, y + plus_y, z);
-                        circleblocks.add(l);
-                        }
-                    }
-     
-        return circleblocks;
-    }
-	
-
 }

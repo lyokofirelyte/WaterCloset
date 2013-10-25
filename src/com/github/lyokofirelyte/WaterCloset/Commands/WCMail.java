@@ -16,9 +16,8 @@ import org.bukkit.entity.Player;
 
 import ru.tehkode.permissions.bukkit.PermissionsEx;
 
-import com.github.lyokofirelyte.WaterCloset.WCCommands;
 import com.github.lyokofirelyte.WaterCloset.WCMain;
-import com.github.lyokofirelyte.WaterCloset.Extras.TimeStampEX;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCMail implements CommandExecutor {
 public static String WC = "§dWC §5// §d";
@@ -116,16 +115,16 @@ String message;
 		        
 		      case "alliance":
 		    	
-		    	mailAlliance(p, TimeStampEX.createString(args, 2));
+		    	mailAlliance(p, Utils.createString(args, 2));
 		    	break;
 		    	
 		      case "staff":
-		    	mailStaff(p, TimeStampEX.createString(args, 2));
+		    	mailStaff(p, Utils.createString(args, 2));
 		    	break;
 		      
 			  
 			  case "website":		  
-				  message = TimeStampEX.createString(args, 2);
+				  message = Utils.createString(args, 2);
 				  mailSite(sender.getName(), message);
 				  sender.sendMessage(AS(WC + "Your message has been sent to http://www.ohsototes.com/?p=mail"));
 				  break;
@@ -144,7 +143,7 @@ String message;
 					  
 					  OfflinePlayer sendTo = Bukkit.getOfflinePlayer(current);
 				  	
-					  message = TimeStampEX.createString(args, 2);
+					  message = Utils.createString(args, 2);
 					  mail = WCMain.mail.getStringList("Users." + current + ".Mail");
 					  mail.add(p.getDisplayName() + " &f-> &2Global &9// &3" + message);
 					  WCMain.mail.set("Users." + current + ".Mail", mail);
@@ -170,10 +169,10 @@ String message;
 				  	}
 				  	
 
-				  	message = TimeStampEX.createString(args, 2);
+				  	message = Utils.createString(args, 2);
 				  	String lastWord = message.substring(message.lastIndexOf(" ")+1);
 				  	
-				  		if (message.contains("!exp") && WCCommands.isInteger(lastWord)){
+				  		if (message.contains("!exp") && Utils.isInteger(lastWord)){
 				  			 int xp = plugin.datacore.getInt("Users." + sender.getName() + ".MasterExp");
 				  			 int xpOther = plugin.datacore.getInt("Users." + args[1] + ".MasterExp");
 				  			 	if (xp < Integer.parseInt(lastWord)){

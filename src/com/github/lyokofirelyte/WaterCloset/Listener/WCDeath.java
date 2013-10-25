@@ -1,4 +1,4 @@
-package com.github.lyokofirelyte.WaterCloset;
+package com.github.lyokofirelyte.WaterCloset.Listener;
 
 import java.util.List;
 import java.util.Random;
@@ -17,6 +17,8 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.WCMobDrops;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
 
 public class WCDeath implements Listener{

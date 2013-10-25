@@ -12,8 +12,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.lyokofirelyte.WaterCloset.WCBlockBreak;
 import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCHome implements CommandExecutor {
 	
@@ -83,8 +83,8 @@ public class WCHome implements CommandExecutor {
 		World world = Bukkit.getWorld(locSplit[5]);
 		Location homeLanding = new Location(world, x, y+1.2, z, yaw, pitch);
 		p.teleport(homeLanding);
-		List<Location> circleblocks = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 0);
-		List<Location> circleblocks2 = WCBlockBreak.circle(p, p.getLocation(), 3, 1, true, false, 1);
+		List<Location> circleblocks = Utils.circle(p, p.getLocation(), 3, 1, true, false, 0);
+		List<Location> circleblocks2 = Utils.circle(p, p.getLocation(), 3, 1, true, false, 1);
 		
 			if (!plugin.userGrabB(p.getName(), "HomeSounds")){
 				p.getWorld().playSound(p.getLocation(), Sound.PORTAL_TRAVEL, 3.0F, 0.5F);
