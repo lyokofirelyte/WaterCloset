@@ -7,6 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCHelp implements CommandExecutor {
 	
@@ -16,18 +17,14 @@ public class WCHelp implements CommandExecutor {
 	public WCHelp(WCMain instance){
 	plugin = instance;
 	}
-
-// ADMINISTRATUM HELP
-static List <String> AdministratumHelpGlobal = WCMain.help.getStringList("Help.Administratum");
-
-// WC HELP
-public static List <String> WCHelpMail = WCMain.help.getStringList("WC.Mail");
-
-
+	
+	public List <String> WCHelpMail;
 
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 	
 		if (cmd.getName().equalsIgnoreCase("search")){
+			
+			WCHelpMail = plugin.help.getStringList("WC.Mail");
 			
 			if (args.length == 0){
 				sender.sendMessage(WC + "Type /search <query>.");
@@ -36,16 +33,16 @@ public static List <String> WCHelpMail = WCMain.help.getStringList("WC.Mail");
 			
 			int x = 0;
 			
-			for (String search : AdministratumHelpGlobal){
-				if (search.toLowerCase().contains(args[0].toLowerCase())){
-					sender.sendMessage(WCMail.AS(search.replaceAll(args[0], "&6" + args[0] + "&3")));
-					x++;
-				}
-			}
+		//	for (String search : AdministratumHelpGlobal){
+			//	if (search.toLowerCase().contains(args[0].toLowerCase())){
+			//		sender.sendMessage(Utils.AS(search.replaceAll(args[0], "&6" + args[0] + "&3")));
+			//		x++;
+			//	}
+		//	}
 			
 			for (String search : WCHelpMail){
 				if (search.toLowerCase().contains(args[0].toLowerCase())){
-					sender.sendMessage(WCMail.AS(search.replaceAll(args[0], "&6" + args[0] + "&3")));
+					sender.sendMessage(Utils.AS(search.replaceAll(args[0], "&6" + args[0] + "&3")));
 					x++;
 				}
 			}

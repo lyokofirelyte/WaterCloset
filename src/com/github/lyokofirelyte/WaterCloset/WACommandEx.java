@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
-import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WACommandEx
@@ -123,7 +123,7 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
         				return true;
         			} else {
         				plugin.WAAlliancesdatacore.set("Users." + sender.getName() + ".CustomColor", args[2]);
-        				sender.sendMessage(WCMail.AS(waaprefix + "You've set your color as &" + args[2] + "this."));
+        				sender.sendMessage(Utils.AS(waaprefix + "You've set your color as &" + args[2] + "this."));
         				return true;
         			}
         	}
@@ -588,7 +588,7 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
 
               Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + args[2] + " " + completed);
               name.sendMessage(this.waaprefix + "Your name was updated.");
-              this.plugin.saveWAAlliances();
+              this.plugin.saveYamls();
               return true;
             }
 
@@ -599,7 +599,7 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
 
             Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + args[2] + " " + completed);
             name.sendMessage(this.waaprefix + "Your name was updated.");
-            this.plugin.saveWAAlliances();
+            this.plugin.saveYamls();
           }
           else
           {
@@ -834,13 +834,13 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
           }
           else if ((args[0].equalsIgnoreCase("save")) && (sender.hasPermission("wa.staff")))
           {
-            this.plugin.saveWAAlliances();
+            this.plugin.saveYamls();
             sender.sendMessage(this.waaprefix + "Config saved!");
           }
           else if ((args[0].equalsIgnoreCase("reload")) && (sender.hasPermission("wa.staff")))
           {
             sender.sendMessage(this.waaprefix + "Config reloaded!");
-            this.plugin.loadWAAlliances();
+            this.plugin.loadYamls();
           }
           else
           {
@@ -1007,12 +1007,12 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
               if (this.plugin.WAAlliancesconfig.getBoolean("Users." + sender.getName() + ".Staff"))
               {
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + pl + " " + "&7&o" + this.plugin.WAAlliancesconfig.getString(new StringBuilder("Users.").append(pl).append(".Nick").toString()));
-                this.plugin.saveWAAlliances();
+                this.plugin.saveYamls();
                 return true;
               }
 
               Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + pl + " " + "&7" + this.plugin.WAAlliancesconfig.getString(new StringBuilder("Users.").append(pl).append(".Nick").toString()));
-              this.plugin.saveWAAlliances();
+              this.plugin.saveYamls();
             }
             else if ((args[0].equalsIgnoreCase("lookup")) && (args.length == 2))
             {
@@ -1028,7 +1028,7 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
                 String Leader = this.plugin.WAAlliancesconfig.getString("Alliances." + args[1] + ".Leader");
                 String color1 = this.plugin.WAAlliancesconfig.getString("Alliances." + args[1] + ".Color1");
                 String color2 = this.plugin.WAAlliancesconfig.getString("Alliances." + args[1] + ".Color2");
-                List <String> users = WCMain.mail.getStringList("Users.Total");
+                List <String> users = plugin.mail.getStringList("Users.Total");
                 plugin.datacore.set("AllianceDataDisplay", "");
                 
                 	for (String lol : users){
@@ -1057,7 +1057,7 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
                   ChatColor.GREEN + "| Members: " + members, 
                   ChatColor.GREEN + "| Leader: " + Leader, 
                   ChatColor.GREEN + "| Colors: " + "&" + color1 + "," + " " + "&" + color2,
-                  ChatColor.GREEN + "| Users: " + WCMail.AS(plugin.datacore.getString("AllianceDataDisplay"))});
+                  ChatColor.GREEN + "| Users: " + Utils.AS(plugin.datacore.getString("AllianceDataDisplay"))});
               }
 
             }
@@ -1174,7 +1174,7 @@ public boolean onCommand(CommandSender sender, Command cmd, String label, String
                 this.plugin.WAAlliancesconfig.set("Alliances." + args[1] + ".Bank", Integer.valueOf(Bank2));
                 Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "eco take " + pl + " " + (sending - 1));
                 sender.sendMessage(this.waaprefix + "The alliance bank now holds " + Bank2 + " shinies.");
-                this.plugin.saveWAAlliances();
+                this.plugin.saveYamls();
                 return true;
               }
 

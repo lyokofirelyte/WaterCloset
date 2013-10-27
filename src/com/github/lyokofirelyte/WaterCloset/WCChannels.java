@@ -18,12 +18,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 
 public class WCChannels implements CommandExecutor, Listener {
 	
   WCMain plugin;
+  WCFAQ faq;
   String waaprefix = ChatColor.WHITE + "waOS " + ChatColor.BLUE + "// " + ChatColor.AQUA;
   String waheader = ChatColor.GREEN + "| " + ChatColor.AQUA;
   String WC = "§dWC §5// §d";
@@ -31,6 +33,10 @@ public class WCChannels implements CommandExecutor, Listener {
   public WCChannels(WCMain instance)
   {
     this.plugin = instance;
+  }
+  
+  public WCChannels(WCFAQ instance){
+	  this.faq = instance;
   }
   
   public static String getTime() {
@@ -87,23 +93,23 @@ public class WCChannels implements CommandExecutor, Listener {
 		int deaths = plugin.datacore.getInt("Users." + player.getName() + ".DeathCount");
 			
 		p.sendMessage(new String[]{
-			WCMail.AS(WCMail.WC + "Inspecting player " + player.getName() + "."),
-			WCMail.AS("&1| &a&oglobal rank&f: " + rank),
-			WCMail.AS("&1| &a&oserver position&f: " + plugin.datacore.getString("Users." + player.getName() + ".SuffixTemp")),
-			WCMail.AS("&1| &f> > > < < <"),
-			WCMail.AS("&1| &b&oalliance&f: " + allianceUpdated),
-			WCMail.AS("&1| &b&oalliance ranking&f: " + allianceRank),
-			WCMail.AS("&1| &f> > > < < <"),
-			WCMail.AS("&1| &6&oparagon level&f: " + paragonLevel),
-			WCMail.AS("&1| &6&oshiny balance&f: " + money),
-			WCMail.AS("&1| &6&odeath count&f: " + deaths),
-			WCMail.AS("&1| &f> > > < < <"),
+			Utils.AS(WCMail.WC + "Inspecting player " + player.getName() + "."),
+			Utils.AS("&1| &a&oglobal rank&f: " + rank),
+			Utils.AS("&1| &a&oserver position&f: " + plugin.datacore.getString("Users." + player.getName() + ".SuffixTemp")),
+			Utils.AS("&1| &f> > > < < <"),
+			Utils.AS("&1| &b&oalliance&f: " + allianceUpdated),
+			Utils.AS("&1| &b&oalliance ranking&f: " + allianceRank),
+			Utils.AS("&1| &f> > > < < <"),
+			Utils.AS("&1| &6&oparagon level&f: " + paragonLevel),
+			Utils.AS("&1| &6&oshiny balance&f: " + money),
+			Utils.AS("&1| &6&odeath count&f: " + deaths),
+			Utils.AS("&1| &f> > > < < <"),
 		});
 		
 		if (player.isOnline()){
-			p.sendMessage(WCMail.AS("&1| &c&ostatus&f: &aONLINE"));
+			p.sendMessage(Utils.AS("&1| &c&ostatus&f: &aONLINE"));
 		} else {
-			p.sendMessage(WCMail.AS("&1| &c&ostatus&f: &4OFFLINE"));	
+			p.sendMessage(Utils.AS("&1| &c&ostatus&f: &4OFFLINE"));	
 		}
 		
 	}
@@ -143,7 +149,7 @@ public class WCChannels implements CommandExecutor, Listener {
 	  
 	  if (event.getMessage().startsWith("!faq")){
 		  event.setCancelled(true);
-		  WCFAQ.faq(event.getMessage(), event.getPlayer());
+		  faq.faq(event.getMessage(), event.getPlayer());
 		  return;
 	  }
 	  
@@ -224,28 +230,28 @@ public void globalChat(Player p, String message){
 					
 					if (timeCode){
 						String time = "&f[" + getTime() + "&f] ";
-						bleh.sendMessage(WCMail.AS(time + prefix + suffix + " §f// " + dispName + "§f: " + globalColor + finalMessage));  
+						bleh.sendMessage(Utils.AS(time + prefix + suffix + " §f// " + dispName + "§f: " + globalColor + finalMessage));  
 						
 					} else {
 						
-					bleh.sendMessage(WCMail.AS(prefix + suffix + " §f// " + dispName + "§f: " + globalColor + finalMessage));  
+					bleh.sendMessage(Utils.AS(prefix + suffix + " §f// " + dispName + "§f: " + globalColor + finalMessage));  
 					}
 					
 				} else {
 					
 					if (timeCode){
 						String time = "&f[" + getTime() + "&f] ";
-						bleh.sendMessage(WCMail.AS(time + prefix + suffix + " §f// " + dispName + "§f: " + globalColor) + finalMessage); 
+						bleh.sendMessage(Utils.AS(time + prefix + suffix + " §f// " + dispName + "§f: " + globalColor) + finalMessage); 
 						
 					} else {
 						
-					bleh.sendMessage(WCMail.AS(prefix + suffix + " §f// " + dispName + "§f: " + globalColor) + finalMessage);  
+					bleh.sendMessage(Utils.AS(prefix + suffix + " §f// " + dispName + "§f: " + globalColor) + finalMessage);  
 					}
 				}
 		}
 		
 	
-		Bukkit.getServer().getConsoleSender().sendMessage(WCMail.AS(WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + message));
+		Bukkit.getServer().getConsoleSender().sendMessage(Utils.AS(WCVault.chat.getPlayerSuffix(p) + " §f// " + p.getDisplayName() + "§f: " + message));
 
 }
 
@@ -308,8 +314,8 @@ public void globalChat(Player p, String message){
           	String customColorOther = plugin.datacore.getString("Users." + currentPlayer.getName() + ".CustomColorActive");
           	
             this.plugin.datacore.set("Users." + Bukkit.getPlayer(args[0]).getName() + ".LastMessage", sender.getName());
-            currentPlayer.sendMessage(WCMail.AS(customColorOther + "<- " + p.getDisplayName() + " §f// " + customColorOther + message2));
-            sender.sendMessage(WCMail.AS(customColor + "-> " + currentPlayer.getDisplayName() + " §f// " + customColor + message2));
+            currentPlayer.sendMessage(Utils.AS(customColorOther + "<- " + p.getDisplayName() + " §f// " + customColorOther + message2));
+            sender.sendMessage(Utils.AS(customColor + "-> " + currentPlayer.getDisplayName() + " §f// " + customColor + message2));
             break;
           }
 
@@ -351,8 +357,8 @@ public void globalChat(Player p, String message){
             	String customColorOther = plugin.datacore.getString("Users." + currentPlayer.getName() + ".CustomColorActive");
             	
             this.plugin.datacore.set("Users." + currentPlayer.getName() + ".LastMessage", sender.getName());
-            currentPlayer.sendMessage(WCMail.AS(customColorOther + "<- " + p.getDisplayName() + " §f// " + customColorOther + message3));
-            sender.sendMessage(WCMail.AS(customColor + "-> " + currentPlayer.getDisplayName() + " §f// " + customColor + message3));
+            currentPlayer.sendMessage(Utils.AS(customColorOther + "<- " + p.getDisplayName() + " §f// " + customColorOther + message3));
+            sender.sendMessage(Utils.AS(customColor + "-> " + currentPlayer.getDisplayName() + " §f// " + customColor + message3));
             break;
           }
         }

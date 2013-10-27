@@ -19,7 +19,7 @@ import org.bukkit.inventory.ItemStack;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.WCMobDrops;
-import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCDeath implements Listener{
 
@@ -96,7 +96,7 @@ public class WCDeath implements Listener{
 		sb.append(" &7(" + deaths + ")");
 
 		message = "&o" + sb.toString();
-		message = WCMail.AS(message.replace("%p", p.getDisplayName() + "&r&o"));
+		message = Utils.AS(message.replace("%p", p.getDisplayName() + "&r&o"));
 
 		return message;
 
@@ -131,17 +131,17 @@ public class WCDeath implements Listener{
 			if (!weapon.hasItemMeta()){
 
 				String wN = weapon.getType().name();
-				message = WCMail.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + pDN + "&r&o").replace("%i", "&6" + wN + "&r&o"));
+				message = Utils.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + pDN + "&r&o").replace("%i", "&6" + wN + "&r&o"));
 
 			} else {
 				String wN = weapon.getItemMeta().getDisplayName();
-				message = WCMail.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + pDN + "&r&o").replace("%i", "&6" + wN + "&r&o"));
+				message = Utils.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + pDN + "&r&o").replace("%i", "&6" + wN + "&r&o"));
 			}
 
 		} else {
 
 			String aTT = ede.getDamager().getType().name().toLowerCase();
-			message = WCMail.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + aTT + "&r&o"));
+			message = Utils.AS(message.replace("%p", p.getDisplayName() + "&r&o").replace("%a", "&6" + aTT + "&r&o"));
 
 		}
 

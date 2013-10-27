@@ -9,6 +9,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WCRanks implements CommandExecutor {
@@ -68,6 +69,6 @@ public class WCRanks implements CommandExecutor {
 		WCVault.econ.withdrawPlayer(p.getName(), cost);
 		WCVault.perms.playerAddGroup(p, newGroup);
 		WCVault.perms.playerRemoveGroup(p, oldGroup);
-		Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + p.getDisplayName() + " &dhas been promoted to " + newGroupFancy + "&d."));	
+		Bukkit.broadcastMessage(Utils.AS(WCMail.WC + p.getDisplayName() + " &dhas been promoted to " + newGroupFancy + "&d."));	
 	}
 }

@@ -83,7 +83,7 @@ public class WCBlockBreak implements Listener{
 		        fplayer.playFirework(p.getWorld(), p.getLocation(),
 	                    FireworkEffect.builder().with(Type.BURST).withColor(Color.BLACK).build());
 		        		
-		        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + p.getDisplayName() + " &dhas found a &9refined &dparagon from smelting!"));
+		        Bukkit.broadcastMessage(Utils.AS(WCMail.WC + p.getDisplayName() + " &dhas found a &9refined &dparagon from smelting!"));
 		}
 		}
 	}
@@ -122,7 +122,7 @@ public class WCBlockBreak implements Listener{
 	        fplayer.playFirework(e.getPlayer().getWorld(), e.getPlayer().getLocation(),
                     FireworkEffect.builder().with(Type.BURST).withColor(Color.BLUE).build());
 	        		
-	        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §aaquatic &dparagon from fishing!"));
+	        Bukkit.broadcastMessage(Utils.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §aaquatic &dparagon from fishing!"));
 		}
 		}
 	}
@@ -160,7 +160,7 @@ public class WCBlockBreak implements Listener{
 			        fplayer.playFirework(e.getPlayer().getWorld(), e.getPlayer().getLocation(),
 		                    FireworkEffect.builder().with(Type.BURST).withColor(Color.ORANGE).build());
 			        		
-			        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §4inferno &dparagon from setting fires."));
+			        Bukkit.broadcastMessage(Utils.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found an §4inferno &dparagon from setting fires."));
 				}
 			}
 		}
@@ -332,7 +332,7 @@ public class WCBlockBreak implements Listener{
         	    }
         	    , delay);
         	}
-        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found a(n) " + type + " &dparagon from harvesting " + mat.toString().toLowerCase() + "&d."));
+        Bukkit.broadcastMessage(Utils.AS(WCMail.WC + e.getPlayer().getDisplayName() + " &dhas found a(n) " + type + " &dparagon from harvesting " + mat.toString().toLowerCase() + "&d."));
 		
 	}
 }

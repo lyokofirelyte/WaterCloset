@@ -173,9 +173,9 @@ public class WCHome implements CommandExecutor {
 		String world = p.getWorld().getName();
 		String xyz = x + "," + y + "," + z + "," + yaw + "," + pitch + "," + world;
 
-		String xSimple = (x + "").substring(0, 7);
-		String ySimple = (y + "").substring(0, 4);
-		String zSimple = (z + "").substring(0, 7);
+		String xSimple = Math.round(x) + "";
+		String ySimple = Math.round(y) + "";
+		String zSimple = Math.round(z) + "";
 		String xyzSimple = xSimple + "&f, &6" + ySimple + "&f, &6" + zSimple + " &6@ " + world;
 		
 		plugin.userWriteS(pName, "Homes." + args[0], xyz);

@@ -25,6 +25,9 @@ commands:
    waa:
       description: WAA Help Menu
       usage: /waa help
+   options:
+      description: WC Options
+      usage: /options
    nick:
       description: NICKNAMES BITCHES!
       usage: /nick <nick>
@@ -128,6 +131,10 @@ commands:
    google:
       description: WC Google Command
       usage: /google <query>
+   invsee:
+      description: WC Inventory Spy
+      usage: /invsee <player> or /invsee <player> f
+      permission: wa.mod
 permissions:
     spleef.admin:
         description: Use admin stuff.

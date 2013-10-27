@@ -172,7 +172,7 @@ public class WCMobDrops implements Listener {
 				} else {
 					WCMain.s(p, "You must aim at a landing pad!");
 				}
-		} else if (p.hasPermission("wa.staff")){
+		} else if (p.hasPermission("wa.staff") && p.getItemInHand().hasItemMeta() && p.getItemInHand().getItemMeta().hasLore()){
 			
 	    	  final Player pl = e.getPlayer();
 	    	  
@@ -264,7 +264,7 @@ public class WCMobDrops implements Listener {
 		}
 		allowedLocations.add(xyz);
 		plugin.WAGamesconfig.set("HG." + plugin.WAGamesdatacore.getString("HG.CurrentArena") + ".Locations", allowedLocations);
-		e.getPlayer().sendMessage(WCMail.AS(WCMail.WC + "Point " + allowedLocations.size() + " &dadded @ " + xyz + "&d."));
+		e.getPlayer().sendMessage(Utils.AS(WCMail.WC + "Point " + allowedLocations.size() + " &dadded @ " + xyz + "&d."));
 		plugin.WAGamesconfig.set("HG." + plugin.WAGamesdatacore.getString("HG.CurrentArena") + ".Points", allowedLocations.size());
 		return;
 	}
@@ -929,7 +929,7 @@ public class WCMobDrops implements Listener {
 			} else {
 				
 				int act = plugin.config.getInt("Paragons.Rewards." + xyz + ".Action");
-				p.sendMessage(WCMail.AS(WCMail.WC + rewardInfo));
+				p.sendMessage(Utils.AS(WCMail.WC + rewardInfo));
 				p.sendMessage(WCMail.WC + "Purchase this by pressing the checkout button.");
 				plugin.datacore.set("Users." + p.getName() + ".ParagonAction", act);
 			}
@@ -994,7 +994,7 @@ public class WCMobDrops implements Listener {
             paragonDrop.setItemMeta((ItemMeta)paragonName);
             drops.add(paragonDrop);
             event.getDrops().addAll(drops);
-            Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + event.getEntity().getKiller().getDisplayName() + " &dhas found a &0death &dparagon from a " + event.getEntityType().toString().toLowerCase() + "&d."));
+            Bukkit.broadcastMessage(Utils.AS(WCMail.WC + event.getEntity().getKiller().getDisplayName() + " &dhas found a &0death &dparagon from a " + event.getEntityType().toString().toLowerCase() + "&d."));
 		}
 		
 	}

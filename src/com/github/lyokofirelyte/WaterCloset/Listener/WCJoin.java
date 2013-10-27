@@ -1,11 +1,13 @@
 package com.github.lyokofirelyte.WaterCloset.Listener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,15 +24,16 @@ import org.bukkit.scoreboard.ScoreboardManager;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 import com.github.lyokofirelyte.WaterCloset.Util.WCVault;
 
 public class WCJoin implements Listener {
   
 WCMain plugin;
+
 public WCJoin(WCMain instance){
 plugin = instance;
 }
-
 
 @SuppressWarnings("deprecation")
 @EventHandler(priority=EventPriority.HIGH)
@@ -44,6 +47,10 @@ plugin = instance;
 	    }
 
 	  setBoard(event.getPlayer());
+	  
+	  File f = new File(plugin.getDataFolder() + File.separator + "Users", event.getPlayer().getName() + ".yml");
+	  YamlConfiguration loadedFile = YamlConfiguration.loadConfiguration(f);
+	  plugin.loadedUsers.put(event.getPlayer().getName(), loadedFile);
 	  
 	  if (event.getPlayer().hasPlayedBefore() == false){
 		  plugin.datacore.set("Users." + event.getPlayer().getName() + ".Comp", true);
@@ -70,7 +77,6 @@ plugin = instance;
 	        event.getPlayer().sendMessage(WCMail.WC + "We're working on getting the alliances back in order. The system is fixed, but for the troubles here's a kit.");
 	 }
 	 
-	WCMail.mailLogin(event.getPlayer());
     List <String> joinMessages = this.plugin.config.getStringList("Core.JoinMessages");
     Random rand = new Random();
     int randomNumber = rand.nextInt(joinMessages.size());
@@ -116,7 +122,7 @@ plugin = instance;
         String completed = firstHalfColors + secondHalfColors;
 
         Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + pl + " " + completed);
-        this.plugin.saveWAAlliances();
+        this.plugin.saveYamls();
         return true;
       }
 
@@ -130,7 +136,7 @@ plugin = instance;
       String completed = firstHalfColors + secondHalfColors;
 
       Bukkit.getServer().dispatchCommand(Bukkit.getServer().getConsoleSender(), "enick " + pl + " " + completed);
-      this.plugin.saveWAAlliances();
+      this.plugin.saveYamls();
     }
 
     if (!hasNick.booleanValue())
@@ -177,13 +183,14 @@ plugin = instance;
 			Score balance = o1.getScore(Bukkit.getOfflinePlayer("§3Balance:"));
 			Score paragons = o1.getScore(Bukkit.getOfflinePlayer("§3Paragon Lvl:"));
 			Score online = o1.getScore(Bukkit.getOfflinePlayer("§9Online:"));
-			Score rank = o1.getScore(Bukkit.getOfflinePlayer("§3Rank: " + WCMail.AS(WCVault.chat.getPlayerPrefix(p))));
+			Score rank = o1.getScore(Bukkit.getOfflinePlayer("§3Rank: " + Utils.AS(WCVault.chat.getPlayerPrefix(p))));
+			Score options = o1.getScore(Bukkit.getOfflinePlayer("§5/options"));
 			
 			Boolean inAlliance = plugin.WAAlliancesconfig.getBoolean("Users." + p.getName() + ".InAlliance");
 			
 			if (inAlliance == null || inAlliance == false){
 				Score alliance = o1.getScore(Bukkit.getOfflinePlayer("§7Forever§8Alone"));
-				alliance.setScore(0);
+				alliance.setScore(1);
 			} else {
 				String alliance = plugin.WAAlliancesconfig.getString("Users." + p.getName() + ".Alliance");
 				String color1 = plugin.WAAlliancesconfig.getString("Alliances." + alliance + ".Color1");
@@ -204,8 +211,9 @@ plugin = instance;
 			
 			paragons.setScore(plugin.datacore.getInt("Users." + p.getName() + ".ParagonLevel"));
 			balance.setScore((int) WCVault.econ.getBalance(p.getName()));
-			rank.setScore(0);
+			rank.setScore(1);
 			online.setScore(Bukkit.getOnlinePlayers().length);
+			options.setScore(0);
 			p.setScoreboard(board);
 		} else {
 			

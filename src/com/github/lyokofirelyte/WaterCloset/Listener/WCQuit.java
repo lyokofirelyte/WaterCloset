@@ -1,5 +1,7 @@
 package com.github.lyokofirelyte.WaterCloset.Listener;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 import org.bukkit.Bukkit;
@@ -30,7 +32,19 @@ public class WCQuit
     Random rand = new Random();
     int randomNumber = rand.nextInt(quitMessages.size());
     final String quitMessage = (String)quitMessages.get(randomNumber);
+    
+    File f = new File(plugin.getDataFolder() + File.separator + "Users", event.getPlayer().getName() + ".yml");
+	
+	try {
+		if (plugin.loadedUsers.containsKey(event.getPlayer().getName())){
+			plugin.loadedUsers.get(event.getPlayer().getName()).save(f);
+		}
+	} catch (IOException e) {
+		e.printStackTrace();
+	}
 
+	plugin.loadedUsers.remove(event.getPlayer().getName());
+	
     event.setQuitMessage(null);
 
     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this.plugin, new Runnable()

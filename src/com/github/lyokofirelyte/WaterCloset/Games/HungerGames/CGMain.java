@@ -15,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class CGMain implements CommandExecutor {
 
@@ -213,11 +214,11 @@ public class CGMain implements CommandExecutor {
 	  }
 	  
 	  public static void s(Player p, String s){
-		  p.sendMessage(WCMail.AS(WCMail.WC + s));
+		  p.sendMessage(Utils.AS(WCMail.WC + s));
 	  }
 	  
 	  public static void s2(Player p, String s){
-		  p.sendMessage(WCMail.AS(s));
+		  p.sendMessage(Utils.AS(s));
 	  }
 	  
 	@SuppressWarnings("deprecation")

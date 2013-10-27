@@ -3,11 +3,15 @@ package com.github.lyokofirelyte.WaterCloset.Util;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.util.BlockIterator;
+
+import ru.tehkode.permissions.bukkit.PermissionsEx;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 
@@ -81,4 +85,17 @@ public class Utils {
 	        }
 	        return target;
 	    }
+ 	 
+ 	public static boolean hasPerms(OfflinePlayer player, String usepermission) {
+		return PermissionsEx.getUser(player.getName()).has(usepermission);
+		}
+ 	
+	
+	
+	public static String AS(String DecorativeToasterCozy){
+		
+		String FlutterShysShed = ChatColor.translateAlternateColorCodes('&', DecorativeToasterCozy);
+		return FlutterShysShed;
+		
+	}
 }

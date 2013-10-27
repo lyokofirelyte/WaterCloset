@@ -19,6 +19,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.lyokofirelyte.WaterCloset.WCMain;
 import com.github.lyokofirelyte.WaterCloset.Commands.WCMail;
+import com.github.lyokofirelyte.WaterCloset.Util.Utils;
 
 public class WCBlockPlace implements Listener{
 	
@@ -52,7 +53,7 @@ public class WCBlockPlace implements Listener{
  				} else {
  					e.setCancelled(true);
  					e.getPlayer().updateInventory();
- 					e.getPlayer().sendMessage(WCMail.AS(WCMail.WC + "You should only place these at the shrine near spawn!"));
+ 					e.getPlayer().sendMessage(Utils.AS(WCMail.WC + "You should only place these at the shrine near spawn!"));
  					return;
  				}
          }
@@ -68,7 +69,7 @@ public class WCBlockPlace implements Listener{
 			List <String> allowedLocations = plugin.config.getStringList("Paragons.Locations");
 			allowedLocations.add(xyz);
 			plugin.config.set("Paragons.Locations", allowedLocations);
-			e.getPlayer().sendMessage(WCMail.AS(WCMail.WC + "Location set!"));
+			e.getPlayer().sendMessage(Utils.AS(WCMail.WC + "Location set!"));
 			e.setCancelled(true);
 			e.getPlayer().updateInventory();
 			return;
@@ -97,7 +98,7 @@ public class WCBlockPlace implements Listener{
 		plugin.config.set("Obelisks.Locations." + xyz + ".Type", type);
 		plugin.config.set("Obelisks.ListGrab." + latest, xyz);
 		
-		e.getPlayer().sendMessage(WCMail.AS(WCMail.WC + "Location set for " + latest));
+		e.getPlayer().sendMessage(Utils.AS(WCMail.WC + "Location set for " + latest));
 		return;
 }
 	
@@ -110,7 +111,7 @@ public class WCBlockPlace implements Listener{
 		List <String> allowedLocations = plugin.config.getStringList("Paragons.Locations");
 		allowedLocations.remove(xyz);
 		plugin.config.set("Paragons.Locations", allowedLocations);
-		e.getPlayer().sendMessage(WCMail.AS(WCMail.WC + "Location removed!"));
+		e.getPlayer().sendMessage(Utils.AS(WCMail.WC + "Location removed!"));
 		e.setCancelled(true);
 		e.getPlayer().updateInventory();
 		return;
@@ -225,7 +226,7 @@ public class WCBlockPlace implements Listener{
 		plugin.datacore.set("Users." + p.getName() + ".Paragons.TempTotal", tempTotal);
 		plugin.datacore.set("Paragon.Total", total);
 
-		p.sendMessage(WCMail.AS(WCMail.WC + "Your donation of x1 &6" + type + " &dparagon was added to THE WALL."));
+		p.sendMessage(Utils.AS(WCMail.WC + "Your donation of x1 &6" + type + " &dparagon was added to THE WALL."));
 		callToken(p, type);
 		
 		if (size == 1){
@@ -236,7 +237,7 @@ public class WCBlockPlace implements Listener{
 			reset(size2, p);
 		    plugin.config.set("Paragons.NewList.Size", 131);
 		    Bukkit.broadcastMessage(WCMail.WC + "THE WALL at the Paragon Collectorium has been filled and reset!");
-		    Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + "&b&oThe Paragon Collectorium is now tier " + plugin.config.getInt("Paragons.Tier") + "&b!"));
+		    Bukkit.broadcastMessage(Utils.AS(WCMail.WC + "&b&oThe Paragon Collectorium is now tier " + plugin.config.getInt("Paragons.Tier") + "&b!"));
 			return;
 		} else {
 			double spotX = plugin.config.getInt("Paragons.Spots." + size + ".X");
@@ -316,7 +317,7 @@ public class WCBlockPlace implements Listener{
         int level = plugin.datacore.getInt("Users." + p.getName() + ".ParagonLevel");
         level++;
         plugin.datacore.set("Users." + p.getName() + ".ParagonLevel", level);
-        Bukkit.broadcastMessage(WCMail.AS(WCMail.WC + p.getDisplayName() + " has ascended to Paragon Level " + level));
+        Bukkit.broadcastMessage(Utils.AS(WCMail.WC + p.getDisplayName() + " has ascended to Paragon Level " + level));
 		plugin.config.set("Users." + p.getName() + ".ParagonLevelDisplay", level);
 		p.sendMessage(WCMail.WC + "Title updated! :)");
 	}
